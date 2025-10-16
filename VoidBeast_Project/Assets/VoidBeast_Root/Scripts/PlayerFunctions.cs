@@ -8,7 +8,7 @@ public class PlayerFunctions : MonoBehaviour
     
     private void Awake()
     {
-        layerInteractable = LayerMask.GetMask("Interactable", "Player");
+        layerInteractable = LayerMask.GetMask("Interactable");
 
     }
     void Update()
@@ -22,15 +22,10 @@ public class PlayerFunctions : MonoBehaviour
 
         if (Physics.Raycast(transform.position-originRaycast, transform.TransformDirection(Vector3.forward), out hit, 30, layerInteractable))
         {
-            Debug.DrawRay(transform.position,transform.TransformDirection(Vector3.forward) * hit.distance,Color.green);
-            Debug.Log("Hit");
+            if (DayNightSystem.Instance != null && DayNightSystem.Instance.isDay)
+            {
+                DayNightSystem.Instance.ToNight();   
+            }
         }
-        else
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.red);
-            Debug.Log("Nope");
-        }
-
-
     }
 }
