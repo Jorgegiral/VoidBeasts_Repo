@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class BuildingHP : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] int buildHP;
+    [SerializeField] Canvas deathCanvas;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        deathCanvas.gameObject.SetActive(false);
+
+    }
+    void TakeDamage(int damage)
+    {
+        buildHP -= damage;
+        if (buildHP < 0 )
+        {
+            deathCanvas.gameObject.SetActive(true);
+            Time.timeScale = 0f;
+        }
+
     }
 }
+
