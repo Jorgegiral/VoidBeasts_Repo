@@ -10,7 +10,7 @@ public class BuildingHP : MonoBehaviour
         deathCanvas.gameObject.SetActive(false);
 
     }
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         buildHP -= damage;
         if (buildHP < 0 )
