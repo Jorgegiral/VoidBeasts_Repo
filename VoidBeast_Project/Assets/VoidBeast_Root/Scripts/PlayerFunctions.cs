@@ -1,3 +1,5 @@
+using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,13 +12,18 @@ public class PlayerFunctions : MonoBehaviour
 
     LayerMask layerInteractable;
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
-
+    [SerializeField] private CinemachineCamera playercam;
+    [SerializeField] private bool actionMode = true;
+     
+    
     private void Awake()
     {
         layerInteractable = LayerMask.GetMask("Interactable");
+        var composerCam = playercam.GetComponent<CinemachinePositionComposer>();
 
 
     }
+
     void Shoot()
     {
         if (bulletVFX != null && shootPoint != null)
@@ -48,6 +55,10 @@ public class PlayerFunctions : MonoBehaviour
         if (!context.performed) return;
 
         Shoot();
+    }
+    public void SwitchMode(InputAction.CallbackContext context)
+    {
+
     }
 }
 

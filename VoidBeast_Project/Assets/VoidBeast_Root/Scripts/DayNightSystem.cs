@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -14,6 +15,7 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] TMP_Text dayNightText;
     [SerializeField]  Volume globalVolume;
     [SerializeField]  Light globalLight;
+    [SerializeField] private CinemachineCamera playercam;
 
     void Awake()
     {
@@ -56,6 +58,9 @@ public class DayNightSystem : MonoBehaviour
             isNight = false;
             nightNumber++;
             globalLight.colorTemperature = 5000;
+            playercam.Lens.OrthographicSize = 5f;
+            var composerCam = playercam.GetComponent<CinemachinePositionComposer>();
+            composerCam.CameraDistance = 8;
         }
 
         UpdateDayNightUI();
@@ -69,7 +74,9 @@ public class DayNightSystem : MonoBehaviour
             EnemyQuantityScale();
             dayNumber++;
             globalLight.colorTemperature = 15000;
-
+            playercam.Lens.OrthographicSize = 10f;
+            var composerCam = playercam.GetComponent<CinemachinePositionComposer>();
+            composerCam.CameraDistance = 20;
         }
         UpdateDayNightUI();
     }
