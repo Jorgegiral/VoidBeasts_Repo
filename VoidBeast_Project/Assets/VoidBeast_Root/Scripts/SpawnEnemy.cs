@@ -46,7 +46,7 @@ public class SpawnEnemy : MonoBehaviour
             float angle = i * Mathf.PI * 2f / enemyQuantity;
             float x = Mathf.Cos(angle) * spawnRadius;
             float z = Mathf.Sin(angle) * spawnRadius;
-            Vector3 spawnPos = spawnerTransform.position + new Vector3(x, 0, z);
+            Vector3 spawnPos = spawnerTransform.position + new Vector3(x, 1, z);
             Instantiate(enemyPrefab, spawnPos, Quaternion.LookRotation(spawnerTransform.position - spawnPos));
 
         }
