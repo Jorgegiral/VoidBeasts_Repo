@@ -6,20 +6,21 @@ using UnityEngine.InputSystem;
 public class PlayerFunctions : MonoBehaviour
 {
     [Header("Shoot config")]
-    [SerializeField] private float shootForce = 20f;
-    [SerializeField] private Transform shootPoint;
-    [SerializeField] private GameObject bulletVFX;
-
+    [SerializeField] float shootForce = 20f;
+    [SerializeField] Transform shootPoint;
+    [SerializeField] GameObject bulletVFX;
+    [SerializeField] CinemachineCamera playerCam;
+    [SerializeField] CinemachineCamera buildCam;
     LayerMask layerInteractable;
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
-    [SerializeField] private CinemachineCamera playercam;
-    [SerializeField] private bool actionMode = true;
+
+
+    [SerializeField] bool actionMode = true;
      
     
     private void Awake()
     {
         layerInteractable = LayerMask.GetMask("Interactable");
-        var composerCam = playercam.GetComponent<CinemachinePositionComposer>();
 
 
     }

@@ -15,7 +15,8 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] TMP_Text dayNightText;
     [SerializeField]  Volume globalVolume;
     [SerializeField]  Light globalLight;
-    [SerializeField] private CinemachineCamera playercam;
+    [SerializeField] CinemachineCamera playerCam;
+    [SerializeField] CinemachineCamera nightCam;
 
     void Awake()
     {
@@ -58,9 +59,10 @@ public class DayNightSystem : MonoBehaviour
             isNight = false;
             nightNumber++;
             globalLight.colorTemperature = 5000;
-            playercam.Lens.OrthographicSize = 5f;
-            var composerCam = playercam.GetComponent<CinemachinePositionComposer>();
-            composerCam.CameraDistance = 8;
+            playerCam.gameObject.SetActive(true);
+            nightCam.gameObject.SetActive(false);
+
+
         }
 
         UpdateDayNightUI();
@@ -74,9 +76,8 @@ public class DayNightSystem : MonoBehaviour
             EnemyQuantityScale();
             dayNumber++;
             globalLight.colorTemperature = 15000;
-            playercam.Lens.OrthographicSize = 10f;
-            var composerCam = playercam.GetComponent<CinemachinePositionComposer>();
-            composerCam.CameraDistance = 20;
+            playerCam.gameObject.SetActive(false);
+            nightCam.gameObject.SetActive(true);
         }
         UpdateDayNightUI();
     }

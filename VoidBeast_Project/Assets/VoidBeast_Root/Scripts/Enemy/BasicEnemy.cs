@@ -16,6 +16,7 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] float attackRange;
     private bool alreadyAttack;
     private float attackCD;
+    private bool canAttack;
 
 
 
@@ -29,11 +30,14 @@ public class BasicEnemy : MonoBehaviour
     {
         UpdateEnemyTarget();
         MoveEnemy();
+        UpdateAttackCooldown();
+
     }
     void UpdateEnemyTarget()
     {
+        GameObject plant = GameObject.FindWithTag("Plants");
 
-            if (GameObject.FindWithTag("Plants"))
+        if (plant != null)
             {
                 //codigo para que vaya a las plantas aún por hacer
             } else
@@ -76,6 +80,17 @@ public class BasicEnemy : MonoBehaviour
         }
         alreadyAttack = true;
         attackCD = timeBetweenAttacks;
+    }
+    private void UpdateAttackCooldown()
+    {
+        if (!canAttack)
+        {
+            attackCD -= Time.deltaTime;
+            if (attackCD <= 0f)
+            {
+                canAttack = true;
+            }
+        }
     }
     private void OnDrawGizmosSelected()
     {
