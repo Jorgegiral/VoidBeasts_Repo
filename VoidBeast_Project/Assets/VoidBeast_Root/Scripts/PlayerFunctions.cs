@@ -9,17 +9,18 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] float shootForce = 20f;
     [SerializeField] Transform shootPoint;
     [SerializeField] GameObject bulletVFX;
-
+    [SerializeField] CinemachineCamera playerCam;
+    [SerializeField] CinemachineCamera buildCam;
     LayerMask layerInteractable;
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
-    [SerializeField] CinemachineCamera playercam;
+
+
     [SerializeField] bool actionMode = true;
      
     
     private void Awake()
     {
         layerInteractable = LayerMask.GetMask("Interactable");
-        var composerCam = playercam.GetComponent<CinemachinePositionComposer>();
 
 
     }
