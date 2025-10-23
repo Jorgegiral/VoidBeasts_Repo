@@ -1,6 +1,7 @@
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
@@ -9,15 +10,24 @@ public class Menu : MonoBehaviour
     [SerializeField] Sprite backgroundDay;
     [SerializeField] Sprite backgroundNight;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        
+        int numRandom = UnityEngine.Random.Range(0, 2);
+        if (numRandom == 0) backgroundImage.sprite = backgroundNight;
+        if (numRandom == 1) backgroundImage.sprite = backgroundDay;
+        Settings.Instance.menuSprite = backgroundImage.sprite;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ExitButton()
     {
-        
+       Application.Quit();
+    }
+    public void PlayButton()
+    {
+        SceneManager.LoadScene(1);
+    }
+    public void OptionsButton()
+    {
+        SceneManager.LoadScene(2);
     }
 }
