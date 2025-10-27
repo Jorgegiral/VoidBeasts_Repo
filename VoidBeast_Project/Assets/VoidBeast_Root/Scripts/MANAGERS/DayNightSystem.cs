@@ -45,7 +45,7 @@ public class DayNightSystem : MonoBehaviour
     {
         if (dayNightText != null)
         {
-            dayNightText.text = isDay ? $"Día {dayNumber}" : $"Noche {nightNumber}";
+            dayNightText.text = isDay ? $"DAY {dayNumber}" : $"NIGHT {nightNumber}";
         }
     }
    
