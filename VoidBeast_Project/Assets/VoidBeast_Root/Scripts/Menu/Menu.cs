@@ -11,6 +11,7 @@ public class Menu : MonoBehaviour
     [SerializeField] Sprite backgroundNight;
     [SerializeField] GameObject logoImages;
     [SerializeField] GameObject settingsPanel;
+    [SerializeField] GameObject controlsPanel;
 
     private void Awake()
     {
@@ -33,5 +34,18 @@ public class Menu : MonoBehaviour
     {
         settingsPanel.SetActive(true);
         logoImages.SetActive(false);
+    }
+    public void CloseOptions()
+    {
+        settingsPanel.SetActive(false);
+        logoImages.SetActive(true);
+    }
+    public void ShowControls()
+    {
+        controlsPanel.SetActive(true);
+    }
+    public void CloseControls()
+    {
+        controlsPanel.SetActive(false);
     }
 }
