@@ -11,7 +11,11 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] GameObject bulletVFX;
     [SerializeField] CinemachineCamera playerCam;
     [SerializeField] CinemachineCamera buildCam;
+    [SerializeField] GameObject SeedMenu;
+
     LayerMask layerInteractable;
+    LayerMask plantsInteractable;
+
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
 
 
