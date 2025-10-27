@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class DayNightSystem : MonoBehaviour
 {
-    public static DayNightSystem Instance { get; private set; }
+    public static DayNightSystem Instance;
     public int dayNumber;
     public int nightNumber;
     public bool isDay;
@@ -20,12 +20,10 @@ public class DayNightSystem : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
         {
-            Destroy(gameObject); 
-            return;
+            Instance = this;
         }
-        Instance = this;
         
     }
     void Start()
