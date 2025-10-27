@@ -1,31 +1,69 @@
+using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerFunctions : MonoBehaviour
 {
+    [Header("Shoot config")]
+    [SerializeField] float shootForce = 20f;
+    [SerializeField] Transform shootPoint;
+    [SerializeField] GameObject bulletVFX;
+    [SerializeField] CinemachineCamera playerCam;
+    [SerializeField] CinemachineCamera buildCam;
+    [SerializeField] GameObject SeedMenu;
+
     LayerMask layerInteractable;
-    private Vector3 originRaycast = new Vector3(0,0.5f,0);
+    LayerMask plantsInteractable;
+
+    private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
+
+
+    [SerializeField] bool actionMode = true;
+     
     
     private void Awake()
     {
         layerInteractable = LayerMask.GetMask("Interactable");
 
-    }
-    void Update()
-    {
 
+    }
+
+    void Shoot()
+    {
+        if (bulletVFX != null && shootPoint != null)
+        {
+            GameObject bullet = Instantiate(bulletVFX, shootPoint.position, shootPoint.rotation);
+
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = shootPoint.forward * shootForce;
+            }
+        }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position-originRaycast, transform.TransformDirection(Vector3.forward), out hit, 30, layerInteractable))
+        if (Physics.Raycast(transform.position - originRaycast, transform.TransformDirection(Vector3.forward), out hit, 30, layerInteractable))
         {
             if (DayNightSystem.Instance != null && DayNightSystem.Instance.isDay)
             {
-                DayNightSystem.Instance.ToNight();   
+                DayNightSystem.Instance.ToNight();
             }
         }
     }
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        Shoot();
+    }
+    public void SwitchMode(InputAction.CallbackContext context)
+    {
+
+    }
 }
+

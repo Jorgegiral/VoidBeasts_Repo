@@ -6,51 +6,85 @@ public class SpawnEnemy : MonoBehaviour
 {
 
     [SerializeField] GameObject enemyPrefab;
-    [SerializeField] Transform spawnerTransform;
     [SerializeField] int enemyQuantity;
     [SerializeField] TMP_Text enemyText;
-    [SerializeField] float spawnRadius = 300f;
-    private int maxGroupSize;
-    private bool enemiesSpawned = false;
-    private List<GameObject> activeEnemies = new List<GameObject>();
-
-
+    [SerializeField] Transform MainBuild;
+    [SerializeField] List<Transform> spawnersTransform = new List<Transform>();
+    private int enemyCount;
+    private float waveCD = 5f;
+    private float waveTimer;
+    private int enemyRemain;
+    private bool spawning = true;
+    private bool finishedNight = false;
+    private Transform selectOne;
 
     void Update()
     {
-        if (DayNightSystem.Instance == null)
-            return;
 
-        if (DayNightSystem.Instance.isNight && !enemiesSpawned)
+        if (DayNightSystem.Instance.isNight && !spawning)
         {
+            spawning = true;
             enemyQuantity = DayNightSystem.Instance.enemyQuantity;
-            SpawnEnemies();
-            enemiesSpawned = true;
+            enemyRemain = DayNightSystem.Instance.enemyQuantity;
+            waveTimer = 0f;
         }
-        if (DayNightSystem.Instance.isDay && enemiesSpawned)
+        if (DayNightSystem.Instance.isNight && spawning)
         {
-            enemiesSpawned = false;
+            waveTimer += Time.deltaTime;
+
+            if (waveTimer >= waveCD && enemyRemain > 0)
+            {
+                finishedNight = true;
+                waveTimer = 0f; 
+                if (DayNightSystem.Instance.nightNumber >= 5)
+                { 
+                SpawnEnemies(SelectOneFromTheList());
+                }
+                else
+                {
+                    SpawnEnemies(selectOne);
+                }
+
+        }
+        }
+        if (DayNightSystem.Instance.isDay && spawning)
+        {      
+            selectOne = SelectOneFromTheList();
+            spawning = false;
+            enemyRemain = 0;
         }
         if (DayNightSystem.Instance.isNight)
         {
-            int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+            enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
             enemyText.text = "Enemigos: " + enemyCount;
-            if (enemyCount == 0) { DayNightSystem.Instance.ToDay(); }
+            if (enemyCount == 0 && finishedNight)
+            {
+                DayNightSystem.Instance.ToDay();
+                finishedNight = false;
+            }
         }
 
     }
-    private void SpawnEnemies()
+    private void SpawnEnemies(Transform spawnerSelected)
     {
-        for (int i = 0; i < enemyQuantity; i++)
+
+        if (enemyRemain > 0) {
+            int enemiesThisWave = Random.Range(1, enemyRemain);
+            enemyRemain -= enemiesThisWave;
+            for (int i = 0; i < enemiesThisWave; i++)
         {
-            float angle = i * Mathf.PI * 2f / enemyQuantity;
-            float x = Mathf.Cos(angle) * spawnRadius;
-            float z = Mathf.Sin(angle) * spawnRadius;
-            Vector3 spawnPos = spawnerTransform.position + new Vector3(x, 0, z);
-            Instantiate(enemyPrefab, spawnPos, Quaternion.LookRotation(spawnerTransform.position - spawnPos));
+            Vector2 randomOffset = Random.insideUnitCircle * 3f;
+            Vector3 spawnPos = spawnerSelected.position + new Vector3(0, 1, 0);
+
+            Instantiate(enemyPrefab, spawnPos, Quaternion.LookRotation(MainBuild.position- spawnPos));
 
         }
+    }
 
-
+}
+    private Transform SelectOneFromTheList()
+    {
+        Transform spawnerSelected  = spawnersTransform[Random.Range(0, spawnersTransform.Count)];
+        return spawnerSelected;
     }
 }
