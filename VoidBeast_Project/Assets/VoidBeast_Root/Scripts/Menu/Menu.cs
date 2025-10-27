@@ -9,13 +9,16 @@ public class Menu : MonoBehaviour
     [SerializeField] Image backgroundImage;
     [SerializeField] Sprite backgroundDay;
     [SerializeField] Sprite backgroundNight;
+    [SerializeField] GameObject logoImages;
+    [SerializeField] GameObject settingsPanel;
 
     private void Awake()
     {
+        logoImages.SetActive(true);
+        settingsPanel.SetActive(false);
         int numRandom = UnityEngine.Random.Range(0, 2);
         if (numRandom == 0) backgroundImage.sprite = backgroundNight;
         if (numRandom == 1) backgroundImage.sprite = backgroundDay;
-        Settings.Instance.menuSprite = backgroundImage.sprite;
     }
 
     public void ExitButton()
@@ -28,6 +31,7 @@ public class Menu : MonoBehaviour
     }
     public void OptionsButton()
     {
-        SceneManager.LoadScene(2);
+        settingsPanel.SetActive(true);
+        logoImages.SetActive(false);
     }
 }
