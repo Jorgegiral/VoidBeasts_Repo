@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,9 +7,9 @@ using UnityEngine.InputSystem;
 public class PlayerFunctions : MonoBehaviour
 {
     [Header("Shoot config")]
-    [SerializeField] float shootForce = 20f;
     [SerializeField] Transform shootPoint;
-    [SerializeField] GameObject bulletVFX;
+    [SerializeField] List<GameObject> bulletVFX = new List<GameObject>();
+    private GameObject effectToSpawn;
     [SerializeField] CinemachineCamera playerCam;
     [SerializeField] CinemachineCamera buildCam;
     [SerializeField] GameObject SeedMenu;
@@ -25,20 +26,15 @@ public class PlayerFunctions : MonoBehaviour
     private void Awake()
     {
         layerInteractable = LayerMask.GetMask("Interactable");
-
+        effectToSpawn = bulletVFX[0];
 
     }
 
     void Shoot()
     {
 
-            GameObject bullet = Instantiate(bulletVFX, shootPoint.position, shootPoint.rotation);
+            GameObject bullet = Instantiate(effectToSpawn, shootPoint.position, Quaternion.identity);
 
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.linearVelocity = shootPoint.forward * shootForce;
-            }
         
     }
 
