@@ -5,9 +5,19 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] LayerMask enemyMask;
     [SerializeField] private int damage = 10;
+    [SerializeField] GameObject hitVFX;
+    [SerializeField] float shootSpeed;
+    [SerializeField] float fireRate;
     private void Awake()
     {
         Destroy(gameObject, 5f);
+    }
+    private void Update()
+    {
+        if(shootSpeed != 0)
+        {
+            transform.position += transform.forward * (shootSpeed * Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -16,10 +26,14 @@ public class Bullet : MonoBehaviour
         {
             var enemyHP = other.GetComponent<EnemyHP>();
             enemyHP.TakeDamage(damage);
+            GameObject hit = Instantiate(hitVFX, transform.position, transform.rotation);
+
             Destroy(gameObject);
         }
         else
         {
+            GameObject hit = Instantiate(hitVFX, transform.position, transform.rotation);
+            
             Destroy(gameObject);
         }
     }
