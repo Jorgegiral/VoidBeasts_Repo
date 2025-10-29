@@ -31,8 +31,7 @@ public class PlayerFunctions : MonoBehaviour
 
     void Shoot()
     {
-        if (bulletVFX != null && shootPoint != null)
-        {
+
             GameObject bullet = Instantiate(bulletVFX, shootPoint.position, shootPoint.rotation);
 
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
@@ -40,7 +39,7 @@ public class PlayerFunctions : MonoBehaviour
             {
                 rb.linearVelocity = shootPoint.forward * shootForce;
             }
-        }
+        
     }
 
     public void OnInteract(InputAction.CallbackContext context)
