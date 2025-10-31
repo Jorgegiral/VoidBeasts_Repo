@@ -13,6 +13,7 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] CinemachineCamera playerCam;
     [SerializeField] CinemachineCamera buildCam;
     [SerializeField] GameObject SeedMenu;
+    [SerializeField] RotateToPlayer rotateToPlayer;
 
     LayerMask layerInteractable;
     LayerMask plantsInteractable;
@@ -32,9 +33,9 @@ public class PlayerFunctions : MonoBehaviour
 
     void Shoot()
     {
-
-            GameObject bullet = Instantiate(effectToSpawn, shootPoint.position, Quaternion.identity);
-
+        rotateToPlayer.RotateOnShoot();
+        GameObject bulletVFX;
+        bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, rotateToPlayer.GetRotation());
         
     }
 
