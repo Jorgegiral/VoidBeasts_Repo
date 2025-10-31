@@ -1,11 +1,14 @@
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class DayNightSystem : MonoBehaviour
 {
-    public static DayNightSystem Instance { get; private set; }
+    public static DayNightSystem Instance;
     public int dayNumber;
     public int nightNumber;
     public bool isDay;
@@ -17,15 +20,15 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField]  Light globalLight;
     [SerializeField] CinemachineCamera playerCam;
     [SerializeField] CinemachineCamera nightCam;
-
+    [SerializeField] Image[] DayNightIcons;
+    [SerializeField] private LocalizedString dayText;   
+    [SerializeField] private LocalizedString nightText;
     void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
         {
-            Destroy(gameObject); 
-            return;
+            Instance = this;
         }
-        Instance = this;
         
     }
     void Start()
@@ -45,10 +48,11 @@ public class DayNightSystem : MonoBehaviour
 
     private void UpdateDayNightUI()
     {
-        if (dayNightText != null)
-        {
-            dayNightText.text = isDay ? $"Día {dayNumber}" : $"Noche {nightNumber}";
-        }
+        string key = isDay ? "A008" : "A009";
+        var localizedString = LocalizationSettings.StringDatabase.GetLocalizedString("Tabla1", key);
+
+        int number = isDay ? dayNumber : nightNumber;
+        dayNightText.text = $"{localizedString} {number}";
     }
    
     public void ToDay()
