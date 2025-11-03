@@ -56,7 +56,7 @@ public class SpawnEnemy : MonoBehaviour
         if (DayNightSystem.Instance.isNight)
         {
             enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-            enemyText.text = "Enemigos: " + enemyCount;
+            enemyText.text = enemyCount.ToString();
             if (enemyCount == 0 && finishedNight)
             {
                 DayNightSystem.Instance.ToDay();

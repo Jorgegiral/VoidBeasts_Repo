@@ -16,13 +16,14 @@ public class DayNightSystem : MonoBehaviour
     public bool startNight;
     public int enemyQuantity;
     [SerializeField] TMP_Text dayNightText;
-    [SerializeField]  Volume globalVolume;
-    [SerializeField]  Light globalLight;
+    [SerializeField] Volume globalVolume;
+    [SerializeField] Light globalLight;
     [SerializeField] CinemachineCamera playerCam;
     [SerializeField] CinemachineCamera nightCam;
     [SerializeField] Image[] DayNightIcons;
-    [SerializeField] private LocalizedString dayText;   
-    [SerializeField] private LocalizedString nightText;
+    [SerializeField] LocalizedString dayText;   
+    [SerializeField] LocalizedString nightText;
+    [SerializeField] Sprite[] DayNightSprites;
     void Awake()
     {
         if (Instance == null)
@@ -37,7 +38,10 @@ public class DayNightSystem : MonoBehaviour
         nightNumber = 1;
         isDay = true;
         isNight = false;
-        
+        DayNightIcons[0].sprite = DayNightSprites[0];
+        DayNightIcons[1].sprite = DayNightSprites[0];
+        DayNightIcons[2].sprite = DayNightSprites[3];
+
         UpdateDayNightUI();
     }
 
@@ -52,7 +56,7 @@ public class DayNightSystem : MonoBehaviour
         var localizedString = LocalizationSettings.StringDatabase.GetLocalizedString("Tabla1", key);
 
         int number = isDay ? dayNumber : nightNumber;
-        dayNightText.text = $"{localizedString} {number}";
+        dayNightText.text = localizedString + " " + number;
     }
    
     public void ToDay()
@@ -65,6 +69,9 @@ public class DayNightSystem : MonoBehaviour
             globalLight.colorTemperature = 5000;
             playerCam.gameObject.SetActive(true);
             nightCam.gameObject.SetActive(false);
+            DayNightIcons[0].sprite = DayNightSprites[0];
+            DayNightIcons[1].sprite = DayNightSprites[0];
+            DayNightIcons[2].sprite = DayNightSprites[3];
 
 
         }
@@ -82,6 +89,9 @@ public class DayNightSystem : MonoBehaviour
             globalLight.colorTemperature = 15000;
             playerCam.gameObject.SetActive(false);
             nightCam.gameObject.SetActive(true);
+            DayNightIcons[0].sprite = DayNightSprites[1];
+            DayNightIcons[1].sprite = DayNightSprites[1];
+            DayNightIcons[2].sprite = DayNightSprites[2];
         }
         UpdateDayNightUI();
     }
