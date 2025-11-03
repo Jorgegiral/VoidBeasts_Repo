@@ -22,19 +22,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            var enemyHP = other.GetComponent<EnemyHP>();
-            enemyHP.TakeDamage(damage);
-            GameObject hit = Instantiate(hitVFX, transform.position, transform.rotation);
 
-            Destroy(gameObject);
-        }
-        else
-        {
             GameObject hit = Instantiate(hitVFX, transform.position, transform.rotation);
             
             Destroy(gameObject);
-        }
+        
     }
 }

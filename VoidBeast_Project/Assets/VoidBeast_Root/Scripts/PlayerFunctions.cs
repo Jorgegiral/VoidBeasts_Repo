@@ -14,7 +14,6 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] CinemachineCamera buildCam;
     [SerializeField] GameObject SeedMenu;
     [SerializeField] RotateToPlayer rotateToPlayer;
-
     LayerMask layerInteractable;
     LayerMask plantsInteractable;
 
