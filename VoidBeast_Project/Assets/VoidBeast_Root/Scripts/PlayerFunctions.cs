@@ -19,7 +19,9 @@ public class PlayerFunctions : MonoBehaviour
     LayerMask plantsInteractable;
 
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
-
+    private Animator anim; //Jorge
+    [SerializeField] GameObject gun; //Jorge
+    //[SerializeField] float gunTime = 0.5f;
 
     [SerializeField] bool actionMode = true;
      
@@ -28,16 +30,34 @@ public class PlayerFunctions : MonoBehaviour
     {
         layerInteractable = LayerMask.GetMask("Interactable");
         effectToSpawn = bulletVFX[0];
-
+        anim = GetComponent<Animator>(); //Jorge
+        gun.SetActive(false); //Jorge
     }
 
     void Shoot()
     {
+        //gun.SetActive(true); //Jorge
+        anim.SetTrigger("Shoot"); //Jorge
         rotateToPlayer.RotateOnShoot();
         GameObject bulletVFX;
         bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, rotateToPlayer.GetRotation());
-        
+        //StartCoroutine(GunDelay());
     }
+    public void GunActived()
+    {
+        gun.SetActive(true);
+    }
+
+    public void GunDesactived()
+    {
+        gun.SetActive(false);
+    }
+
+    /*System.Collections.IEnumerator GunDelay()
+    {
+        yield return new WaitForSecondsRealtime(gunTime);
+        gun.SetActive(false);
+    }*/
 
     public void OnInteract(InputAction.CallbackContext context)
     {

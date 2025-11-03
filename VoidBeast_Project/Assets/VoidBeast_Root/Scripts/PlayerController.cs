@@ -11,11 +11,13 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     private bool isMoving;
     private Vector2 previousMoveInput;
+    private Animator anim; //Jorge
     [SerializeField] private RotateToPlayer rotateToPlayer;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>(); //Jorge
         rb.freezeRotation = true;
         cameraFollowTransform = Camera.main.transform;
     }
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviour
             rotateToPlayer.RotateOnStopMoving();
             
         }
+        anim.SetBool("isRunning", isMoving); //Jorge
 
         previousMoveInput = moveInput;
     }
