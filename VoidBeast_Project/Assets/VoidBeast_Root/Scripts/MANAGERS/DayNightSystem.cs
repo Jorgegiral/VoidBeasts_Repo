@@ -56,7 +56,7 @@ public class DayNightSystem : MonoBehaviour
         var localizedString = LocalizationSettings.StringDatabase.GetLocalizedString("Tabla1", key);
 
         int number = isDay ? dayNumber : nightNumber;
-        dayNightText.text += localizedString + "" + number;
+        dayNightText.text = localizedString + " " + number;
     }
    
     public void ToDay()

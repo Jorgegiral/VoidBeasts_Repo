@@ -9,18 +9,30 @@ public class PlayerHP : MonoBehaviour
     float healthRegenTick = 1f;
     [SerializeField] Transform spawnpoint;
     [SerializeField] Slider sliderHP;
-
+    [SerializeField] float invincibilityDurationSeconds;
+    bool isInvicible = false;
     void Start()
     {
         currentHealth = maxHealth;
     }
-
+    
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-        if(currentHealth < 0)
+        if (isInvicible)
+        {
+            return;
+        }
+        else
         {
 
+            currentHealth -= damage;
+            if (currentHealth < 0)
+            {
+
+            }
+            UpdateHPSlider();
+            BecomeTemporarilyInvincible();
+            isInvicible=false;
         }
     }
     public void HealDamage(float heal)
@@ -30,13 +42,19 @@ public class PlayerHP : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
+        UpdateHPSlider();
     }
     public void UpdateHPSlider()
     {
-        sliderHP.value = currentHealth / maxHealth;
+        sliderHP.value = currentHealth;
     }
-    private void SpawnCharacter()
+    void BecomeTemporarilyInvincible()
     {
-
+        float deltaTime = Time.deltaTime;
+        for (float i = 0; i < invincibilityDurationSeconds; i += deltaTime)
+        {
+            isInvicible = true;
+        }
     }
+
 }

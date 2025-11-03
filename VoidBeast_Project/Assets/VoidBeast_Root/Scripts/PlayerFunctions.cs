@@ -14,7 +14,6 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] CinemachineCamera buildCam;
     [SerializeField] GameObject SeedMenu;
     [SerializeField] RotateToPlayer rotateToPlayer;
-
     LayerMask layerInteractable;
     LayerMask plantsInteractable;
 
@@ -28,15 +27,13 @@ public class PlayerFunctions : MonoBehaviour
     {
         layerInteractable = LayerMask.GetMask("Interactable");
         effectToSpawn = bulletVFX[0];
-
     }
 
     void Shoot()
     {
         rotateToPlayer.RotateOnShoot();
         GameObject bulletVFX;
-        bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, rotateToPlayer.GetRotation());
-        
+        bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, rotateToPlayer.GetRotation());   
     }
 
     public void OnInteract(InputAction.CallbackContext context)
