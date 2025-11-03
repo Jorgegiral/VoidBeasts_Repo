@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
         if (wasMoving && !isMoving)
         {
-            rotateToPlayer.RotateOnStopMoving();
+            
             
         }
         anim.SetBool("isRunning", isMoving); //Jorge

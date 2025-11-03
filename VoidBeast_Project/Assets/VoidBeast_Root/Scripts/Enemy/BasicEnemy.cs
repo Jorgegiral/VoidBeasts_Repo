@@ -11,13 +11,17 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] private LayerMask buildLayer;
     [SerializeField] float timeBetweenAttacks;
     [SerializeField] int enemyDamage;
+    [SerializeField] float enemySpeed;
+
 
     [Header("Detection prio")]
     [SerializeField] float attackRange;
+    [SerializeField] float lockRange;
+
     private bool alreadyAttack;
     private float attackCD;
     private bool canAttack;
-
+    
 
 
     private void Awake()
@@ -51,6 +55,7 @@ public class BasicEnemy : MonoBehaviour
     void MoveEnemy()
     {
         float distance = Vector3.Distance(transform.position, target.position);
+        float enemyStep = enemySpeed * Time.deltaTime;
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, attackRange, buildLayer))
         {
@@ -60,7 +65,11 @@ public class BasicEnemy : MonoBehaviour
                 AttackEnemy();
             }
         }else
-        if (distance > attackRange)
+        if (distance < lockRange)
+        {
+            transform.position = Vector3.MoveTowards(transform.position,target.position,attackRange);
+        }
+        else if(distance > attackRange) 
         {
             agent.isStopped = false;
             agent.SetDestination(target.position);
