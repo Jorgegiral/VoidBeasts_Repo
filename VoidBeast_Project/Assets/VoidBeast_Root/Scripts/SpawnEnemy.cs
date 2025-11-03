@@ -5,7 +5,9 @@ using UnityEngine;
 public class SpawnEnemy : MonoBehaviour
 {
 
-    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] GameObject enemyBasic;
+    [SerializeField] GameObject enemyPuñetero;
+
     [SerializeField] int enemyQuantity;
     [SerializeField] TMP_Text enemyText;
     [SerializeField] Transform MainBuild;
@@ -76,15 +78,28 @@ public class SpawnEnemy : MonoBehaviour
             Vector2 randomOffset = Random.insideUnitCircle * 3f;
             Vector3 spawnPos = spawnerSelected.position + new Vector3(0, 1, 0);
 
-            Instantiate(enemyPrefab, spawnPos, Quaternion.LookRotation(MainBuild.position- spawnPos));
+                GameObject prefabToSpawn = ChooseEnemyType();
+
+                Instantiate(prefabToSpawn, spawnPos, Quaternion.LookRotation(MainBuild.position- spawnPos));
 
         }
     }
 
 }
+    private GameObject ChooseEnemyType()
+    {
+        int night = DayNightSystem.Instance.nightNumber;
+
+        float chancePuñetero = 0.2f; 
+
+    
+        float roll = Random.value; 
+        return roll < chancePuñetero ? enemyPuñetero : enemyBasic;
+    }
+
     private Transform SelectOneFromTheList()
     {
-        Transform spawnerSelected  = spawnersTransform[Random.Range(0, spawnersTransform.Count)];
-        return spawnerSelected;
+        return spawnersTransform[Random.Range(0, spawnersTransform.Count)];
     }
 }
+

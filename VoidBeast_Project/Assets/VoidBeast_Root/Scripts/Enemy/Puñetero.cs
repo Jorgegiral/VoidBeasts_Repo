@@ -29,6 +29,7 @@ public class Puñetero : MonoBehaviour
 
     void Update()
     {
+        UpdateEnemyTarget();
         MoveEnemy();
         UpdateAttackCooldown();
 
@@ -44,7 +45,7 @@ public class Puñetero : MonoBehaviour
     }
     void MoveEnemy()
     {
-        Vector3 distance = transform.position - target.position;
+        float distance = Vector3.Distance(transform.position, target.position);
         agent.SetDestination(target.position);
 
         if (distance < 2f)
@@ -62,7 +63,7 @@ public class Puñetero : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, playerLayer))
         {
 
-            var health = hit.collider.GetComponent<BuildingHP>();
+            var health = hit.collider.GetComponent<PlayerHP>();
             if (health != null)
             {
                 health.TakeDamage(enemyDamage);
