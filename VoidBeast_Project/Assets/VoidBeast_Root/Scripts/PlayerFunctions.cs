@@ -62,7 +62,7 @@ public class PlayerFunctions : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position - originRaycast, transform.TransformDirection(Vector3.forward), out hit, 30, layerInteractable))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 30, layerInteractable))
         {
             if (DayNightSystem.Instance != null && DayNightSystem.Instance.isDay)
             {
