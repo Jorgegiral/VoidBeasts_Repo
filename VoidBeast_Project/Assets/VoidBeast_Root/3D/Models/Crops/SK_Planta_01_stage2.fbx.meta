@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2afac2eddc5348846a6c7209c9d0c686
+guid: a57ffbc82b00da4498fe7bcd8dd0ed9d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,9 +31,9 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: AN_Run
-      takeName: AN_Run
-      internalID: 7431228309844382106
+      name: Idle
+      takeName: AN_Idel
+      internalID: 6363918241667315846
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -43,35 +43,6 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: AN_Attack
-      takeName: AN_Attack
-      internalID: -5508046854914085404
-      firstFrame: 0
-      lastFrame: 16
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
