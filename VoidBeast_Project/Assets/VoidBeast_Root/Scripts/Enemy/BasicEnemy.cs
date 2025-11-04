@@ -1,7 +1,5 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class BasicEnemy : MonoBehaviour
 {
@@ -11,18 +9,22 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] private LayerMask buildLayer;
     [SerializeField] float timeBetweenAttacks;
     [SerializeField] int enemyDamage;
+    [SerializeField] private float minSpeed = 0.6f;
+    [SerializeField] private float maxSpeed = 2f;
 
     [Header("Detection prio")]
     [SerializeField] float attackRange;
-    private bool alreadyAttack;
-    private float attackCD;
-    private bool canAttack;
 
+    private float attackCD = 2;
+    private bool canAttack = true;
+    private Vector3 assignedAttackPoint;
+    private bool hasAttackPoint = false;
 
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = Random.Range(minSpeed, maxSpeed);
 
     }
 
@@ -50,24 +52,53 @@ public class BasicEnemy : MonoBehaviour
     }
     void MoveEnemy()
     {
-        float distance = Vector3.Distance(transform.position, target.position);
-        RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.forward, out hit, attackRange, buildLayer))
+        if (!hasAttackPoint)
         {
-            agent.isStopped = true;
-            if (!alreadyAttack)
+            BuildingHP building = target.GetComponent<BuildingHP>();
+            if (building)
             {
-                AttackEnemy();
+                Vector3 newPoint;
+                bool found = building.GetFreeAttackPoint(transform.position, out newPoint);
+
+                if (found)
+                {
+                    if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+                        assignedAttackPoint = hit.position;
+                    else
+                        assignedAttackPoint = newPoint;
+
+                    hasAttackPoint = true;
+                    agent.SetDestination(assignedAttackPoint);
+                }
+                else
+                {
+                    agent.SetDestination(target.transform.position );
+                    LookAtBuilding();
+                    return;
+                }
             }
-        }else
-        if (distance > attackRange)
+
+        }
+        float distToPoint = Vector3.Distance(transform.position, assignedAttackPoint);
+
+        if (distToPoint > 2f)
         {
             agent.isStopped = false;
-            agent.SetDestination(target.position);
+            agent.SetDestination(assignedAttackPoint);
         }
+        else
+        {
+            agent.isStopped = true;
+            LookAtBuilding();
+
+
+            AttackEnemy();
+        }
+       
     }
     void AttackEnemy()
     {
+        if (!canAttack) return;
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, buildLayer))
         {
@@ -78,7 +109,7 @@ public class BasicEnemy : MonoBehaviour
                 health.TakeDamage(enemyDamage);
             }
         }
-        alreadyAttack = true;
+        canAttack = false;
         attackCD = timeBetweenAttacks;
     }
     private void UpdateAttackCooldown()
@@ -92,9 +123,18 @@ public class BasicEnemy : MonoBehaviour
             }
         }
     }
-    private void OnDrawGizmosSelected()
+    void LookAtBuilding()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + transform.forward * attackRange);
+        if (!target) return;
+
+        Vector3 direction = (target.position - transform.position).normalized;
+        direction.y = 0f; 
+
+        if (direction.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+        }
     }
+   
 }

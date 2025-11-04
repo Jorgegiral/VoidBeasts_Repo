@@ -21,7 +21,7 @@ public class EnemyHP : MonoBehaviour
     {
         enemyCurrentHealth -= damage;
         //PONER CAPA ROJA PARA FEEDBACK DE DAÑO
-        Settings.instance.PlaySoundFXClip(damageEnemySound, transform, 1f);
+      //  Settings.instance.PlaySoundFXClip(damageEnemySound, transform, 1f);
         if (enemyCurrentHealth < 0) 
         {
             Destroy(gameObject);

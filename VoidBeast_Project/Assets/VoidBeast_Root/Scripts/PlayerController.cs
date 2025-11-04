@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,10 +10,10 @@ public class PlayerController : MonoBehaviour
     private Transform cameraFollowTransform;
     private Rigidbody rb;
     private Vector2 moveInput;
-    private bool isMoving;
     private Vector2 previousMoveInput;
     private Animator anim; //Jorge
     [SerializeField] private RotateToPlayer rotateToPlayer;
+    [SerializeField] private Image blackAndWhiteImage;
 
     private void Start()
     {
@@ -24,6 +25,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (blackAndWhiteImage.IsActive())
+        {
+            return;
+        }
+        else { 
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
         move = cameraFollowTransform.forward * move.z + cameraFollowTransform.right * move.x;
         move.y = 0;
@@ -41,14 +47,19 @@ public class PlayerController : MonoBehaviour
 
         if (wasMoving && !isMoving)
         {
-            rotateToPlayer.RotateOnStopMoving();
-            
+            if (rotateToPlayer != null)
+                rotateToPlayer.RotateOnStopMoving();
+        }
+        else if (!wasMoving && isMoving)
+        {
+            if (rotateToPlayer != null)
+                rotateToPlayer.StopRotation();
         }
         anim.SetBool("isRunning", isMoving); //Jorge
 
         previousMoveInput = moveInput;
     }
-
+    }
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
