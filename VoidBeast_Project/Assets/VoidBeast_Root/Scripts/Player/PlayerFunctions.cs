@@ -13,10 +13,10 @@ public class PlayerFunctions : MonoBehaviour
     private GameObject effectToSpawn;
     [SerializeField] CinemachineCamera playerCam;
     [SerializeField] CinemachineCamera buildCam;
-    [SerializeField] GameObject SeedMenu;
+    [SerializeField] GameObject seedMenu;
     [SerializeField] RotateToPlayer rotateToPlayer;
     LayerMask layerInteractable;
-    LayerMask plantsInteractable;
+    LayerMask layerPlant;
     private bool isShooting = false;
 
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
@@ -30,18 +30,20 @@ public class PlayerFunctions : MonoBehaviour
     private void Awake()
     {
         layerInteractable = LayerMask.GetMask("Interactable");
+        layerPlant = LayerMask.GetMask("Plant");
+
         effectToSpawn = bulletVFX[0];
         anim = GetComponent<Animator>(); //Jorge
         gun.SetActive(false); //Jorge
+        seedMenu.SetActive(false);
     }
 
     void Shoot()
     {
-
+        rotateToPlayer.RotateOnShoot();
         isShooting = true; 
         //gun.SetActive(true); //Jorge
         anim.SetTrigger("Shoot"); //Jorge
-        rotateToPlayer.RotateOnShoot();
         GameObject bulletVFX;
         bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, transform.rotation);
 
@@ -76,11 +78,17 @@ public class PlayerFunctions : MonoBehaviour
                 DayNightSystem.Instance.ToNight();
             }
         }
+        if (DayNightSystem.Instance.isDay) { 
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 30, layerPlant))
+        {
+            ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
+            seedMenu.SetActive(true);
+        }
     }
+}
     public void OnShoot(InputAction.CallbackContext context)
     {
 
-        if (!context.performed) return;
         if (isShooting) return;
         if (PlayerStats.instance.isDeath) return;
         Shoot();

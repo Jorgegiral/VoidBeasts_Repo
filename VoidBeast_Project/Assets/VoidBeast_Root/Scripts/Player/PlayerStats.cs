@@ -5,7 +5,7 @@ public class PlayerStats : MonoBehaviour
     public static PlayerStats instance;
     public float playerSpeed;
     public float playerHealth;
-    public bool isDeath;
+    public bool isDeath = false;
     void Awake()
     {
         if (instance == null) { instance = this; }
@@ -13,9 +13,5 @@ public class PlayerStats : MonoBehaviour
     }
 
     
-    void Update()
-    {
-        
-    }
     
 }

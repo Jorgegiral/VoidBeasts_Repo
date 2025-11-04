@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 previousMoveInput;
     private Animator anim; //Jorge
     [SerializeField] private RotateToPlayer rotateToPlayer;
-    [SerializeField] private Image blackAndWhiteImage;
 
     private void Start()
     {
