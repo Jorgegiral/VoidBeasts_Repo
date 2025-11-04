@@ -72,7 +72,7 @@ public class BasicEnemy : MonoBehaviour
                 }
                 else
                 {
-                    agent.isStopped = true;
+                    agent.SetDestination(target.transform.position );
                     LookAtBuilding();
                     return;
                 }
