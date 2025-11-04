@@ -19,11 +19,12 @@ public class BasicEnemy : MonoBehaviour
     private bool canAttack = true;
     private Vector3 assignedAttackPoint;
     private bool hasAttackPoint = false;
-
+    private Animator anim; //Jorge
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>(); //Jorge
         agent.speed = Random.Range(minSpeed, maxSpeed);
 
     }
@@ -98,6 +99,7 @@ public class BasicEnemy : MonoBehaviour
     }
     void AttackEnemy()
     {
+        anim.SetTrigger("Attack");
         if (!canAttack) return;
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, buildLayer))
