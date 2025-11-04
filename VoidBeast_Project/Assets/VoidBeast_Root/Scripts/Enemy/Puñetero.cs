@@ -8,7 +8,7 @@ public class Puñetero : MonoBehaviour
     [SerializeField] Transform target;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] float timeBetweenAttacks;
-    [SerializeField] int enemyDamage;
+    [SerializeField] int enemyDamage = 20;
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
 
@@ -46,10 +46,17 @@ public class Puñetero : MonoBehaviour
     void MoveEnemy()
     {
         float distance = Vector3.Distance(transform.position, target.position);
-        agent.SetDestination(target.position);
 
-        if (distance < 2f)
+        if (distance > 3f)
         {
+            agent.isStopped = false;
+
+            agent.SetDestination(target.position);
+
+        }
+        else
+        {
+            agent.isStopped = true;
             LookAtPlayer();
             AttackEnemy();
         }
