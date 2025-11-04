@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class DayNightSystem : MonoBehaviour
     public bool isDay;
     public bool isNight;
     public bool startNight;
+    public bool startDay;
     public int enemyQuantity;
     [SerializeField] TMP_Text dayNightText;
     [SerializeField] Volume globalVolume;
@@ -24,6 +26,8 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] LocalizedString dayText;   
     [SerializeField] LocalizedString nightText;
     [SerializeField] Sprite[] DayNightSprites;
+    public List<Parcela> parcelas = new List<Parcela>();
+
     void Awake()
     {
         if (Instance == null)
@@ -45,10 +49,7 @@ public class DayNightSystem : MonoBehaviour
         UpdateDayNightUI();
     }
 
-    void Update()
-    {
 
-    }
 
     private void UpdateDayNightUI()
     {
@@ -72,7 +73,14 @@ public class DayNightSystem : MonoBehaviour
             DayNightIcons[0].sprite = DayNightSprites[0];
             DayNightIcons[1].sprite = DayNightSprites[0];
             DayNightIcons[2].sprite = DayNightSprites[3];
-
+            ParcelaManager.instance.freeSeed = true;
+            MoneySystem.instance.UpdateMoneyText();
+            foreach (Parcela p in parcelas)
+            {
+                if (p == null || p.plant == null) continue;
+                p.DayCountdown();  
+                p.UnPlanted();                 
+            }
 
         }
 
@@ -92,14 +100,27 @@ public class DayNightSystem : MonoBehaviour
             DayNightIcons[0].sprite = DayNightSprites[1];
             DayNightIcons[1].sprite = DayNightSprites[1];
             DayNightIcons[2].sprite = DayNightSprites[2];
+            foreach (Parcela p in parcelas)
+            {
+                if (p == null || p.plant == null) continue;
+                p.NightCountdown();
+                p.GrowedPlant();
+            }
         }
         UpdateDayNightUI();
     }
     public int EnemyQuantityScale()
     {
         //por ahora asi
-        enemyQuantity = nightNumber * 5;
+        enemyQuantity = Mathf.RoundToInt(3 + Mathf.Pow(nightNumber, 1.5f));
         return enemyQuantity;
+    }
+    public void RegisterParcela(Parcela newParcela)
+    {
+        if (!parcelas.Contains(newParcela))
+        {
+            parcelas.Add(newParcela);
+        }
     }
 }
 
