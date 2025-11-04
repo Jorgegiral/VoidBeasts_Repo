@@ -1,31 +1,39 @@
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] LayerMask enemyMask;
     [SerializeField] private int damage = 10;
     [SerializeField] GameObject hitVFX;
-    [SerializeField] float shootSpeed;
-    [SerializeField] float fireRate;
+    [SerializeField] float shootSpeed = 2f;
+    private Vector3 moveDirection;
+
     private void Awake()
     {
+
+        moveDirection.y = 0f;
         Destroy(gameObject, 5f);
+
     }
     private void Update()
     {
         if(shootSpeed != 0)
         {
-            transform.position += transform.forward * (shootSpeed * Time.deltaTime);
+            transform.position += transform.forward * shootSpeed * Time.deltaTime;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
 
-            GameObject hit = Instantiate(hitVFX, transform.position, transform.rotation);
-            
-            Destroy(gameObject);
-        
+    private void OnCollisionEnter(Collision other)
+    {
+        GameObject hitVFXGameObject = Instantiate(hitVFX, transform.position, Quaternion.identity);
+        Destroy(hitVFXGameObject, 2f);
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            EnemyHP enemyHP = other.gameObject.GetComponent<EnemyHP>();
+            enemyHP.TakeDamage(damage);
+        }
+        Destroy(gameObject);
     }
 }

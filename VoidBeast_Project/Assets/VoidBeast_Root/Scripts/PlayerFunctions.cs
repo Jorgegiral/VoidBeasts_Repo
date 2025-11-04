@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerFunctions : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] RotateToPlayer rotateToPlayer;
     LayerMask layerInteractable;
     LayerMask plantsInteractable;
+    private bool isShooting = false;
 
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
@@ -23,8 +25,9 @@ public class PlayerFunctions : MonoBehaviour
     //[SerializeField] float gunTime = 0.5f;
 
     [SerializeField] bool actionMode = true;
-     
-    
+    [SerializeField] private Image blackAndWhiteImage;
+
+
     private void Awake()
     {
         layerInteractable = LayerMask.GetMask("Interactable");
@@ -35,11 +38,15 @@ public class PlayerFunctions : MonoBehaviour
 
     void Shoot()
     {
+        if (isShooting) return; 
+
+        isShooting = true; 
         //gun.SetActive(true); //Jorge
         anim.SetTrigger("Shoot"); //Jorge
         rotateToPlayer.RotateOnShoot();
         GameObject bulletVFX;
-        bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, rotateToPlayer.GetRotation());
+        bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, transform.rotation);
+
         //StartCoroutine(GunDelay());
     }
     public void GunActived()
@@ -60,6 +67,7 @@ public class PlayerFunctions : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+
         RaycastHit hit;
 
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 30, layerInteractable))
@@ -72,6 +80,10 @@ public class PlayerFunctions : MonoBehaviour
     }
     public void OnShoot(InputAction.CallbackContext context)
     {
+        if (blackAndWhiteImage.IsActive())
+        {
+            return;
+        }
         if (!context.performed) return;
 
         Shoot();
@@ -79,6 +91,10 @@ public class PlayerFunctions : MonoBehaviour
     public void SwitchMode(InputAction.CallbackContext context)
     {
 
+    }
+    public void EndShoot()
+    {
+        isShooting = false;
     }
 }
 
