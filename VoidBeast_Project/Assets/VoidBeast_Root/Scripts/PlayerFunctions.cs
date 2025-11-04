@@ -17,6 +17,7 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] RotateToPlayer rotateToPlayer;
     LayerMask layerInteractable;
     LayerMask plantsInteractable;
+    private bool isShooting = false;
 
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
@@ -37,6 +38,9 @@ public class PlayerFunctions : MonoBehaviour
 
     void Shoot()
     {
+        if (isShooting) return; 
+
+        isShooting = true; 
         //gun.SetActive(true); //Jorge
         anim.SetTrigger("Shoot"); //Jorge
         rotateToPlayer.RotateOnShoot();
@@ -90,6 +94,10 @@ public class PlayerFunctions : MonoBehaviour
     public void SwitchMode(InputAction.CallbackContext context)
     {
 
+    }
+    public void EndShoot()
+    {
+        isShooting = false;
     }
 }
 
