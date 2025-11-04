@@ -3,16 +3,20 @@ using UnityEngine;
 
 public class MoneySystem : MonoBehaviour
 {
-    int money;
+    public int money;
     [SerializeField] TMP_Text moneyText;
+    public static MoneySystem instance;
 
+    void Awake()
+    {
+        if (instance == null) { instance = this; }
 
-    // Update is called once per frame
-    void Update()
+    }
+    private void Start()
     {
         UpdateMoneyText();
     }
-    void UpdateMoneyText()
+    public void UpdateMoneyText()
     {
         if (DayNightSystem.Instance.isDay)
         {
@@ -22,17 +26,11 @@ public class MoneySystem : MonoBehaviour
     public void AddMoney(int moneyToAdd)
     {
         money += moneyToAdd;
+        UpdateMoneyText();
     }
     public void BuyMoney(int moneyToBuy)
     {
-        if(money - moneyToBuy < 0)
-        {
-
-        }
-        else
-        {
-            money -= moneyToBuy;
-        }
-        
+         money -= moneyToBuy;
+         UpdateMoneyText();
     }
 }
