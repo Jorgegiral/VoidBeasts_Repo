@@ -33,7 +33,7 @@ public class RotateToPlayer : MonoBehaviour
             lookDirection.y = 0f; 
             transform.rotation = Quaternion.LookRotation(lookDirection);
         }
-
+        Debug.Log("Girando");
     }
     public void RotateOnStopMoving()
     {

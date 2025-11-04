@@ -27,7 +27,8 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        Instantiate(hitVFX, transform.position, Quaternion.identity);
+        GameObject hitVFXGameObject = Instantiate(hitVFX, transform.position, Quaternion.identity);
+        Destroy(hitVFXGameObject, 2f);
         if (other.gameObject.CompareTag("Enemy"))
         {
             EnemyHP enemyHP = other.gameObject.GetComponent<EnemyHP>();

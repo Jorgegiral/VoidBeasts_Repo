@@ -67,10 +67,7 @@ public class PlayerFunctions : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (blackAndWhiteImage.IsActive())
-        {
-            return;
-        }
+
         RaycastHit hit;
 
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 30, layerInteractable))

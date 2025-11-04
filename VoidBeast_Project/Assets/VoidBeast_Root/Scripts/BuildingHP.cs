@@ -81,19 +81,6 @@ public class BuildingHP : MonoBehaviour
             }
         }
     }
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, attackRadius);
-
-        if (attackPoints.Count > 0)
-        {
-            for (int i = 0; i < attackPoints.Count; i++)
-            {
-                Gizmos.color = attackPointOccupied.Count > i && attackPointOccupied[i] ? Color.red : Color.green;
-                Gizmos.DrawSphere(attackPoints[i], 0.2f);
-            }
-        }
-    }
+  
 }
 
