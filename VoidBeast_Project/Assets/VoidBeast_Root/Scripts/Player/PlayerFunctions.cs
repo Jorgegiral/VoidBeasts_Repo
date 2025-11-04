@@ -25,7 +25,6 @@ public class PlayerFunctions : MonoBehaviour
     //[SerializeField] float gunTime = 0.5f;
 
     [SerializeField] bool actionMode = true;
-    [SerializeField] private Image blackAndWhiteImage;
 
 
     private void Awake()
@@ -38,7 +37,6 @@ public class PlayerFunctions : MonoBehaviour
 
     void Shoot()
     {
-        if (isShooting) return; 
 
         isShooting = true; 
         //gun.SetActive(true); //Jorge
@@ -67,6 +65,7 @@ public class PlayerFunctions : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        if (PlayerStats.instance.isDeath) return;
 
         RaycastHit hit;
 
@@ -80,12 +79,10 @@ public class PlayerFunctions : MonoBehaviour
     }
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (blackAndWhiteImage.IsActive())
-        {
-            return;
-        }
-        if (!context.performed) return;
 
+        if (!context.performed) return;
+        if (isShooting) return;
+        if (PlayerStats.instance.isDeath) return;
         Shoot();
     }
     public void SwitchMode(InputAction.CallbackContext context)

@@ -45,10 +45,7 @@ public class DayNightSystem : MonoBehaviour
         UpdateDayNightUI();
     }
 
-    void Update()
-    {
 
-    }
 
     private void UpdateDayNightUI()
     {

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 4f;
-    [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float gravityValue = -9.81f;
     private Transform cameraFollowTransform;
     private Rigidbody rb;
@@ -25,16 +24,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (blackAndWhiteImage.IsActive())
-        {
-            return;
-        }
-        else { 
+
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
         move = cameraFollowTransform.forward * move.z + cameraFollowTransform.right * move.x;
         move.y = 0;
 
-        rb.linearVelocity = new Vector3(move.x * playerSpeed, rb.linearVelocity.y + gravityValue * Time.fixedDeltaTime, move.z * playerSpeed);
+            rb.linearVelocity = new Vector3(move.x * PlayerStats.instance.playerSpeed, rb.linearVelocity.y + gravityValue * Time.fixedDeltaTime, move.z * PlayerStats.instance.playerSpeed);
 
         if (moveInput != Vector2.zero)
         {
@@ -58,10 +53,11 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isRunning", isMoving); //Jorge
 
         previousMoveInput = moveInput;
-    }
+    
     }
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (PlayerStats.instance.isDeath) return;
         moveInput = context.ReadValue<Vector2>();
         
     }
