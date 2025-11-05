@@ -12,4 +12,5 @@ public class Plants : ScriptableObject
     public Image shopImage;
     public List<GameObject> plantGameObject;
     public int ganancias;
+    public int plantHP;
 }
