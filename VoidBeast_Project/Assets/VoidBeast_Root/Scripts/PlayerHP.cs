@@ -6,23 +6,18 @@ using UnityEngine.UI;
 public class PlayerHP : MonoBehaviour
 {
     [SerializeField] float currentHealth;
-    float maxHealth = 100;
-    float healthRegen = 1f;
-    float healthRegenTick = 1f;
     private float regenTimer = 0f;
     [SerializeField] Transform spawnpoint;
     [SerializeField] Slider sliderHP;
     [SerializeField] float invincibilityDurationSeconds;
     bool isInvicible = false;
-    float deathTimer = 5f;
     float deathCountdown;
     [SerializeField] TMP_Text deathTimerText;
     [SerializeField] Image blackAndWhiteImage;
 
-    bool isDead = false;
     void Start()
     {
-        currentHealth = maxHealth;
+        currentHealth = PlayerStats.instance.playerHealth;
         deathTimerText.gameObject.SetActive(false);
         blackAndWhiteImage.gameObject.SetActive(false);
     }
@@ -34,7 +29,7 @@ public class PlayerHP : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        if (isInvicible || isDead)
+        if (isInvicible || PlayerStats.instance.isDeath)
         {
             return;
         }
@@ -56,9 +51,9 @@ public class PlayerHP : MonoBehaviour
     public void HealDamage(float heal)
     {
         currentHealth += heal;
-        if(currentHealth > maxHealth)
+        if(currentHealth > PlayerStats.instance.playerHealth)
         {
-            currentHealth = maxHealth;
+            currentHealth = PlayerStats.instance.playerHealth;
         }
         UpdateHPSlider();
     }
@@ -74,33 +69,33 @@ public class PlayerHP : MonoBehaviour
     }
     private void Regeneration()
     {
-        if (isDead) return;
+        if (PlayerStats.instance.isDeath) return;
 
         regenTimer += Time.deltaTime;
 
-        if (regenTimer >= healthRegenTick)
+        if (regenTimer >= PlayerStats.instance.healthRegenTick)
         {
             regenTimer = 0f;
 
-            if (currentHealth < maxHealth)
+            if (currentHealth < PlayerStats.instance.playerHealth)
             {
-                HealDamage(healthRegen);
+                HealDamage(PlayerStats.instance.healthRegen);
             }
         }
     }
     private void StartDeathTimer()
     {
-        if (isDead) return;
+        if (PlayerStats.instance.isDeath) return;
 
-        isDead = true;
+        PlayerStats.instance.isDeath = true;
         deathTimerText.gameObject.SetActive(true);
         blackAndWhiteImage.gameObject.SetActive(true);
 
-        deathCountdown = deathTimer;
+        deathCountdown = PlayerStats.instance.deathTimer;
     }
     private void DeathTimer()
     {
-        if (!isDead) return;
+        if (PlayerStats.instance.isDeath) return;
 
         deathCountdown -= Time.deltaTime;
         deathTimerText.text = deathCountdown.ToString("0");
@@ -114,9 +109,9 @@ public class PlayerHP : MonoBehaviour
 
             }
 
-            currentHealth = maxHealth;
+            currentHealth = PlayerStats.instance.playerHealth;
             UpdateHPSlider();
-            isDead = false; ;
+            PlayerStats.instance.isDeath = false; ;
         }
     }
 
