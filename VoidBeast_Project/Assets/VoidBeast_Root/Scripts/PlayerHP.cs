@@ -5,19 +5,17 @@ using UnityEngine.UI;
 
 public class PlayerHP : MonoBehaviour
 {
-    [SerializeField] float currentHealth;
     private float regenTimer = 0f;
     [SerializeField] Transform spawnpoint;
     [SerializeField] Slider sliderHP;
     [SerializeField] float invincibilityDurationSeconds;
     bool isInvicible = false;
-    float deathCountdown;
+    float deathCountdown = 5f;
     [SerializeField] TMP_Text deathTimerText;
     [SerializeField] Image blackAndWhiteImage;
 
     void Start()
     {
-        currentHealth = PlayerStats.instance.playerHealth;
         deathTimerText.gameObject.SetActive(false);
         blackAndWhiteImage.gameObject.SetActive(false);
     }
@@ -34,11 +32,11 @@ public class PlayerHP : MonoBehaviour
             return;
         }
 
-     
-            currentHealth -= damage;
+
+        PlayerStats.instance.playerCurrentHealth -= damage;
             UpdateHPSlider();
 
-        if (currentHealth <= 0)
+        if (PlayerStats.instance.playerCurrentHealth <= 0)
             {
             StartDeathTimer();
             return;
@@ -50,16 +48,16 @@ public class PlayerHP : MonoBehaviour
     }
     public void HealDamage(float heal)
     {
-        currentHealth += heal;
-        if(currentHealth > PlayerStats.instance.playerHealth)
+        PlayerStats.instance.playerCurrentHealth += heal;
+        if(PlayerStats.instance.playerCurrentHealth > PlayerStats.instance.playerMaxHealth)
         {
-            currentHealth = PlayerStats.instance.playerHealth;
+            PlayerStats.instance.playerCurrentHealth = PlayerStats.instance.playerMaxHealth;
         }
         UpdateHPSlider();
     }
     public void UpdateHPSlider()
     {
-        sliderHP.value = currentHealth;
+        sliderHP.value = PlayerStats.instance.playerCurrentHealth;
     }
     private IEnumerator BecomeTemporarilyInvincible()
     {
@@ -77,7 +75,7 @@ public class PlayerHP : MonoBehaviour
         {
             regenTimer = 0f;
 
-            if (currentHealth < PlayerStats.instance.playerHealth)
+            if (PlayerStats.instance.playerCurrentHealth < PlayerStats.instance.playerMaxHealth)
             {
                 HealDamage(PlayerStats.instance.healthRegen);
             }
@@ -95,7 +93,7 @@ public class PlayerHP : MonoBehaviour
     }
     private void DeathTimer()
     {
-        if (PlayerStats.instance.isDeath) return;
+        if (!PlayerStats.instance.isDeath) return;
 
         deathCountdown -= Time.deltaTime;
         deathTimerText.text = deathCountdown.ToString("0");
@@ -104,14 +102,15 @@ public class PlayerHP : MonoBehaviour
             if (spawnpoint != null)
             {
                 transform.position = spawnpoint.position;
+                Debug.Log("Spawning");
                 deathTimerText.gameObject.SetActive(false);
                 blackAndWhiteImage.gameObject.SetActive(false);
 
             }
 
-            currentHealth = PlayerStats.instance.playerHealth;
+            PlayerStats.instance.playerCurrentHealth = PlayerStats.instance.playerMaxHealth;
             UpdateHPSlider();
-            PlayerStats.instance.isDeath = false; ;
+            PlayerStats.instance.isDeath = false; 
         }
     }
 

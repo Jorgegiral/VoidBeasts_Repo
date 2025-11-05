@@ -4,7 +4,8 @@ public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats instance;
     public float playerSpeed;
-    public float playerHealth;
+    public float playerMaxHealth;
+    public float playerCurrentHealth;
     public bool isDeath = false;
     public bool isPlanting = false;
     public float healthRegen;
@@ -15,7 +16,7 @@ public class PlayerStats : MonoBehaviour
     void Awake()
     {
         if (instance == null) { instance = this; }
-
+        playerCurrentHealth = playerMaxHealth;
     }
 
     
