@@ -11,7 +11,7 @@ public class Puñetero : MonoBehaviour
     [SerializeField] int enemyDamage = 20;
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
-
+    private Animator anim;
     [Header("Detection prio")]
     [SerializeField] float attackRange;
 
@@ -24,7 +24,7 @@ public class Puñetero : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = Random.Range(minSpeed, maxSpeed);
-
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -66,6 +66,8 @@ public class Puñetero : MonoBehaviour
     void AttackEnemy()
     {
         if (!canAttack) return;
+        anim.SetTrigger("Attack");
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, playerLayer))
         {
