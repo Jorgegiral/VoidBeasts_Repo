@@ -14,6 +14,10 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject logoImages;
     [SerializeField] GameObject settingsPanel;
     [SerializeField] GameObject controlsPanel;
+    [SerializeField] GameObject generalSettings;
+    [SerializeField] GameObject keyboardControls;
+    [SerializeField] GameObject ControllerControls;
+
     private bool idiomaActivado = false;
     private int idiomaActual = 0;
 
@@ -49,12 +53,25 @@ public class Menu : MonoBehaviour
     public void ShowControls()
     {
         controlsPanel.SetActive(true);
+        keyboardControls.SetActive(true);
+        ControllerControls.SetActive(false);
+        generalSettings.SetActive(false);
     }
     public void CloseControls()
     {
         controlsPanel.SetActive(false);
+        generalSettings.SetActive(true);
     }
-
+    public void ShowKeyboardControls()
+    {
+        keyboardControls.SetActive(true);
+        ControllerControls.SetActive(false);
+    }
+    public void ShowControllerControls()
+    {
+        keyboardControls.SetActive(false);
+        ControllerControls.SetActive(true);
+    }
 
     public void CambiarIdiomas()
     {
