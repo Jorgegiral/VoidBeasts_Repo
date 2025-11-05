@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
+        if (PlayerStats.instance.isPlanting) return;
+
         moveInput = context.ReadValue<Vector2>();
         
     }
