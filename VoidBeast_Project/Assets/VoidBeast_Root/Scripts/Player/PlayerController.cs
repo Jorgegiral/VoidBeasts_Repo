@@ -9,9 +9,8 @@ public class PlayerController : MonoBehaviour
     private Transform cameraFollowTransform;
     private Rigidbody rb;
     private Vector2 moveInput;
-    private Vector2 previousMoveInput;
+
     private Animator anim; //Jorge
-    [SerializeField] private RotateToPlayer rotateToPlayer;
 
     private void Start()
     {
@@ -36,22 +35,11 @@ public class PlayerController : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0f, targetAngle, 0);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.fixedDeltaTime * rotationSpeed);
         }
-        bool wasMoving = previousMoveInput != Vector2.zero;
         bool isMoving = moveInput != Vector2.zero;
 
-        if (wasMoving && !isMoving)
-        {
-            if (rotateToPlayer != null)
-                rotateToPlayer.RotateOnStopMoving();
-        }
-        else if (!wasMoving && isMoving)
-        {
-            if (rotateToPlayer != null)
-                rotateToPlayer.StopRotation();
-        }
+ 
         anim.SetBool("isRunning", isMoving); //Jorge
 
-        previousMoveInput = moveInput;
     
     }
     public void OnMove(InputAction.CallbackContext context)

@@ -6,7 +6,7 @@ public class ParcelaManager : MonoBehaviour
     public static ParcelaManager instance;
     public ParcelaOrder selectedParcela;
     public bool freeSeed = true;
-
+    private bool isParcelaFull;
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -15,11 +15,10 @@ public class ParcelaManager : MonoBehaviour
 
     public void AddPlant(Plants plantToBuy)
     {
-        if (!freeSeed)
+        if (!freeSeed && !CheckFullParcela())
         {
             if (plantToBuy.precio > MoneySystem.instance.money)
                 return;
-
 
             MoneySystem.instance.BuyMoney(plantToBuy.precio);
         }
@@ -33,6 +32,19 @@ public class ParcelaManager : MonoBehaviour
             if(freeSeed) freeSeed = false;
             break;
         }
+    }
+    bool CheckFullParcela()
+    {
+        for (int i = 0;  i < selectedParcela.parcelas.Length; i++)
+        {
+            if (selectedParcela.parcelas[i].PlantIsFull()) isParcelaFull = true;
+                continue;
+            if (!selectedParcela.parcelas[i].PlantIsFull()) isParcelaFull = false;
+            break;
+
+        }
+       return isParcelaFull;
+
     }
 
 }
