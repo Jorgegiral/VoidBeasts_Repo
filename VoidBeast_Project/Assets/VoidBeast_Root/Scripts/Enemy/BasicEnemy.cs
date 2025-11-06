@@ -86,6 +86,8 @@ public class BasicEnemy : MonoBehaviour
         {
             agent.isStopped = false;
             agent.SetDestination(assignedAttackPoint);
+            anim.SetBool("isAttacking", false);
+
         }
         else
         {
@@ -99,7 +101,7 @@ public class BasicEnemy : MonoBehaviour
     }
     void AttackEnemy()
     {
-        anim.SetTrigger("Attack");
+        anim.SetBool("isAttacking", true);
         if (!canAttack) return;
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, buildLayer))

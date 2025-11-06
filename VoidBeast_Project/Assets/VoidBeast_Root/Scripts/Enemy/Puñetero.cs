@@ -52,6 +52,7 @@ public class Puñetero : MonoBehaviour
             agent.isStopped = false;
 
             agent.SetDestination(target.position);
+            anim.SetBool("isAttacking", false);
 
         }
         else
@@ -66,7 +67,7 @@ public class Puñetero : MonoBehaviour
     void AttackEnemy()
     {
         if (!canAttack) return;
-        anim.SetTrigger("Attack");
+        anim.SetBool("isAttacking", true);
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, playerLayer))
