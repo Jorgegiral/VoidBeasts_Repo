@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Parcela : MonoBehaviour
@@ -9,6 +10,8 @@ public class Parcela : MonoBehaviour
     int nightCount;
     [SerializeField]Material plantedMaterial;
     [SerializeField]Material actualMaterial;
+    [SerializeField] GameObject starsVFX;
+    private GameObject tempVFX;
     private Renderer render;
     private GameObject tempPlant;
     private void Start()
@@ -27,6 +30,8 @@ public class Parcela : MonoBehaviour
     public void Planted()
     {
        render.material = plantedMaterial;
+       tempVFX = Instantiate(starsVFX,transform.position,Quaternion.LookRotation(Vector3.up));
+        Destroy(tempVFX, 1);
        dayCount = plant.numDias;
        nightCount  = plant.numDias;
     }
