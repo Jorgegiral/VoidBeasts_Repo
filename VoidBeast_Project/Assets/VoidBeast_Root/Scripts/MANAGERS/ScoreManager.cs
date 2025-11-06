@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Security.Cryptography;
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI inputNights;
@@ -16,5 +17,15 @@ public class ScoreManager : MonoBehaviour
     {
         Leaderboard.instance.SetLeaderboardEntry(inputName.text, int.Parse(inputNights.text));
     }
-    
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+    public void NextButton()
+    {
+        leaderboardImage.SetActive(true);
+        youDiedImage.SetActive(false);
+        nightSurvived.text = DayNightSystem.Instance.nightNumber.ToString();
+        
+    }
 }
