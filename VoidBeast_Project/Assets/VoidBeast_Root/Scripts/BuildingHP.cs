@@ -20,7 +20,7 @@ public class BuildingHP : MonoBehaviour
     public void TakeDamage(int damage)
     {
         buildHP -= damage;
-        if (buildHP < 0 )
+        if (buildHP <= 0 )
         {
             deathCanvas.gameObject.SetActive(true);
             Time.timeScale = 0f;

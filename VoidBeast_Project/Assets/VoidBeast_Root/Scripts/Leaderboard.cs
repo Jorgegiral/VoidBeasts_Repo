@@ -36,7 +36,6 @@ public class Leaderboard : MonoBehaviour
     {
         LeaderboardCreator.UploadNewEntry(publicLeaderboardKey,username, nights, ((msg) =>
         {
-            username.Substring(0, 16);
             //if(System.Array.IndexOf(badWords, name) != -1) return;
             GetLeaderboard();
         }));
