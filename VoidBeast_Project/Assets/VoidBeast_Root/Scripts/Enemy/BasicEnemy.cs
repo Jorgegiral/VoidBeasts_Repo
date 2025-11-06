@@ -124,6 +124,7 @@ public class BasicEnemy : MonoBehaviour
             if (attackCD <= 0f)
             {
                 canAttack = true;
+
             }
         }
     }

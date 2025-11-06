@@ -79,7 +79,7 @@ public class PlayerFunctions : MonoBehaviour
             }
         }
         if (DayNightSystem.Instance.isDay) { 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 5, layerPlant))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 6, layerPlant))
         {
             ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
             seedMenu.SetActive(true);
