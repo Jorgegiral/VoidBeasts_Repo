@@ -34,24 +34,32 @@ public class ParcelaManager : MonoBehaviour
                 break;
             }
         }
-    }
-    bool CheckFullParcela()
-    {
-        for (int i = 0; i < selectedParcela.parcelas.Length; i++)
+        if (freeSeed && !CheckFullParcela())
         {
-            if (selectedParcela.parcelas[i].PlantIsFull())
+            for (int i = 0; i < selectedParcela.parcelas.Length; i++)
             {
-                isParcelaFull = true;
-                continue;
-            }
-            else
-            {
-                isParcelaFull = false;
+                if (selectedParcela.parcelas[i].PlantIsFull())
+                    continue;
+                selectedParcela.parcelas[i].plant = plantToBuy;
+                selectedParcela.parcelas[i].PlantIsFull();
+                selectedParcela.parcelas[i].Planted();
+                if (freeSeed) freeSeed = false;
                 break;
+
             }
         }
-        return isParcelaFull;
+        bool CheckFullParcela()
+        {
+            foreach (var parcela in selectedParcela.parcelas)
+            {
+                if (!parcela.PlantIsFull())
+                    return false;
+            }
+            return true;
+        }
     }
 }
+
+
 
 

@@ -25,9 +25,10 @@ public class EnemyHP : MonoBehaviour
       //  Settings.instance.PlaySoundFXClip(damageEnemySound, transform, 1f);
         if (enemyCurrentHealth < 0) 
         {
+            BasicEnemy enemy = GetComponent<BasicEnemy>();
             GameObject tempSmoke = Instantiate(smokeVFX,transform.position,transform.rotation);
             Destroy(tempSmoke,1f);
-            Destroy(gameObject);
+            enemy.OnDeath();
         }
     }
 }

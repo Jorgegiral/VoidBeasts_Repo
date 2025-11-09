@@ -34,83 +34,90 @@ public class BasicEnemy : MonoBehaviour
     void Update()
     {
         UpdateEnemyTarget();
-        MoveEnemy();
         UpdateAttackCooldown();
 
     }
     void UpdateEnemyTarget()
     {
-        GameObject plant = GameObject.FindWithTag("Plants");
+        GameObject[] plants = GameObject.FindGameObjectsWithTag("Plants");
+        GameObject closestPlant = null;
+        float minDist = Mathf.Infinity;
 
-        if (plant != null)
+        foreach (var plant in plants)
+        {
+            float dist = Vector3.Distance(transform.position, plant.transform.position);
+            if (dist < minDist)
             {
-            
+                minDist = dist;
+                closestPlant = plant;
+            }
+        }
+
+        if (closestPlant != null)
+        {
+            target = closestPlant.transform;
+            targetBuilding = null; 
+            hasAttackPoint = false;
+        }
+        else
+        {
             GameObject mainBuilding = GameObject.Find("MainBuild");
             target = mainBuilding.transform;
-        } else
-            {
-                GameObject mainBuilding = GameObject.Find("MainBuild");
-                target = mainBuilding.transform;
-              
-            }
-        
+        }
+
     }
-    void MoveEnemy()
+    void MoveEnemyBuild()
     {
-        
-        if (!hasAttackPoint)
+        if (!target) return;
+
+        if (target.CompareTag("MainBuild"))
         {
             BuildingHP building = target.GetComponent<BuildingHP>();
-            if (building)
+            if (!hasAttackPoint && building)
             {
-                Vector3 newPoint;
-                bool found = building.GetFreeAttackPoint(transform.position, out newPoint);
-
-                if (found)
+                if (building.GetFreeAttackPoint(transform.position, out Vector3 newPoint))
                 {
+                    assignedAttackPoint = NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas)
+                        ? hit.position
+                        : newPoint;
                     targetBuilding = building;
-                    if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                        assignedAttackPoint = hit.position;
-                    else
-                        assignedAttackPoint = newPoint;
-
                     hasAttackPoint = true;
-                    agent.SetDestination(assignedAttackPoint);
                 }
                 else
                 {
-                    agent.SetDestination(target.transform.position );
-                    LookAtBuilding();
-                    return;
+                    assignedAttackPoint = target.position;
                 }
             }
-
         }
-        float distToPoint = Vector3.Distance(transform.position, assignedAttackPoint);
+        else
+        {
+            assignedAttackPoint = target.position; // Planta
+        }
 
-        if (distToPoint > 2f)
+        // Movimiento
+        float dist = Vector3.Distance(transform.position, assignedAttackPoint);
+        if (dist > 1.5f)
         {
             agent.isStopped = false;
             agent.SetDestination(assignedAttackPoint);
             anim.SetBool("isAttacking", false);
-
         }
         else
         {
             agent.isStopped = true;
-            LookAtBuilding();
-
-
-            AttackEnemy();
+            LookAtTarget();
+            AttackTarget();
         }
-       
     }
-    void AttackEnemy()
+
+
+
+    void AttackTarget()
     {
         anim.SetBool("isAttacking", true);
         if (!canAttack) return;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer.Length))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer[0]))
         {
 
             var health = hit.collider.GetComponent<BuildingHP>();
@@ -119,6 +126,16 @@ public class BasicEnemy : MonoBehaviour
                 health.TakeDamage(enemyDamage);
             }
         }
+        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer[1]))
+        {
+
+            var health = hit.collider.GetComponent<PlantHP>();
+            if (health != null)
+            {
+                health.TakeDamage(enemyDamage);
+            }
+        }
+
         canAttack = false;
         attackCD = timeBetweenAttacks;
     }
@@ -134,7 +151,7 @@ public class BasicEnemy : MonoBehaviour
             }
         }
     }
-    void LookAtBuilding()
+    void LookAtTarget()
     {
         if (!target) return;
 
