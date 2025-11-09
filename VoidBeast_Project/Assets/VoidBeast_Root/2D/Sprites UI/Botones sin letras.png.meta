@@ -198,7 +198,7 @@ TextureImporter:
         serializedVersion: 2
         x: 1744
         y: 551
-        width: 872
+        width: 800
         height: 275
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -264,7 +264,7 @@ TextureImporter:
         serializedVersion: 2
         x: 1744
         y: 276
-        width: 872
+        width: 800
         height: 275
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -328,9 +328,9 @@ TextureImporter:
       name: Botones sin letras_8
       rect:
         serializedVersion: 2
-        x: 1742
+        x: 1744
         y: 1
-        width: 872
+        width: 800
         height: 275
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
