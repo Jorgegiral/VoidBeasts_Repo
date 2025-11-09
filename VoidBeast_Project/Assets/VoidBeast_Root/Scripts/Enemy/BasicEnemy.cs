@@ -6,7 +6,7 @@ public class BasicEnemy : MonoBehaviour
     [Header("AI Config")]
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Transform target;
-    [SerializeField] private LayerMask[] attackLayer;
+    [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
     [SerializeField] int enemyDamage;
     [SerializeField] private float minSpeed = 0.6f;
@@ -34,28 +34,17 @@ public class BasicEnemy : MonoBehaviour
     void Update()
     {
         UpdateEnemyTarget();
+        MoveEnemyBuild();
         UpdateAttackCooldown();
 
     }
     void UpdateEnemyTarget()
     {
-        GameObject[] plants = GameObject.FindGameObjectsWithTag("Plants");
-        GameObject closestPlant = null;
-        float minDist = Mathf.Infinity;
+        GameObject plant = GameObject.FindGameObjectWithTag("Plant");
 
-        foreach (var plant in plants)
+        if (plant != null)
         {
-            float dist = Vector3.Distance(transform.position, plant.transform.position);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                closestPlant = plant;
-            }
-        }
-
-        if (closestPlant != null)
-        {
-            target = closestPlant.transform;
+            target = plant.transform;
             targetBuilding = null; 
             hasAttackPoint = false;
         }
@@ -63,6 +52,8 @@ public class BasicEnemy : MonoBehaviour
         {
             GameObject mainBuilding = GameObject.Find("MainBuild");
             target = mainBuilding.transform;
+            targetBuilding = mainBuilding.GetComponent<BuildingHP>();
+            hasAttackPoint = false;
         }
 
     }
@@ -117,22 +108,19 @@ public class BasicEnemy : MonoBehaviour
         anim.SetBool("isAttacking", true);
         if (!canAttack) return;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer[0]))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer))
         {
 
             var health = hit.collider.GetComponent<BuildingHP>();
+            var planthealth = hit.collider.GetComponent<PlantHP>();
+
             if (health != null)
             {
                 health.TakeDamage(enemyDamage);
             }
-        }
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer[1]))
-        {
-
-            var health = hit.collider.GetComponent<PlantHP>();
-            if (health != null)
+            if (planthealth != null)
             {
-                health.TakeDamage(enemyDamage);
+                planthealth.TakeDamage(enemyDamage);
             }
         }
 
