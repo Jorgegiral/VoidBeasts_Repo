@@ -6,11 +6,13 @@ public class BasicEnemy : MonoBehaviour
     [Header("AI Config")]
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Transform target;
-    [SerializeField] private LayerMask buildLayer;
+    [SerializeField] private LayerMask[] attackLayer;
     [SerializeField] float timeBetweenAttacks;
     [SerializeField] int enemyDamage;
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
+    private BuildingHP targetBuilding;
+
 
     [Header("Detection prio")]
     [SerializeField] float attackRange;
@@ -42,8 +44,10 @@ public class BasicEnemy : MonoBehaviour
 
         if (plant != null)
             {
-                //codigo para que vaya a las plantas aún por hacer
-            } else
+            
+            GameObject mainBuilding = GameObject.Find("MainBuild");
+            target = mainBuilding.transform;
+        } else
             {
                 GameObject mainBuilding = GameObject.Find("MainBuild");
                 target = mainBuilding.transform;
@@ -53,6 +57,7 @@ public class BasicEnemy : MonoBehaviour
     }
     void MoveEnemy()
     {
+        
         if (!hasAttackPoint)
         {
             BuildingHP building = target.GetComponent<BuildingHP>();
@@ -63,6 +68,7 @@ public class BasicEnemy : MonoBehaviour
 
                 if (found)
                 {
+                    targetBuilding = building;
                     if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
                         assignedAttackPoint = hit.position;
                     else
@@ -104,7 +110,7 @@ public class BasicEnemy : MonoBehaviour
         anim.SetBool("isAttacking", true);
         if (!canAttack) return;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, buildLayer))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer.Length))
         {
 
             var health = hit.collider.GetComponent<BuildingHP>();
@@ -141,5 +147,12 @@ public class BasicEnemy : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
     }
-   
+    public void OnDeath()
+    {
+        if (targetBuilding && hasAttackPoint)
+        {
+            targetBuilding.ReleaseAttackPoint(assignedAttackPoint);
+        }
+        Destroy(gameObject); 
+    }
 }

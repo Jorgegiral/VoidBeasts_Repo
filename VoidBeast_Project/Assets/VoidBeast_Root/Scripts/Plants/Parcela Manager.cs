@@ -21,32 +21,37 @@ public class ParcelaManager : MonoBehaviour
                 return;
 
             MoneySystem.instance.BuyMoney(plantToBuy.precio);
-        }
-        for (int i = 0; i < selectedParcela.parcelas.Length; i++)
-        {
-            if (selectedParcela.parcelas[i].PlantIsFull())
-                continue;
-            selectedParcela.parcelas[i].plant = plantToBuy;
-            selectedParcela.parcelas[i].PlantIsFull();
-            selectedParcela.parcelas[i].Planted();
-            if(freeSeed) freeSeed = false;
-            break;
+            Debug.Log("Comprado");
+
+            for (int i = 0; i < selectedParcela.parcelas.Length; i++)
+            {
+                if (selectedParcela.parcelas[i].PlantIsFull())
+                    continue;
+                selectedParcela.parcelas[i].plant = plantToBuy;
+                selectedParcela.parcelas[i].PlantIsFull();
+                selectedParcela.parcelas[i].Planted();
+                if (freeSeed) freeSeed = false;
+                break;
+            }
         }
     }
     bool CheckFullParcela()
     {
-        for (int i = 0;  i < selectedParcela.parcelas.Length; i++)
+        for (int i = 0; i < selectedParcela.parcelas.Length; i++)
         {
-            if (selectedParcela.parcelas[i].PlantIsFull()) isParcelaFull = true;
+            if (selectedParcela.parcelas[i].PlantIsFull())
+            {
+                isParcelaFull = true;
                 continue;
-            if (!selectedParcela.parcelas[i].PlantIsFull()) isParcelaFull = false;
-            break;
-
+            }
+            else
+            {
+                isParcelaFull = false;
+                break;
+            }
         }
-       return isParcelaFull;
-
+        return isParcelaFull;
     }
-
 }
 
 
