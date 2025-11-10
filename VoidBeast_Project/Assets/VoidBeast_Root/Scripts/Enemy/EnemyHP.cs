@@ -28,6 +28,7 @@ public class EnemyHP : MonoBehaviour
             BasicEnemy enemy = GetComponent<BasicEnemy>();
             GameObject tempSmoke = Instantiate(smokeVFX,transform.position,transform.rotation);
             Destroy(tempSmoke,1f);
+            PlayerStats.instance.enemykilledCount++;
             if (enemy != null)
             {
                 enemy.OnDeath();
