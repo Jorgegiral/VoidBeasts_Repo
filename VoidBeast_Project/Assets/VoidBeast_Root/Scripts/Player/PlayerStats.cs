@@ -12,6 +12,7 @@ public class PlayerStats : MonoBehaviour
     public float healthRegenTick;
     public float deathTimer = 5f;
     public int gunDamage;
+    public int enemykilledCount;
 
     void Awake()
     {

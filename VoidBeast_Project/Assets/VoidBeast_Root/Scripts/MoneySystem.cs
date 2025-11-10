@@ -6,6 +6,7 @@ public class MoneySystem : MonoBehaviour
     public int money;
     [SerializeField] TMP_Text moneyText;
     public static MoneySystem instance;
+    public int totalMoneyEarned;
 
     void Awake()
     {
@@ -27,6 +28,7 @@ public class MoneySystem : MonoBehaviour
     {
         money += moneyToAdd;
         UpdateMoneyText();
+        totalMoneyEarned += moneyToAdd;
     }
     public void BuyMoney(int moneyToBuy)
     {

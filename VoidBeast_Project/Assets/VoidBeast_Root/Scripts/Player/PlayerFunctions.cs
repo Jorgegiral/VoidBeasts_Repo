@@ -15,6 +15,9 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] CinemachineCamera buildCam;
     [SerializeField] GameObject seedMenu;
     [SerializeField] RotateToPlayer rotateToPlayer;
+    [SerializeField] GameObject escapeMenu;
+    bool menuOpened = false;
+    bool seedOpened = false;
     LayerMask layerInteractable;
     LayerMask layerPlant;
     private bool isShooting = false;
@@ -83,6 +86,7 @@ public class PlayerFunctions : MonoBehaviour
         {
             ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
             seedMenu.SetActive(true);
+                seedOpened = true;
         }
     }
 }
@@ -95,7 +99,24 @@ public class PlayerFunctions : MonoBehaviour
     }
     public void SwitchMode(InputAction.CallbackContext context)
     {
-
+        //Modo construcción
+    }
+    public void OnEscapeButton(InputAction.CallbackContext context)
+    {
+        if (seedOpened)
+        {
+            seedMenu.SetActive(false);
+            seedOpened = false;
+        } else
+        if (menuOpened)
+        {
+            escapeMenu.SetActive(false);
+            menuOpened = false;
+        } else 
+        {
+            escapeMenu.SetActive(true);
+            menuOpened = true;
+        }
     }
     public void EndShoot()
     {

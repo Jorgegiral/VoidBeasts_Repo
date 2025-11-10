@@ -39,6 +39,7 @@ public class Parcela : MonoBehaviour
     {
         if (nightCount == 0) { 
          tempPlant = Instantiate(plant.plantGameObject[0], transform.position, transform.rotation);
+            
          }
         if (nightCount == 1)
         {
@@ -47,9 +48,11 @@ public class Parcela : MonoBehaviour
         }
         if (nightCount == 2)
         {
-            Destroy(tempPlant);
             tempPlant = Instantiate(plant.plantGameObject[2], transform.position, transform.rotation);
+           
         }
+        tempPlant.transform.parent = transform;
+
     }
     public void UnPlanted()
     {
@@ -62,6 +65,13 @@ public class Parcela : MonoBehaviour
             nightCount = 0;
             render.material = actualMaterial;
         }
+    }
+    public void DestroyedPlant()
+    {
+            plant = null;
+            dayCount = 0;
+            nightCount = 0;
+            render.material = actualMaterial;   
     }
     public void DayCountdown()
     {

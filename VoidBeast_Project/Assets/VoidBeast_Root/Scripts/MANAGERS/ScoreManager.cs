@@ -26,6 +26,8 @@ public class ScoreManager : MonoBehaviour
         leaderboardImage.SetActive(true);
         youDiedImage.SetActive(false);
         nightSurvived.text = DayNightSystem.Instance.nightNumber.ToString();
+        enemiesKilled.text = PlayerStats.instance.enemykilledCount.ToString();
+        MoneyEarned.text = MoneySystem.instance.totalMoneyEarned.ToString();
         
     }
 }
