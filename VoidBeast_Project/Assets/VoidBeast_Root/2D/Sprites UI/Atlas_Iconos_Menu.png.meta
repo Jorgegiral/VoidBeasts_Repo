@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a024c7d59521ad446aea7b62974900e6
+guid: 36082103427bdf14e9f9c9078e2e30ce
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -81,46 +81,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -149,167 +110,167 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Botones arreglados_0
+      name: Iconos Menu_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 551
-        width: 872
-        height: 275
+        x: 26
+        y: 457
+        width: 503
+        height: 90
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9693148eeb4166043b5214c2fc242fdc
-      internalID: -1114001053
+      spriteID: f6d6f444d825d3747b0ce1fd53ae9c12
+      internalID: -1087597480
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Botones arreglados_1
+      name: Iconos Menu_1
       rect:
         serializedVersion: 2
-        x: 872
-        y: 551
-        width: 872
-        height: 275
+        x: 577
+        y: 421
+        width: 315
+        height: 186
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7c2ccb97e8260084d938ee6d6e5a1d3a
-      internalID: -1259700102
+      spriteID: 03c807f3140db6f459184453c22e8ee2
+      internalID: -327816348
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Botones arreglados_2
+      name: Iconos Menu_3
       rect:
         serializedVersion: 2
-        x: 1744
-        y: 551
-        width: 872
-        height: 275
+        x: 201
+        y: 269
+        width: 274
+        height: 136
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5255045c4633e9449828fdd23360b477
-      internalID: 1458144155
+      spriteID: 0510b41a396c4ae4195e3f2036b3a5ae
+      internalID: -1882525091
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Botones arreglados_3
+      name: Iconos Menu_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 276
-        width: 872
-        height: 275
+        x: 595
+        y: 267
+        width: 276
+        height: 139
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 264f0c2aa6476d34991ff9b9448c025f
-      internalID: -207477007
+      spriteID: deb3cafc962545d458fc984e1fec6ef7
+      internalID: 961717712
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Botones arreglados_4
+      name: Iconos Menu_5
       rect:
         serializedVersion: 2
-        x: 872
-        y: 276
-        width: 872
-        height: 275
+        x: 145
+        y: 64
+        width: 159
+        height: 118
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f09fdec644906dc4e967a2a487c14458
-      internalID: -1394554759
+      spriteID: 11e492fcb6e8b1f4180d5e540e48cec5
+      internalID: 1857507923
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Botones arreglados_5
+      name: Iconos Menu_7
       rect:
         serializedVersion: 2
-        x: 1744
-        y: 276
-        width: 872
-        height: 275
+        x: 391
+        y: 51
+        width: 196
+        height: 146
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 62cce897455951a41a8529dd2ec7795c
-      internalID: 397846229
+      spriteID: feea28d2a2c10c7498b236ac364c3fe0
+      internalID: -1438885457
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Botones arreglados_6
+      name: Iconos Menu_9
       rect:
         serializedVersion: 2
-        x: 0
-        y: 1
-        width: 872
-        height: 275
+        x: 665
+        y: 44
+        width: 194
+        height: 164
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 754ace55c8f5c6b419a3443c1bf6fb29
-      internalID: 1743076499
+      spriteID: 9bc0636dc13c5844f98ae868336bb047
+      internalID: -592816831
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Botones arreglados_7
+      name: Iconos Menu_2
       rect:
         serializedVersion: 2
-        x: 872
-        y: 1
-        width: 872
-        height: 275
+        x: 764
+        y: 412
+        width: 143
+        height: 135
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -318,20 +279,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4804c8c9a866d864c9598e0b176d8d56
-      internalID: -1389241085
+      spriteID: e5954c7069470dd4384307f5ce5f2ad5
+      internalID: 1839637325
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Botones arreglados_8
+      name: Iconos Menu_6
       rect:
         serializedVersion: 2
-        x: 1744
-        y: 1
-        width: 872
-        height: 275
+        x: 562
+        y: 488
+        width: 140
+        height: 127
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -340,8 +301,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6727ddfbaed77ef47af5deb2fa403216
-      internalID: 843740008
+      spriteID: 1ed8fc25ecb2db248a637dcbfe2d709b
+      internalID: -571169025
       vertices: []
       indices: 
       edges: []
@@ -350,7 +311,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 46488280fe041594bacf121f1971e596
+    spriteID: 6e43da6c08ca69e45bd4986646437933
     internalID: 0
     vertices: []
     indices: 
@@ -360,15 +321,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Botones arreglados_0: -1114001053
-      Botones arreglados_1: -1259700102
-      Botones arreglados_2: 1458144155
-      Botones arreglados_3: -207477007
-      Botones arreglados_4: -1394554759
-      Botones arreglados_5: 397846229
-      Botones arreglados_6: 1743076499
-      Botones arreglados_7: -1389241085
-      Botones arreglados_8: 843740008
+      Iconos Menu_0: -1087597480
+      Iconos Menu_1: -327816348
+      Iconos Menu_10: -567422322
+      Iconos Menu_11: -935042248
+      Iconos Menu_2: 1839637325
+      Iconos Menu_3: -1882525091
+      Iconos Menu_4: 961717712
+      Iconos Menu_5: 1857507923
+      Iconos Menu_6: -571169025
+      Iconos Menu_7: -1438885457
+      Iconos Menu_8: 317925044
+      Iconos Menu_9: -592816831
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
