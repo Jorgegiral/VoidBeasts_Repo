@@ -7,7 +7,8 @@ public class PlayerHP : MonoBehaviour
 {
     private float regenTimer = 0f;
     [SerializeField] Transform spawnpoint;
-    [SerializeField] Slider sliderHP;
+    [SerializeField] Image fillImage;       
+    [SerializeField] Image backgroundImage;
     [SerializeField] float invincibilityDurationSeconds;
     bool isInvicible = false;
     float deathCountdown = 5f;
@@ -34,14 +35,14 @@ public class PlayerHP : MonoBehaviour
 
 
         PlayerStats.instance.playerCurrentHealth -= damage;
-            UpdateHPSlider();
+            UpdateHP();
 
         if (PlayerStats.instance.playerCurrentHealth <= 0)
             {
             StartDeathTimer();
             return;
         }
-            UpdateHPSlider();
+            UpdateHP();
             BecomeTemporarilyInvincible();
             isInvicible=false;
         
@@ -53,11 +54,15 @@ public class PlayerHP : MonoBehaviour
         {
             PlayerStats.instance.playerCurrentHealth = PlayerStats.instance.playerMaxHealth;
         }
-        UpdateHPSlider();
+        UpdateHP();
     }
-    public void UpdateHPSlider()
+    public void UpdateHP()
     {
-        sliderHP.value = PlayerStats.instance.playerCurrentHealth;
+        float fill = PlayerStats.instance.playerCurrentHealth / PlayerStats.instance.playerMaxHealth;
+        fill = Mathf.Clamp01(fill);
+
+        if (fillImage != null)
+            fillImage.fillAmount = fill;
     }
     private IEnumerator BecomeTemporarilyInvincible()
     {
@@ -109,7 +114,7 @@ public class PlayerHP : MonoBehaviour
             }
 
             PlayerStats.instance.playerCurrentHealth = PlayerStats.instance.playerMaxHealth;
-            UpdateHPSlider();
+            UpdateHP();
             PlayerStats.instance.isDeath = false; 
         }
     }

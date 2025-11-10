@@ -81,6 +81,32 @@ public class BuildingHP : MonoBehaviour
             }
         }
     }
-  
+    private void OnDrawGizmos()
+    {
+        // Dibujar el radio
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
+
+        // Solo generar puntos si no estamos en Play Mode
+        if (!Application.isPlaying)
+        {
+            attackPoints.Clear();
+            for (int i = 0; i < numberOfAttackPoints; i++)
+            {
+                float angle = i * Mathf.PI * 2f / numberOfAttackPoints;
+                Vector3 point = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * attackRadius;
+                point += transform.position;
+                attackPoints.Add(point);
+            }
+        }
+
+        // Dibujar los puntos
+        for (int i = 0; i < attackPoints.Count; i++)
+        {
+            bool occupied = (i < attackPointOccupied.Count) && attackPointOccupied[i];
+            Gizmos.color = occupied ? Color.red : Color.green;
+            Gizmos.DrawSphere(attackPoints[i], 0.15f);
+        }
+    }
 }
 

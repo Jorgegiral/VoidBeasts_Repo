@@ -12,7 +12,9 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
     private BuildingHP targetBuilding;
-
+    public float raycastHeightOffset = 1f;
+    [SerializeField] private float retargetInterval = 5f; 
+    private float retargetTimer = 0f;
 
     [Header("Detection prio")]
     [SerializeField] float attackRange;
@@ -33,27 +35,46 @@ public class BasicEnemy : MonoBehaviour
 
     void Update()
     {
-        UpdateEnemyTarget();
+
+        UpdateEnemyTarget(); 
         MoveEnemyBuild();
         UpdateAttackCooldown();
 
     }
     void UpdateEnemyTarget()
     {
-        GameObject plant = GameObject.FindGameObjectWithTag("Plant");
+        GameObject[] plants = GameObject.FindGameObjectsWithTag("Plant");
+        GameObject nearestPlant = null;
+        float nearestDistance = Mathf.Infinity;
 
-        if (plant != null)
+        foreach (GameObject plant in plants)
         {
-            target = plant.transform;
-            targetBuilding = null; 
-            hasAttackPoint = false;
+            float distance = Vector3.Distance(transform.position, plant.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestPlant = plant;
+            }
+        }
+        if (nearestPlant != null)
+        {
+            if (target == null || target != nearestPlant.transform)
+            {
+                hasAttackPoint = false; 
+                targetBuilding = null;
+            }
+            target = nearestPlant.transform;
         }
         else
         {
             GameObject mainBuilding = GameObject.Find("MainBuild");
+            if (target == null || target != mainBuilding.transform)
+            {
+                hasAttackPoint = false;
+            }
             target = mainBuilding.transform;
             targetBuilding = mainBuilding.GetComponent<BuildingHP>();
-            hasAttackPoint = false;
+
         }
 
     }
@@ -61,16 +82,17 @@ public class BasicEnemy : MonoBehaviour
     {
         if (!target) return;
 
-        if (target.CompareTag("MainBuild"))
+        if (target.name == "MainBuild")
         {
             BuildingHP building = target.GetComponent<BuildingHP>();
             if (!hasAttackPoint && building)
             {
                 if (building.GetFreeAttackPoint(transform.position, out Vector3 newPoint))
                 {
-                    assignedAttackPoint = NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas)
-                        ? hit.position
-                        : newPoint;
+                    if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+                        assignedAttackPoint = hit.position;
+                    else
+                        assignedAttackPoint = newPoint;
                     targetBuilding = building;
                     hasAttackPoint = true;
                 }
@@ -87,7 +109,7 @@ public class BasicEnemy : MonoBehaviour
 
         // Movimiento
         float dist = Vector3.Distance(transform.position, assignedAttackPoint);
-        if (dist > 1.5f)
+        if (dist > 2.0f)
         {
             agent.isStopped = false;
             agent.SetDestination(assignedAttackPoint);
@@ -108,7 +130,8 @@ public class BasicEnemy : MonoBehaviour
         anim.SetBool("isAttacking", true);
         if (!canAttack) return;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer))
+        Vector3 rayOrigin = transform.position + Vector3.up * raycastHeightOffset;
+        if (Physics.Raycast(rayOrigin, transform.forward, out hit, attackRange, attackLayer))
         {
 
             var health = hit.collider.GetComponent<BuildingHP>();
@@ -159,5 +182,17 @@ public class BasicEnemy : MonoBehaviour
             targetBuilding.ReleaseAttackPoint(assignedAttackPoint);
         }
         Destroy(gameObject); 
+    }
+    private void OnDrawGizmosSelected()
+    {
+        // Color del raycast (rojo para ataque)
+        Gizmos.color = Color.red;
+        Vector3 rayOrigin = transform.position + Vector3.up * raycastHeightOffset;
+
+        // Dibujamos una línea desde la posición del enemigo hacia adelante
+        Gizmos.DrawLine(rayOrigin, transform.position + transform.forward * attackRange);
+
+        // También podemos dibujar una esfera al final del raycast para indicar el rango máximo
+        Gizmos.DrawWireSphere(rayOrigin + transform.forward * attackRange, 0.2f);
     }
 }
