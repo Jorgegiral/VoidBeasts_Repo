@@ -6,11 +6,13 @@ public class BasicEnemy : MonoBehaviour
     [Header("AI Config")]
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Transform target;
-    [SerializeField] private LayerMask buildLayer;
+    [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
     [SerializeField] int enemyDamage;
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
+    private BuildingHP targetBuilding;
+
 
     [Header("Detection prio")]
     [SerializeField] float attackRange;
@@ -32,87 +34,96 @@ public class BasicEnemy : MonoBehaviour
     void Update()
     {
         UpdateEnemyTarget();
-        MoveEnemy();
+        MoveEnemyBuild();
         UpdateAttackCooldown();
 
     }
     void UpdateEnemyTarget()
     {
-        GameObject plant = GameObject.FindWithTag("Plants");
+        GameObject plant = GameObject.FindGameObjectWithTag("Plant");
 
         if (plant != null)
-            {
-                //codigo para que vaya a las plantas aún por hacer
-            } else
-            {
-                GameObject mainBuilding = GameObject.Find("MainBuild");
-                target = mainBuilding.transform;
-              
-            }
-        
+        {
+            target = plant.transform;
+            targetBuilding = null; 
+            hasAttackPoint = false;
+        }
+        else
+        {
+            GameObject mainBuilding = GameObject.Find("MainBuild");
+            target = mainBuilding.transform;
+            targetBuilding = mainBuilding.GetComponent<BuildingHP>();
+            hasAttackPoint = false;
+        }
+
     }
-    void MoveEnemy()
+    void MoveEnemyBuild()
     {
-        if (!hasAttackPoint)
+        if (!target) return;
+
+        if (target.CompareTag("MainBuild"))
         {
             BuildingHP building = target.GetComponent<BuildingHP>();
-            if (building)
+            if (!hasAttackPoint && building)
             {
-                Vector3 newPoint;
-                bool found = building.GetFreeAttackPoint(transform.position, out newPoint);
-
-                if (found)
+                if (building.GetFreeAttackPoint(transform.position, out Vector3 newPoint))
                 {
-                    if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                        assignedAttackPoint = hit.position;
-                    else
-                        assignedAttackPoint = newPoint;
-
+                    assignedAttackPoint = NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas)
+                        ? hit.position
+                        : newPoint;
+                    targetBuilding = building;
                     hasAttackPoint = true;
-                    agent.SetDestination(assignedAttackPoint);
                 }
                 else
                 {
-                    agent.SetDestination(target.transform.position );
-                    LookAtBuilding();
-                    return;
+                    assignedAttackPoint = target.position;
                 }
             }
-
         }
-        float distToPoint = Vector3.Distance(transform.position, assignedAttackPoint);
+        else
+        {
+            assignedAttackPoint = target.position; // Planta
+        }
 
-        if (distToPoint > 2f)
+        // Movimiento
+        float dist = Vector3.Distance(transform.position, assignedAttackPoint);
+        if (dist > 1.5f)
         {
             agent.isStopped = false;
             agent.SetDestination(assignedAttackPoint);
             anim.SetBool("isAttacking", false);
-
         }
         else
         {
             agent.isStopped = true;
-            LookAtBuilding();
-
-
-            AttackEnemy();
+            LookAtTarget();
+            AttackTarget();
         }
-       
     }
-    void AttackEnemy()
+
+
+
+    void AttackTarget()
     {
         anim.SetBool("isAttacking", true);
         if (!canAttack) return;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, buildLayer))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackLayer))
         {
 
             var health = hit.collider.GetComponent<BuildingHP>();
+            var planthealth = hit.collider.GetComponent<PlantHP>();
+
             if (health != null)
             {
                 health.TakeDamage(enemyDamage);
             }
+            if (planthealth != null)
+            {
+                planthealth.TakeDamage(enemyDamage);
+            }
         }
+
         canAttack = false;
         attackCD = timeBetweenAttacks;
     }
@@ -128,7 +139,7 @@ public class BasicEnemy : MonoBehaviour
             }
         }
     }
-    void LookAtBuilding()
+    void LookAtTarget()
     {
         if (!target) return;
 
@@ -141,5 +152,12 @@ public class BasicEnemy : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
     }
-   
+    public void OnDeath()
+    {
+        if (targetBuilding && hasAttackPoint)
+        {
+            targetBuilding.ReleaseAttackPoint(assignedAttackPoint);
+        }
+        Destroy(gameObject); 
+    }
 }

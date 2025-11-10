@@ -21,32 +21,45 @@ public class ParcelaManager : MonoBehaviour
                 return;
 
             MoneySystem.instance.BuyMoney(plantToBuy.precio);
+            Debug.Log("Comprado");
+
+            for (int i = 0; i < selectedParcela.parcelas.Length; i++)
+            {
+                if (selectedParcela.parcelas[i].PlantIsFull())
+                    continue;
+                selectedParcela.parcelas[i].plant = plantToBuy;
+                selectedParcela.parcelas[i].PlantIsFull();
+                selectedParcela.parcelas[i].Planted();
+                if (freeSeed) freeSeed = false;
+                break;
+            }
         }
-        for (int i = 0; i < selectedParcela.parcelas.Length; i++)
+        if (freeSeed && !CheckFullParcela())
         {
-            if (selectedParcela.parcelas[i].PlantIsFull())
-                continue;
-            selectedParcela.parcelas[i].plant = plantToBuy;
-            selectedParcela.parcelas[i].PlantIsFull();
-            selectedParcela.parcelas[i].Planted();
-            if(freeSeed) freeSeed = false;
-            break;
+            for (int i = 0; i < selectedParcela.parcelas.Length; i++)
+            {
+                if (selectedParcela.parcelas[i].PlantIsFull())
+                    continue;
+                selectedParcela.parcelas[i].plant = plantToBuy;
+                selectedParcela.parcelas[i].PlantIsFull();
+                selectedParcela.parcelas[i].Planted();
+                if (freeSeed) freeSeed = false;
+                break;
+
+            }
+        }
+        bool CheckFullParcela()
+        {
+            foreach (var parcela in selectedParcela.parcelas)
+            {
+                if (!parcela.PlantIsFull())
+                    return false;
+            }
+            return true;
         }
     }
-    bool CheckFullParcela()
-    {
-        for (int i = 0;  i < selectedParcela.parcelas.Length; i++)
-        {
-            if (selectedParcela.parcelas[i].PlantIsFull()) isParcelaFull = true;
-                continue;
-            if (!selectedParcela.parcelas[i].PlantIsFull()) isParcelaFull = false;
-            break;
-
-        }
-       return isParcelaFull;
-
-    }
-
 }
+
+
 
 
