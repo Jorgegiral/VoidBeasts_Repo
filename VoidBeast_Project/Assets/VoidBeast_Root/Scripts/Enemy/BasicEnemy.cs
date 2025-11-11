@@ -8,7 +8,7 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] Transform target;
     [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
-    [SerializeField] float enemyDamage 10f;
+    [SerializeField] float enemyDamage;
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
     private BuildingHP targetBuilding;
