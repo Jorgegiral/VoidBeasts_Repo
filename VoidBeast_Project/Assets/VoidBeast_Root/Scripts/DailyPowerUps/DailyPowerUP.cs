@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,4 +27,16 @@ public class DailyPowerUP : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    private void PickPowerUps()
+    {
+        selectedPowerUps = new DailyPowerUpsSO[3];
+        for (int i = 0; i < selectedPowerUps.Length; i++)
+        {
+            ImagePowerUp[i].sprite = selectedPowerUps[i].raritySprite;
+            rarityText[i].text = selectedPowerUps[i].rarityName.ToString();
+            upgradeText[i].text = selectedPowerUps[i].type.ToString();
+            infoText[i].text = selectedPowerUps[i].description;
+        }
+    }
+}
 }

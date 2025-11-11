@@ -27,8 +27,17 @@ public class Menu : MonoBehaviour
         logoImages.SetActive(true);
         settingsPanel.SetActive(false);
         int numRandom = UnityEngine.Random.Range(0, 2);
-        if (numRandom == 0) backgroundImage.sprite = backgroundNight;
-        if (numRandom == 1) backgroundImage.sprite = backgroundDay;
+        if (numRandom == 0)
+        {
+            backgroundImage.sprite = backgroundNight;
+            MusicManager.instance.PlayNightSong();
+        }
+        if (numRandom == 1)
+        { 
+            backgroundImage.sprite = backgroundDay;
+            MusicManager.instance.PlayDaySong();
+
+        }
         int Id = PlayerPrefs.GetInt("LocaleKey", 0);
     }
 
