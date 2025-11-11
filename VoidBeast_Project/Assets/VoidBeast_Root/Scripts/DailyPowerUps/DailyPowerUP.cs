@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.Android.Gradle.Manifest;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,13 +12,13 @@ public class DailyPowerUP : MonoBehaviour
     [SerializeField] TMP_Text[] rarityText;
     [SerializeField] TMP_Text[] upgradeText;
     [SerializeField] TMP_Text[] infoText;
-    [SerializeField] TMP_Text actualMoney;
+    [SerializeField] TMP_Text Money;
     public DailyPowerUpsSO[] selectedPowerUps;
     string upgradeName;
     private int selectedIndex = -1;
 
-    int PowerUpCost;
-
+    int PowerUpCost = 10;
+    int powerUpCount;
     
     public void StartPowerUp()
     {
@@ -35,24 +34,28 @@ public class DailyPowerUP : MonoBehaviour
     }
     public DailyPowerUpsSO OnClickPowerUp()
     {
-
         if (selectedIndex < 0)
         {
             gameObject.SetActive(false);
             return null;
         }
-
-        DailyPowerUpsSO chosen = selectedPowerUps[selectedIndex];
-        PlayerStats.instance.powerUpChosen = chosen;
-
-        return chosen;
+        if (CanAfford())
+        {
+            DailyPowerUpsSO chosen = selectedPowerUps[selectedIndex];
+            PlayerStats.instance.powerUpChosen = chosen;
+            PlayerStats.instance.ApplyStats();
+            return chosen;
+        }
+        else
+        {
+            return null;
+        }
     }
     public void SelectPowerUp(int index)
     {
         selectedIndex = index;
         OnClickPowerUp();
         PlayerStats.instance.blockMovement = false;
-        PlayerStats.instance.ApplyStats();
         gameObject.SetActive(false);
     }
     private void PickPowerUps()
@@ -93,6 +96,19 @@ public class DailyPowerUP : MonoBehaviour
             return RandomFrom(availablePowerUps, PowerUpRarity.Rare);
 
         return RandomFrom(availablePowerUps, PowerUpRarity.Legendary);
+    }
+    private bool CanAfford()
+    {
+        if(MoneySystem.instance.money >= PowerUpCost)
+        {
+            MoneySystem.instance.BuyMoney(PowerUpCost);
+            PowerUpCost += 20;
+            return true;
+        }
+        else
+        {
+            return false;
+        }      
     }
 
     private DailyPowerUpsSO RandomFrom(List<DailyPowerUpsSO> pool, PowerUpRarity rarity)
