@@ -23,6 +23,12 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
 
+        if (PlayerStats.instance.blockMovement)
+        {
+            rb.linearVelocity = Vector3.zero; 
+            anim.SetBool("isRunning", false); 
+            return; 
+        }
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
         move = cameraFollowTransform.forward * move.z + cameraFollowTransform.right * move.x;
         move.y = 0;

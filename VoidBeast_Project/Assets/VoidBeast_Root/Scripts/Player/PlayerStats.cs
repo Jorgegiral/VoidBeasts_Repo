@@ -24,13 +24,13 @@ public class PlayerStats : MonoBehaviour
 
     public void ApplyStats()
     {
-        if (powerUpChosen.type.ToString() == "Gun Damage")
+        if (powerUpChosen.type.ToString() == "GunDamage")
         {
-            powerUpChosen.value += gunDamage;
+            gunDamage += powerUpChosen.value;
         }
-        if (powerUpChosen.type.ToString() == "Death Timer")
+        if (powerUpChosen.type.ToString() == "DeathTimer")
         {
-            powerUpChosen.value -= deathTimer;
+            deathTimer += powerUpChosen.value;
             if(deathTimer <= 0)
             {
                 deathTimer = 0;
@@ -38,16 +38,16 @@ public class PlayerStats : MonoBehaviour
         }
         if (powerUpChosen.type.ToString() == "Health")
         {
-            powerUpChosen.value += playerMaxHealth;
-            powerUpChosen.value += playerCurrentHealth;
+            playerMaxHealth += powerUpChosen.value;
+            playerCurrentHealth += powerUpChosen.value;
         }
-        if (powerUpChosen.type.ToString() == "Health Regen")
+        if (powerUpChosen.type.ToString() == "HealthRegen")
         {
-            powerUpChosen.value += healthRegen;
+            healthRegen += powerUpChosen.value;
         }
         if (powerUpChosen.type.ToString() == "Speed")
         {
-            powerUpChosen.value += playerSpeed;
+            playerSpeed += powerUpChosen.value;
         }
         powerUpChosen = null;
     }
