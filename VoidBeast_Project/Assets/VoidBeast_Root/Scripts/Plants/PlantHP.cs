@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class PlantHP : MonoBehaviour
 {
-    [SerializeField] int plantHP;
+    [SerializeField] float plantHP;
     [SerializeField] Parcela plantParcela;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         plantHP -= damage;
         if (plantHP <= 0)

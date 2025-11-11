@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 4f;
     [SerializeField] private float gravityValue = -9.81f;
+    [SerializeField] private AudioClip moveSound;
     private Transform cameraFollowTransform;
     private Rigidbody rb;
     private Vector2 moveInput;
@@ -26,7 +27,8 @@ public class PlayerController : MonoBehaviour
         if (PlayerStats.instance.blockMovement)
         {
             rb.linearVelocity = Vector3.zero; 
-            anim.SetBool("isRunning", false); 
+            anim.SetBool("isRunning", false);
+            Settings.instance.StopSingleSoundFX();
             return; 
         }
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
@@ -42,10 +44,12 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.fixedDeltaTime * rotationSpeed);
         }
         bool isMoving = moveInput != Vector2.zero;
+        if (!isMoving)
+        {
+            Settings.instance.StopSingleSoundFX();
+        }
 
- 
-        anim.SetBool("isRunning", isMoving); //Jorge
-        if (PlayerStats.instance.blockMovement) anim.SetBool("isRunning", false);
+            anim.SetBool("isRunning", isMoving); //Jorge
 
 
     }
@@ -55,7 +59,7 @@ public class PlayerController : MonoBehaviour
         if (PlayerStats.instance.blockMovement) //Jorge
 
         return;
-
+        Settings.instance.PlayUniqueSoundSFXClip(moveSound, transform, 1f);
         moveInput = context.ReadValue<Vector2>();
         
     }

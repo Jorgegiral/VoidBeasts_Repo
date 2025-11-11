@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 
 public class Settings : MonoBehaviour
 {
     public static Settings instance;
     [SerializeField] AudioSource soundFXObject;
     [SerializeField] AudioMixer audioMixer;
-    
+    private AudioSource uniqueAudioSource;
+
     void Awake()
     {
         if (instance == null)
@@ -38,6 +40,28 @@ public class Settings : MonoBehaviour
         float clipLength = audioSource.clip.length;
         Destroy(audioSource.gameObject, clipLength);
         // En caso de que haya varios sonidos de la misma cosa que los haga random
+    }
+    public void PlayUniqueSoundSFXClip(AudioClip clip, Transform spawnTransform, float volume)
+    {
+        if (uniqueAudioSource != null && uniqueAudioSource.isPlaying)
+            return;
+
+        if (uniqueAudioSource == null)
+        {
+            uniqueAudioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
+        }
+
+        uniqueAudioSource.transform.position = spawnTransform.position;
+        uniqueAudioSource.clip = clip;
+        uniqueAudioSource.volume = volume;
+        uniqueAudioSource.Play();
+    }
+    public void StopSingleSoundFX()
+    {
+        if (uniqueAudioSource != null && uniqueAudioSource.isPlaying)
+        {
+            uniqueAudioSource.Stop();
+        }
     }
     public void SetMusicVolume(float volume)
     {

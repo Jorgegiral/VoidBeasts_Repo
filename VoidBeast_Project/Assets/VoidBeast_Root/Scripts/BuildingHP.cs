@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class BuildingHP : MonoBehaviour
 {
-    [SerializeField] int buildHP;
-    [SerializeField] int currentBuildHP;
+    [SerializeField] float buildHP;
+    [SerializeField] float currentBuildHP;
     [SerializeField] Canvas deathCanvas;
     public int numberOfAttackPoints = 12;     
     public float attackRadius = 3f;
@@ -25,7 +25,7 @@ public class BuildingHP : MonoBehaviour
     {
         currentBuildHP = buildHP;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentBuildHP -= damage;
         UpdateHP();

@@ -4,7 +4,7 @@ public class EnemyHP : MonoBehaviour
 {
     float enemyMaxHealth;
     float enemyCurrentHealth;
-    [SerializeField] private AudioClip damageEnemySound;
+    [SerializeField] private AudioClip deathEnemySound;
     [SerializeField] private GameObject smokeVFX;
     private void Awake()
     {
@@ -22,7 +22,6 @@ public class EnemyHP : MonoBehaviour
     {
         enemyCurrentHealth -= damage;
         //PONER CAPA ROJA PARA FEEDBACK DE DAÑO
-      //  Settings.instance.PlaySoundFXClip(damageEnemySound, transform, 1f);
         if (enemyCurrentHealth < 0) 
         {
             BasicEnemy enemy = GetComponent<BasicEnemy>();
@@ -31,10 +30,15 @@ public class EnemyHP : MonoBehaviour
             PlayerStats.instance.enemykilledCount++;
             if (enemy != null)
             {
+                Settings.instance.PlaySoundFXClip(deathEnemySound, transform, 1f);
+
                 enemy.OnDeath();
+
             }
             else
             {
+                Settings.instance.PlaySoundFXClip(deathEnemySound, transform, 1f);
+
                 Destroy(gameObject);
             }
         }
