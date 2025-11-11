@@ -25,7 +25,7 @@ public class BuildingHP : MonoBehaviour
     {
         currentBuildHP = buildHP;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentBuildHP -= damage;
         UpdateHP();
