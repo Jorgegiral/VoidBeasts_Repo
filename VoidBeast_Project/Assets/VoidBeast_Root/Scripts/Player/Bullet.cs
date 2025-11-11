@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private int damage = 10;
     [SerializeField] GameObject hitVFX;
     [SerializeField] float shootSpeed = 2f;
     private Vector3 moveDirection;
@@ -32,7 +31,7 @@ public class Bullet : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             EnemyHP enemyHP = other.gameObject.GetComponent<EnemyHP>();
-            enemyHP.TakeDamage(damage);
+            enemyHP.TakeDamage(PlayerStats.instance.gunDamage);
         }
         Destroy(gameObject);
     }

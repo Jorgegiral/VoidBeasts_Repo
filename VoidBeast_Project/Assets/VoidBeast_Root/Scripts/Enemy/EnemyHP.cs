@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemyHP : MonoBehaviour
 {
-    int enemyMaxHealth;
-    int enemyCurrentHealth;
+    float enemyMaxHealth;
+    float enemyCurrentHealth;
     [SerializeField] private AudioClip damageEnemySound;
     [SerializeField] private GameObject smokeVFX;
     private void Awake()
@@ -15,10 +15,10 @@ public class EnemyHP : MonoBehaviour
 
     int ScaleEnemyHP()
     {
-        int enemyHP =  DayNightSystem.Instance.nightNumber * 2;
+        int enemyHP =  DayNightSystem.Instance.nightNumber * 2 + 5;
         return enemyHP;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         enemyCurrentHealth -= damage;
         //PONER CAPA ROJA PARA FEEDBACK DE DAÑO

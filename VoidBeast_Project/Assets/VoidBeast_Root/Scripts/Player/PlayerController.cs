@@ -39,13 +39,16 @@ public class PlayerController : MonoBehaviour
 
  
         anim.SetBool("isRunning", isMoving); //Jorge
+        if (PlayerStats.instance.blockMovement) anim.SetBool("isRunning", false);
 
-    
+
     }
     public void OnMove(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
-        if (PlayerStats.instance.isPlanting) return;
+        if (PlayerStats.instance.blockMovement) //Jorge
+
+        return;
 
         moveInput = context.ReadValue<Vector2>();
         
