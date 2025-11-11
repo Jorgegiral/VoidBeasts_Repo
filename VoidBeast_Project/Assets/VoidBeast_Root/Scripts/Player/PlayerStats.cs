@@ -13,6 +13,8 @@ public class PlayerStats : MonoBehaviour
     public float deathTimer = 5f;
     public int gunDamage;
     public int enemykilledCount;
+    public DailyPowerUpsSO powerUpChosen;
+    private int selectedIndex = -1;
 
     void Awake()
     {
@@ -20,6 +22,6 @@ public class PlayerStats : MonoBehaviour
         playerCurrentHealth = playerMaxHealth;
     }
 
-    
-    
+
+
 }
