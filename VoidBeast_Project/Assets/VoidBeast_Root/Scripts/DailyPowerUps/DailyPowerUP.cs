@@ -52,6 +52,7 @@ public class DailyPowerUP : MonoBehaviour
         selectedIndex = index;
         OnClickPowerUp();
         PlayerStats.instance.blockMovement = false;
+        PlayerStats.instance.ApplyStats();
         gameObject.SetActive(false);
     }
     private void PickPowerUps()

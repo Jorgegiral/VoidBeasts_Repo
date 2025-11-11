@@ -22,6 +22,34 @@ public class PlayerStats : MonoBehaviour
         playerCurrentHealth = playerMaxHealth;
     }
 
-
+    public void ApplyStats()
+    {
+        if (powerUpChosen.type.ToString() == "Gun Damage")
+        {
+            powerUpChosen.value += gunDamage;
+        }
+        if (powerUpChosen.type.ToString() == "Death Timer")
+        {
+            powerUpChosen.value -= deathTimer;
+            if(deathTimer <= 0)
+            {
+                deathTimer = 0;
+            }       
+        }
+        if (powerUpChosen.type.ToString() == "Health")
+        {
+            powerUpChosen.value += playerMaxHealth;
+            powerUpChosen.value += playerCurrentHealth;
+        }
+        if (powerUpChosen.type.ToString() == "Health Regen")
+        {
+            powerUpChosen.value += healthRegen;
+        }
+        if (powerUpChosen.type.ToString() == "Speed")
+        {
+            powerUpChosen.value += playerSpeed;
+        }
+        powerUpChosen = null;
+    }
 
 }

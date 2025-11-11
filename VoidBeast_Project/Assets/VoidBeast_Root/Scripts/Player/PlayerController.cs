@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
-        if (PlayerStats.instance.blockMovement); //Jorge
+        if (PlayerStats.instance.blockMovement) //Jorge
 
         return;
 

@@ -18,7 +18,7 @@ public class EnemyHP : MonoBehaviour
         int enemyHP =  DayNightSystem.Instance.nightNumber * 2 + 5;
         return enemyHP;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         enemyCurrentHealth -= damage;
         //PONER CAPA ROJA PARA FEEDBACK DE DAÑO
