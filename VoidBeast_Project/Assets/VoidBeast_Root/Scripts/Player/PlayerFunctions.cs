@@ -103,13 +103,16 @@ public class PlayerFunctions : MonoBehaviour
     }
     public void OnEscapeButton(InputAction.CallbackContext context)
     {
+        if (!context.performed)
+            return;
+
         if (seedOpened)
         {
             seedMenu.SetActive(false);
             seedOpened = false;
             PlayerStats.instance.blockMovement = false;
-        } else
-        if (menuOpened)
+        } 
+        else if (menuOpened)
         {
             escapeMenu.SetActive(false);
             menuOpened = false;

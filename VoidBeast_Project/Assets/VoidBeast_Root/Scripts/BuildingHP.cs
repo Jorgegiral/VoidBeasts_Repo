@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildingHP : MonoBehaviour
 {
     [SerializeField] int buildHP;
+    [SerializeField] int currentBuildHP;
     [SerializeField] Canvas deathCanvas;
     public int numberOfAttackPoints = 12;     
-    public float attackRadius = 3f;          
+    public float attackRadius = 3f;
+    [SerializeField] Image fillImage;
 
     private List<Vector3> attackPoints = new List<Vector3>();
     private List<bool> attackPointOccupied = new List<bool>();
@@ -19,8 +22,8 @@ public class BuildingHP : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
-        buildHP -= damage;
-        if (buildHP <= 0 )
+        currentBuildHP -= damage;
+        if (currentBuildHP <= 0 )
         {
             deathCanvas.gameObject.SetActive(true);
             Time.timeScale = 0f;
@@ -80,6 +83,14 @@ public class BuildingHP : MonoBehaviour
                 break;
             }
         }
+    }
+    public void UpdateHP()
+    {
+        float fill = currentBuildHP / buildHP;
+        fill = Mathf.Clamp01(fill);
+
+        if (fillImage != null)
+            fillImage.fillAmount = fill;
     }
 }
 
