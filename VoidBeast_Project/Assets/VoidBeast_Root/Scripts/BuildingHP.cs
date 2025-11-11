@@ -10,19 +10,25 @@ public class BuildingHP : MonoBehaviour
     public int numberOfAttackPoints = 12;     
     public float attackRadius = 3f;
     [SerializeField] Image fillImage;
-
+    [SerializeField] public GameObject imageHP;
     private List<Vector3> attackPoints = new List<Vector3>();
     private List<bool> attackPointOccupied = new List<bool>();
     private void Awake()
     {
         deathCanvas.gameObject.SetActive(false);
+        imageHP.SetActive(false);
         GenerateAttackPoints();
+        currentBuildHP = buildHP;
 
-
+    }
+    public void NewDayHealth()
+    {
+        currentBuildHP = buildHP;
     }
     public void TakeDamage(int damage)
     {
         currentBuildHP -= damage;
+        UpdateHP();
         if (currentBuildHP <= 0 )
         {
             deathCanvas.gameObject.SetActive(true);

@@ -28,7 +28,7 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] Sprite[] DayNightSprites;
     public List<Parcela> parcelas = new List<Parcela>();
     public DailyPowerUP dailyPowerUP;
-
+    public BuildingHP buildHP;
     void Awake()
     {
         if (Instance == null)
@@ -77,6 +77,9 @@ public class DayNightSystem : MonoBehaviour
             ParcelaManager.instance.freeSeed = true;
             MoneySystem.instance.UpdateMoneyText();
             dailyPowerUP.StartPowerUp();
+            buildHP.NewDayHealth();
+            buildHP.imageHP.SetActive(false);
+
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
@@ -102,6 +105,9 @@ public class DayNightSystem : MonoBehaviour
             DayNightIcons[0].sprite = DayNightSprites[1];
             DayNightIcons[1].sprite = DayNightSprites[1];
             DayNightIcons[2].sprite = DayNightSprites[2];
+            buildHP.imageHP.SetActive(true);
+
+
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
