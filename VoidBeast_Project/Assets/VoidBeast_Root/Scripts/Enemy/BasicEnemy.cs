@@ -8,7 +8,7 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] Transform target;
     [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
-    [SerializeField] int enemyDamage;
+    [SerializeField] float enemyDamage;
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
     private BuildingHP targetBuilding;
@@ -24,6 +24,8 @@ public class BasicEnemy : MonoBehaviour
     private Vector3 assignedAttackPoint;
     private bool hasAttackPoint = false;
     private Animator anim; //Jorge
+    [SerializeField] AudioClip attackEnemySound;
+    [SerializeField] AudioClip moveEnemySound;
 
     private void Awake()
     {
@@ -111,6 +113,7 @@ public class BasicEnemy : MonoBehaviour
         float dist = Vector3.Distance(transform.position, assignedAttackPoint);
         if (dist > 2.0f)
         {
+            Settings.instance.PlayUniqueSoundSFXClip(moveEnemySound, transform, 1f);
             agent.isStopped = false;
             agent.SetDestination(assignedAttackPoint);
             anim.SetBool("isAttacking", false);
@@ -129,6 +132,8 @@ public class BasicEnemy : MonoBehaviour
     {
         anim.SetBool("isAttacking", true);
         if (!canAttack) return;
+
+        Settings.instance.PlaySoundFXClip(attackEnemySound, transform, 1f);
         RaycastHit hit;
         Vector3 rayOrigin = transform.position + Vector3.up * raycastHeightOffset;
         if (Physics.Raycast(rayOrigin, transform.forward, out hit, attackRange, attackLayer))
@@ -183,16 +188,5 @@ public class BasicEnemy : MonoBehaviour
         }
         Destroy(gameObject); 
     }
-    private void OnDrawGizmosSelected()
-    {
-        // Color del raycast (rojo para ataque)
-        Gizmos.color = Color.red;
-        Vector3 rayOrigin = transform.position + Vector3.up * raycastHeightOffset;
 
-        // Dibujamos una línea desde la posición del enemigo hacia adelante
-        Gizmos.DrawLine(rayOrigin, transform.position + transform.forward * attackRange);
-
-        // También podemos dibujar una esfera al final del raycast para indicar el rango máximo
-        Gizmos.DrawWireSphere(rayOrigin + transform.forward * attackRange, 0.2f);
-    }
 }
