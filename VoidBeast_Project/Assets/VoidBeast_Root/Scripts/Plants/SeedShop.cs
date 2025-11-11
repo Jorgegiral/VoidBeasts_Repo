@@ -5,6 +5,6 @@ public class SeedShop : MonoBehaviour
 
     void Update()
     {
-        PlayerStats.instance.isPlanting = true;
+        PlayerStats.instance.blockMovement = true;
     }
 }

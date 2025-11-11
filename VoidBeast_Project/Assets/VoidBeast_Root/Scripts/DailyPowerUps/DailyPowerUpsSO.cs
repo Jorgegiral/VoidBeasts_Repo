@@ -8,6 +8,7 @@ public class DailyPowerUpsSO : ScriptableObject
     public Sprite raritySprite;
     public PowerUpType type;
     public string description;
+    public float value;
     
 }
  public enum PowerUpType {
