@@ -12,19 +12,19 @@ public class DailyPowerUP : MonoBehaviour
     [SerializeField] TMP_Text[] rarityText;
     [SerializeField] TMP_Text[] upgradeText;
     [SerializeField] TMP_Text[] infoText;
-    [SerializeField] TMP_Text Money;
+    [SerializeField] TMP_Text costMoneyText;
     public DailyPowerUpsSO[] selectedPowerUps;
     string upgradeName;
     private int selectedIndex = -1;
 
     int PowerUpCost = 10;
-    int powerUpCount;
     
     public void StartPowerUp()
     {
         gameObject.SetActive(true);
         PickPowerUps();
         PlayerStats.instance.blockMovement = true;
+        costMoneyText.text = PowerUpCost.ToString();
     }
     public void ClosePowerUp()
     {
