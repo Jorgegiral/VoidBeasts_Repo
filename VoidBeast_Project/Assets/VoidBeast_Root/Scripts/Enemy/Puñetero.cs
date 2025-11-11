@@ -18,7 +18,8 @@ public class Puñetero : MonoBehaviour
     private float attackCD = 2;
     private bool canAttack = true;
 
-
+    [SerializeField] AudioClip attackEnemySound;
+    [SerializeField] AudioClip moveEnemySound;
 
     private void Awake()
     {
@@ -49,6 +50,8 @@ public class Puñetero : MonoBehaviour
 
         if (distance > 3f)
         {
+            Settings.instance.PlayUniqueSoundSFXClip(moveEnemySound, transform, 1f);
+
             agent.isStopped = false;
 
             agent.SetDestination(target.position);
@@ -68,6 +71,7 @@ public class Puñetero : MonoBehaviour
     {
         if (!canAttack) return;
         anim.SetBool("isAttacking", true);
+        Settings.instance.PlaySoundFXClip(attackEnemySound, transform, 1f);
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, playerLayer))

@@ -16,6 +16,7 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] GameObject seedMenu;
     [SerializeField] RotateToPlayer rotateToPlayer;
     [SerializeField] GameObject escapeMenu;
+    [SerializeField] AudioClip shootSound;
     bool menuOpened = false;
     bool seedOpened = false;
     LayerMask layerInteractable;
@@ -95,7 +96,9 @@ public class PlayerFunctions : MonoBehaviour
 
         if (isShooting) return;
         if (PlayerStats.instance.isDeath) return;
+
         Shoot();
+        Settings.instance.PlaySoundFXClip(shootSound,transform, 1f);
     }
     public void SwitchMode(InputAction.CallbackContext context)
     {
