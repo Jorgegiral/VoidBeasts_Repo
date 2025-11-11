@@ -27,6 +27,7 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] LocalizedString nightText;
     [SerializeField] Sprite[] DayNightSprites;
     public List<Parcela> parcelas = new List<Parcela>();
+    public DailyPowerUP dailyPowerUP;
 
     void Awake()
     {
@@ -45,7 +46,7 @@ public class DayNightSystem : MonoBehaviour
         DayNightIcons[0].sprite = DayNightSprites[0];
         DayNightIcons[1].sprite = DayNightSprites[0];
         DayNightIcons[2].sprite = DayNightSprites[3];
-
+        MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
     }
 
@@ -75,6 +76,7 @@ public class DayNightSystem : MonoBehaviour
             DayNightIcons[2].sprite = DayNightSprites[3];
             ParcelaManager.instance.freeSeed = true;
             MoneySystem.instance.UpdateMoneyText();
+            dailyPowerUP.StartPowerUp();
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
@@ -83,7 +85,7 @@ public class DayNightSystem : MonoBehaviour
             }
 
         }
-
+        MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
     }
     public void ToNight()
@@ -107,6 +109,7 @@ public class DayNightSystem : MonoBehaviour
                 p.GrowedPlant();
             }
         }
+        MusicManager.instance.PlayNightSong();
         UpdateDayNightUI();
     }
     public int EnemyQuantityScale()
