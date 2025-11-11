@@ -107,15 +107,20 @@ public class PlayerFunctions : MonoBehaviour
         {
             seedMenu.SetActive(false);
             seedOpened = false;
+            PlayerStats.instance.isPlanting = false;
         } else
         if (menuOpened)
         {
             escapeMenu.SetActive(false);
             menuOpened = false;
-        } else 
+            PlayerStats.instance.isPlanting = false;
+
+        }
+        else 
         {
             escapeMenu.SetActive(true);
             menuOpened = true;
+            PlayerStats.instance.isPlanting = false;
         }
     }
     public void EndShoot()

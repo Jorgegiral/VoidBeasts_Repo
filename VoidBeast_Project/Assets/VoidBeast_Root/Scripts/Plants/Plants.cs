@@ -6,11 +6,9 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "Plants", menuName = "Scriptable Objects/Plants")]
 public class Plants : ScriptableObject
 {
-    public int plantName;
+    public string plantName;
     public int numDias;
     public int precio;
-    public Image shopImage;
     public List<GameObject> plantGameObject;
     public int ganancias;
-    public int plantHP;
 }

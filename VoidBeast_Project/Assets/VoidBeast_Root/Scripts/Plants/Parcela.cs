@@ -37,17 +37,19 @@ public class Parcela : MonoBehaviour
     }
     public void GrowedPlant()
     {
-        if (nightCount == 0) { 
-         tempPlant = Instantiate(plant.plantGameObject[0], transform.position, transform.rotation);
+        if (nightCount == 0) {
+           Destroy(tempPlant);
+           tempPlant = Instantiate(plant.plantGameObject[0], transform.position, transform.rotation);
             
          }
         if (nightCount == 1)
         {
-            Destroy(tempPlant);
+           Destroy(tempPlant);
            tempPlant = Instantiate(plant.plantGameObject[1], transform.position, transform.rotation);
         }
         if (nightCount == 2)
         {
+            Destroy(tempPlant);
             tempPlant = Instantiate(plant.plantGameObject[2], transform.position, transform.rotation);
            
         }
