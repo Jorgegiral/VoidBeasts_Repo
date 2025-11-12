@@ -14,7 +14,7 @@ public class ParcelaOrder : MonoBehaviour
         bool parcelasLlenas = false;
         foreach(Parcela p in parcelas)
         {
-            if (p.PlantIsFull())
+            if (p.PlantIsFullandDayCount())
             {
                 parcelasLlenas = true;
                 break;

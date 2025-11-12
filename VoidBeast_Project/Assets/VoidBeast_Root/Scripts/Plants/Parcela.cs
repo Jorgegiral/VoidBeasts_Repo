@@ -11,6 +11,7 @@ public class Parcela : MonoBehaviour
     [SerializeField]Material plantedMaterial;
     [SerializeField]Material actualMaterial;
     [SerializeField] GameObject starsVFX;
+    [SerializeField] Shader desintegrate;
     private GameObject tempVFX;
     private Renderer render;
     private GameObject tempPlant;
@@ -25,6 +26,15 @@ public class Parcela : MonoBehaviour
     public bool PlantIsFull()
     {
         return plant != null;
+
+    }
+    public bool PlantIsFullandDayCount()
+    {
+        if (plant != null && dayCount == 0)
+        {
+            return true;
+        } 
+        return false;
 
     }
     public void Planted()
@@ -61,7 +71,15 @@ public class Parcela : MonoBehaviour
     {
         if (dayCount == 0)
         {
-            Destroy(tempPlant);
+            Renderer[] plantRenderer = tempPlant.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in plantRenderer)
+            {
+                for (int i = 0;i < renderer.materials.Length; i++)
+                {
+                    renderer.materials[i].shader = desintegrate;
+                }
+                StartCoroutine(AnimateDissolve(renderer.materials, 6f));
+            }
             MoneySystem.instance.AddMoney(plant.ganancias);
             plant = null;
             dayCount = 0;
@@ -84,5 +102,29 @@ public class Parcela : MonoBehaviour
     {
         nightCount--;
     }
+    private System.Collections.IEnumerator AnimateDissolve(Material[] materials, float duration)
+    {
+        float elapsed = 0f;
 
+        foreach (var mat in materials)
+        {
+            mat.SetFloat("_DissolveAmount", 0f);
+        }
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float dissolveValue = Mathf.Lerp(1f, 0f, elapsed / duration);
+            foreach (var mat in materials)
+            {
+                mat.SetFloat("_DissolveAmount", dissolveValue);
+            }
+            yield return null;
+        }
+
+        foreach (var mat in materials)
+        {
+            mat.SetFloat("_DissolveAmount", 1f);
+        }
+        Destroy(tempPlant);
+    }
 }
