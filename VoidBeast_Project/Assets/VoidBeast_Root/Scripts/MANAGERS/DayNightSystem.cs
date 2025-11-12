@@ -81,17 +81,17 @@ public class DayNightSystem : MonoBehaviour
             dailyPowerUP.StartPowerUp();
             buildHP.NewDayHealth();
             buildHP.imageHP.SetActive(false);
-
+            foreach (ParcelaOrder p in parcelasOrder)
+            {
+                p.PlayRecolect();
+            }
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
-            foreach (ParcelaOrder p in parcelasOrder)
-            {
-                p.PlayRecolect();
-            }
+
 
         }
         MusicManager.instance.PlayDaySong();

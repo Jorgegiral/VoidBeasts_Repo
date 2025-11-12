@@ -12,6 +12,7 @@ public class Parcela : MonoBehaviour
     [SerializeField]Material actualMaterial;
     [SerializeField] GameObject starsVFX;
     [SerializeField] Shader desintegrate;
+    [SerializeField] GameObject collectVFX;
     private GameObject tempVFX;
     private Renderer render;
     private GameObject tempPlant;
@@ -30,12 +31,7 @@ public class Parcela : MonoBehaviour
     }
     public bool PlantIsFullandDayCount()
     {
-        if (plant != null && dayCount == 0)
-        {
-            return true;
-        } 
-        return false;
-
+        return plant != null && dayCount == 1;
     }
     public void Planted()
     {
@@ -77,9 +73,11 @@ public class Parcela : MonoBehaviour
                 for (int i = 0;i < renderer.materials.Length; i++)
                 {
                     renderer.materials[i].shader = desintegrate;
+                    renderer.materials[i].SetFloat("_DissolveAmount", 0f);
                 }
-                StartCoroutine(AnimateDissolve(renderer.materials, 6f));
+                StartCoroutine(AnimateDissolve(renderer.materials, 3f));
             }
+
             MoneySystem.instance.AddMoney(plant.ganancias);
             plant = null;
             dayCount = 0;
@@ -104,16 +102,15 @@ public class Parcela : MonoBehaviour
     }
     private System.Collections.IEnumerator AnimateDissolve(Material[] materials, float duration)
     {
+        yield return new WaitForSeconds(2f);
+        tempVFX = Instantiate(collectVFX, transform.position, Quaternion.LookRotation(Vector3.up));
+        Destroy(tempVFX, 3f);
         float elapsed = 0f;
 
-        foreach (var mat in materials)
-        {
-            mat.SetFloat("_DissolveAmount", 0f);
-        }
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float dissolveValue = Mathf.Lerp(1f, 0f, elapsed / duration);
+            float dissolveValue = Mathf.Lerp(0f, 1f, elapsed / duration);
             foreach (var mat in materials)
             {
                 mat.SetFloat("_DissolveAmount", dissolveValue);
