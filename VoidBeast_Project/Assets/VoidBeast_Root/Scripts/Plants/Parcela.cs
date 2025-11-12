@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Parcela : MonoBehaviour
@@ -11,6 +10,8 @@ public class Parcela : MonoBehaviour
     [SerializeField]Material plantedMaterial;
     [SerializeField]Material actualMaterial;
     [SerializeField] GameObject starsVFX;
+    [SerializeField] Shader desintegrate;
+    [SerializeField] GameObject collectVFX;
     private GameObject tempVFX;
     private Renderer render;
     private GameObject tempPlant;
@@ -26,6 +27,10 @@ public class Parcela : MonoBehaviour
     {
         return plant != null;
 
+    }
+    public bool PlantIsFullandDayCount()
+    {
+        return plant != null && dayCount == 1;
     }
     public void Planted()
     {
@@ -61,7 +66,17 @@ public class Parcela : MonoBehaviour
     {
         if (dayCount == 0)
         {
-            Destroy(tempPlant);
+            Renderer[] plantRenderer = tempPlant.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in plantRenderer)
+            {
+                for (int i = 0;i < renderer.materials.Length; i++)
+                {
+                    renderer.materials[i].shader = desintegrate;
+                    renderer.materials[i].SetFloat("_DissolveAmount", 0f);
+                }
+                StartCoroutine(AnimateDissolve(renderer.materials, 3f));
+            }
+
             MoneySystem.instance.AddMoney(plant.ganancias);
             plant = null;
             dayCount = 0;
@@ -84,5 +99,28 @@ public class Parcela : MonoBehaviour
     {
         nightCount--;
     }
+    private System.Collections.IEnumerator AnimateDissolve(Material[] materials, float duration)
+    {
+        yield return new WaitForSeconds(2f);
+        tempVFX = Instantiate(collectVFX, transform.position, Quaternion.LookRotation(Vector3.up));
+        Destroy(tempVFX, 3f);
+        float elapsed = 0f;
 
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float dissolveValue = Mathf.Lerp(0f, 1f, elapsed / duration);
+            foreach (var mat in materials)
+            {
+                mat.SetFloat("_DissolveAmount", dissolveValue);
+            }
+            yield return null;
+        }
+
+        foreach (var mat in materials)
+        {
+            mat.SetFloat("_DissolveAmount", 1f);
+        }
+        Destroy(tempPlant);
+    }
 }

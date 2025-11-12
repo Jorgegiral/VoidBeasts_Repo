@@ -27,6 +27,8 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] LocalizedString nightText;
     [SerializeField] Sprite[] DayNightSprites;
     public List<Parcela> parcelas = new List<Parcela>();
+    public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
+
     public DailyPowerUP dailyPowerUP;
     public BuildingHP buildHP;
     void Awake()
@@ -79,13 +81,17 @@ public class DayNightSystem : MonoBehaviour
             dailyPowerUP.StartPowerUp();
             buildHP.NewDayHealth();
             buildHP.imageHP.SetActive(false);
-
+            foreach (ParcelaOrder p in parcelasOrder)
+            {
+                p.PlayRecolect();
+            }
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
+
 
         }
         MusicManager.instance.PlayDaySong();
@@ -129,6 +135,13 @@ public class DayNightSystem : MonoBehaviour
         if (!parcelas.Contains(newParcela))
         {
             parcelas.Add(newParcela);
+        }
+    }
+    public void RegisterParcelaOrder(ParcelaOrder newParcela)
+    {
+        if (!parcelasOrder.Contains(newParcela))
+        {
+            parcelasOrder.Add(newParcela);
         }
     }
 }

@@ -19,7 +19,7 @@ public class SpawnEnemy : MonoBehaviour
     private bool spawning = true;
     private bool finishedNight = false;
     private Transform selectOne;
-
+    [SerializeField] GameObject warningVFX;
     void Update()
     {
 
