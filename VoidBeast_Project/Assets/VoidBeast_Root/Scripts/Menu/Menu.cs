@@ -22,7 +22,7 @@ public class Menu : MonoBehaviour
     private int idiomaActual = 0;
 
 
-    private void Awake()
+    private void Start()
     {
         logoImages.SetActive(true);
         settingsPanel.SetActive(false);
