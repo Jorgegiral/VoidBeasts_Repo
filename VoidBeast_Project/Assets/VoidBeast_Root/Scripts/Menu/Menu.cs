@@ -18,6 +18,10 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject keyboardControls;
     [SerializeField] GameObject ControllerControls;
 
+    [SerializeField] AudioClip ClickSound;
+    [SerializeField] AudioClip unClickSound;
+
+
     private bool idiomaActivado = false;
     private int idiomaActual = 0;
 
@@ -48,20 +52,28 @@ public class Menu : MonoBehaviour
     public void PlayButton()
     {
         Time.timeScale = 1f;
+        Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
         SceneManager.LoadScene(1);
+
     }
     public void OptionsButton()
     {
+        Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
+
         settingsPanel.SetActive(true);
         logoImages.SetActive(false);
     }
     public void CloseOptions()
     {
+        Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
+
         settingsPanel.SetActive(false);
         logoImages.SetActive(true);
     }
     public void ShowControls()
     {
+        Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
+
         controlsPanel.SetActive(true);
         keyboardControls.SetActive(true);
         ControllerControls.SetActive(false);
@@ -69,22 +81,30 @@ public class Menu : MonoBehaviour
     }
     public void CloseControls()
     {
+        Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
+
         controlsPanel.SetActive(false);
         generalSettings.SetActive(true);
     }
     public void ShowKeyboardControls()
     {
+        Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
+
         keyboardControls.SetActive(true);
         ControllerControls.SetActive(false);
     }
     public void ShowControllerControls()
     {
+        Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
+
         keyboardControls.SetActive(false);
         ControllerControls.SetActive(true);
     }
 
     public void CambiarIdiomas()
     {
+        Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
+
         if (idiomaActivado)
             return;
 
