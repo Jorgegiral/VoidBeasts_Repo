@@ -114,10 +114,17 @@ public class PlayerFunctions : MonoBehaviour
             seedOpened = false;
             PlayerStats.instance.blockMovement = false;
         }   
-        else 
+        else if(!PlayerStats.instance.menuOpened)
         {
             escapeMenu.SetActive(true);
-            PlayerStats.instance.blockMovement = false;
+            PlayerStats.instance.menuOpened = true;
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            escapeMenu.SetActive(false);
+            PlayerStats.instance.menuOpened = false;
+            Time.timeScale = 1f;
         }
     }
     public void EndShoot()

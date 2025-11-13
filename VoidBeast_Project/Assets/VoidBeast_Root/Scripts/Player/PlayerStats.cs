@@ -13,6 +13,7 @@ public class PlayerStats : MonoBehaviour
     public float deathTimer = 5f;
     public float gunDamage;
     public int enemykilledCount;
+    public bool menuOpened;
     public DailyPowerUpsSO powerUpChosen;
     private int selectedIndex = -1;
 

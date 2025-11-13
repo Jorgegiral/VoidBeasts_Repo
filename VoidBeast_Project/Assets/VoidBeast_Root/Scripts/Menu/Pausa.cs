@@ -56,6 +56,8 @@ public class Pausa : MonoBehaviour
 
         optionsPanel.SetActive(false);
         pauseMenu.SetActive(false);
+        PlayerStats.instance.menuOpened = false;
+        Time.timeScale = 1f;
     }
     public void CloseOptions()
     {
