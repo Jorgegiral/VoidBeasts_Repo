@@ -14,8 +14,9 @@ public class DailyPowerUpsSO : ScriptableObject
     Health,
     HealthRegen,
     GunDamage,
-    Speed,
-    DeathTimer,
+    PlayerSpeed,
+    Resurrection,
+    FireRate
     }
 public enum PowerUpRarity
 {
