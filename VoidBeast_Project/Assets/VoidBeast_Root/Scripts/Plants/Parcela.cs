@@ -15,6 +15,9 @@ public class Parcela : MonoBehaviour
     private GameObject tempVFX;
     private Renderer render;
     private GameObject tempPlant;
+    [SerializeField] AudioClip plantSound;
+    [SerializeField] AudioClip starSound;
+
     private void Start()
     {
         render = GetComponent<Renderer>();
@@ -36,6 +39,10 @@ public class Parcela : MonoBehaviour
     {
        render.material = plantedMaterial;
        tempVFX = Instantiate(starsVFX,transform.position,Quaternion.LookRotation(Vector3.up));
+        Settings.instance.PlaySoundFXClip(plantSound, transform, 1f);
+        Settings.instance.PlaySoundFXClip(starSound, transform, 1f);
+
+
         Destroy(tempVFX, 1);
        dayCount = plant.numDias;
        nightCount  = plant.numDias;

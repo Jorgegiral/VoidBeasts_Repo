@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DailyPowerUP : MonoBehaviour
@@ -12,10 +13,13 @@ public class DailyPowerUP : MonoBehaviour
     [SerializeField] TMP_Text[] rarityText;
     [SerializeField] TMP_Text[] upgradeText;
     [SerializeField] TMP_Text[] infoText;
-    [SerializeField] TMP_Text costMoneyText;
+    [SerializeField] TMP_Text[] costMoneyText;
     public DailyPowerUpsSO[] selectedPowerUps;
+    [SerializeField] AudioClip startPickSound;
+    [SerializeField] AudioClip clickSound;
     string upgradeName;
     private int selectedIndex = -1;
+    [SerializeField] GameObject firstSelectedMenu;
 
     int PowerUpCost = 10;
     
@@ -23,16 +27,26 @@ public class DailyPowerUP : MonoBehaviour
     {
         gameObject.SetActive(true);
         PickPowerUps();
-        PlayerStats.instance.blockMovement = true;
-        costMoneyText.text = PowerUpCost.ToString();
+        Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
+
+        //for? solo para 3
+        costMoneyText[0].text = PowerUpCost.ToString();
+        costMoneyText[1].text = PowerUpCost.ToString();
+        costMoneyText[2].text = PowerUpCost.ToString();
+        EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
+        Time.timeScale = 0f;
+
     }
     public void ClosePowerUp()
     {
         gameObject.SetActive(false);
-        PlayerStats.instance.blockMovement = false;
+        Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
+        Time.timeScale = 1f;
+
 
     }
-    public DailyPowerUpsSO OnClickPowerUp()
+
+    public DailyPowerUpsSO SendClickPowerUpInfo()
     {
         if (selectedIndex < 0)
         {
@@ -44,6 +58,9 @@ public class DailyPowerUP : MonoBehaviour
             DailyPowerUpsSO chosen = selectedPowerUps[selectedIndex];
             PlayerStats.instance.powerUpChosen = chosen;
             PlayerStats.instance.ApplyStats();
+            Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
+            gameObject.SetActive(false);
+
             return chosen;
         }
         else
@@ -54,9 +71,8 @@ public class DailyPowerUP : MonoBehaviour
     public void SelectPowerUp(int index)
     {
         selectedIndex = index;
-        OnClickPowerUp();
-        PlayerStats.instance.blockMovement = false;
-        gameObject.SetActive(false);
+        Time.timeScale = 1f;
+        SendClickPowerUpInfo();
     }
     private void PickPowerUps()
     {

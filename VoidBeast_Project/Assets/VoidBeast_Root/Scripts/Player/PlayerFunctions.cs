@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -17,12 +18,10 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] RotateToPlayer rotateToPlayer;
     [SerializeField] GameObject escapeMenu;
     [SerializeField] AudioClip shootSound;
-    bool menuOpened = false;
     bool seedOpened = false;
     LayerMask layerInteractable;
     LayerMask layerPlant;
-    private bool isShooting = false;
-
+    private bool canShoot = true;    
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
     [SerializeField] GameObject gun; //Jorge
@@ -44,13 +43,14 @@ public class PlayerFunctions : MonoBehaviour
 
     void Shoot()
     {
+        if (!canShoot) return;
         rotateToPlayer.RotateOnShoot();
-        isShooting = true; 
         //gun.SetActive(true); //Jorge
         anim.SetTrigger("Shoot"); //Jorge
         GameObject bulletVFX;
         bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, transform.rotation);
-
+        Settings.instance.PlaySoundFXClip(shootSound, transform, 1f);
+        StartCoroutine(ShootCooldown());
         //StartCoroutine(GunDelay());
     }
     public void GunActived()
@@ -75,7 +75,7 @@ public class PlayerFunctions : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 5, layerInteractable))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerInteractable))
         {
             if (DayNightSystem.Instance != null && DayNightSystem.Instance.isDay)
             {
@@ -83,7 +83,7 @@ public class PlayerFunctions : MonoBehaviour
             }
         }
         if (DayNightSystem.Instance.isDay) { 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 6, layerPlant))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerPlant))
         {
             ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
             seedMenu.SetActive(true);
@@ -94,11 +94,9 @@ public class PlayerFunctions : MonoBehaviour
     public void OnShoot(InputAction.CallbackContext context)
     {
 
-        if (isShooting) return;
         if (PlayerStats.instance.isDeath) return;
 
         Shoot();
-        Settings.instance.PlaySoundFXClip(shootSound,transform, 1f);
     }
     public void SwitchMode(InputAction.CallbackContext context)
     {
@@ -114,24 +112,25 @@ public class PlayerFunctions : MonoBehaviour
             seedMenu.SetActive(false);
             seedOpened = false;
             PlayerStats.instance.blockMovement = false;
-        } 
-        else if (menuOpened)
-        {
-            escapeMenu.SetActive(false);
-            menuOpened = false;
-            PlayerStats.instance.blockMovement = false;
-
-        }
-        else 
+        }   
+        else if(!PlayerStats.instance.menuOpened)
         {
             escapeMenu.SetActive(true);
-            menuOpened = true;
-            PlayerStats.instance.blockMovement = false;
+            PlayerStats.instance.menuOpened = true;
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            escapeMenu.SetActive(false);
+            PlayerStats.instance.menuOpened = false;
+            Time.timeScale = 1f;
         }
     }
-    public void EndShoot()
+    IEnumerator ShootCooldown()
     {
-        isShooting = false;
+        canShoot = false;
+        yield return new WaitForSeconds(PlayerStats.instance.gunAttackSpeed);
+        canShoot = true;
     }
 }
 

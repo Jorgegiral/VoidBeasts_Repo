@@ -77,6 +77,7 @@ public class DayNightSystem : MonoBehaviour
             DayNightIcons[1].sprite = DayNightSprites[0];
             DayNightIcons[2].sprite = DayNightSprites[3];
             ParcelaManager.instance.freeSeed = true;
+            ParcelaManager.instance.freeSeedText.SetActive(true);
             MoneySystem.instance.UpdateMoneyText();
             dailyPowerUP.StartPowerUp();
             buildHP.NewDayHealth();

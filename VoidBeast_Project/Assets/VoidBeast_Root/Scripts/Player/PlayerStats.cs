@@ -12,7 +12,9 @@ public class PlayerStats : MonoBehaviour
     public float healthRegenTick;
     public float deathTimer = 5f;
     public float gunDamage;
+    public float gunAttackSpeed = 2f;
     public int enemykilledCount;
+    public bool menuOpened;
     public DailyPowerUpsSO powerUpChosen;
     private int selectedIndex = -1;
 
@@ -36,6 +38,14 @@ public class PlayerStats : MonoBehaviour
                 deathTimer = 0;
             }       
         }
+        if (powerUpChosen.type.ToString() == "Resurrection")
+        {
+            deathTimer += powerUpChosen.value;
+            if (deathTimer <= 0)
+            {
+                deathTimer = 0;
+            }
+        }
         if (powerUpChosen.type.ToString() == "Health")
         {
             playerMaxHealth += powerUpChosen.value;
@@ -45,9 +55,17 @@ public class PlayerStats : MonoBehaviour
         {
             healthRegen += powerUpChosen.value;
         }
-        if (powerUpChosen.type.ToString() == "Speed")
+        if (powerUpChosen.type.ToString() == "PlayerSpeed")
         {
             playerSpeed += powerUpChosen.value;
+        }
+        if (powerUpChosen.type.ToString() == "FireRate")
+        {
+            gunAttackSpeed += powerUpChosen.value;
+            if (gunAttackSpeed <= 0)
+            {
+                gunAttackSpeed = 0;
+            }
         }
         powerUpChosen = null;
     }

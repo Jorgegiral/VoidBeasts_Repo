@@ -9,27 +9,34 @@ public class Selection : MonoBehaviour
 
     void Update()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, layerPlant | layerInteractable))
+        if (DayNightSystem.Instance.isDay)
         {
-            Transform selectionChild = hit.collider.transform.Find("Selection");
-
-            if (selectionChild != null)
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, layerPlant | layerInteractable))
             {
-                if (lastSelected != null && lastSelected != selectionChild.gameObject)
+                Transform selectionChild = hit.collider.transform.Find("Selection");
+
+                if (selectionChild != null)
+                {
+                    if (lastSelected != null && lastSelected != selectionChild.gameObject)
+                        lastSelected.SetActive(false);
+
+                    selectionChild.gameObject.SetActive(true);
+                    lastSelected = selectionChild.gameObject;
+                }
+            }
+            else
+            {
+                if (lastSelected != null)
+                {
                     lastSelected.SetActive(false);
+                    lastSelected = null;
+                }
 
-                selectionChild.gameObject.SetActive(true);
-                lastSelected = selectionChild.gameObject;
             }
+
         }
-        else
-        {
-            if (lastSelected != null)
-            {
-                lastSelected.SetActive(false);
-                lastSelected = null;
-            }
-        }
+
+
     }
 }
