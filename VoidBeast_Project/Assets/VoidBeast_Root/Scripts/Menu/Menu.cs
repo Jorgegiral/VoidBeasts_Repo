@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Localization.Settings;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class Menu : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class Menu : MonoBehaviour
     [SerializeField] AudioClip unClickSound;
     private float sfxVolume;
     private float musicVolume;
+    [SerializeField] GameObject firstSelectedMenu;
+    [SerializeField] GameObject firstSelectedControls;
+    [SerializeField] GameObject firstSelectedGame;
+
 
     private bool idiomaActivado = false;
     private int idiomaActual = 0;
@@ -47,6 +52,8 @@ public class Menu : MonoBehaviour
         int Id = PlayerPrefs.GetInt("LocaleKey", 0);
         musicSlider.value = Settings.instance.GetMusicVolume();
         SFXSlider.value = Settings.instance.GetSFXVolume();
+        StartCoroutine(SelectFirstButtonDelayed());
+
     }
 
     public void ExitButton()
@@ -66,6 +73,7 @@ public class Menu : MonoBehaviour
 
         settingsPanel.SetActive(true);
         logoImages.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
     }
     public void CloseOptions()
     {
@@ -73,6 +81,8 @@ public class Menu : MonoBehaviour
 
         settingsPanel.SetActive(false);
         logoImages.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstSelectedGame);
+
     }
     public void ShowControls()
     {
@@ -82,6 +92,8 @@ public class Menu : MonoBehaviour
         keyboardControls.SetActive(true);
         ControllerControls.SetActive(false);
         generalSettings.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(firstSelectedControls);
+
     }
     public void CloseControls()
     {
@@ -89,6 +101,8 @@ public class Menu : MonoBehaviour
 
         controlsPanel.SetActive(false);
         generalSettings.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
+
     }
     public void ShowKeyboardControls()
     {
@@ -136,5 +150,11 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetInt("LocaleKey",localId);
         PlayerPrefs.Save();
         idiomaActivado = false;
+    }
+    private IEnumerator SelectFirstButtonDelayed()
+    {
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(firstSelectedGame);
     }
 }

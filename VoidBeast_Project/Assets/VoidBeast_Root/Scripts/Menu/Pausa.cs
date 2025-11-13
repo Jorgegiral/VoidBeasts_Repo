@@ -17,6 +17,11 @@ public class Pausa : MonoBehaviour
     [SerializeField] Slider musicSlider;
     [SerializeField] AudioClip ClickSound;
     [SerializeField] AudioClip unClickSound;
+    [SerializeField] GameObject firstSelectedOnOppen;
+    [SerializeField] GameObject firstSelectedOnMenu;
+    [SerializeField] GameObject firstSelectedOnControls;
+
+
     float sfxVolume;
     float musicVolume;
 

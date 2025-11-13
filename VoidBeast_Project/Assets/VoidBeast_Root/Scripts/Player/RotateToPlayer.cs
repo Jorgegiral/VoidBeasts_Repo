@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Collections;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Apple;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class RotateToPlayer : MonoBehaviour
@@ -11,9 +13,8 @@ public class RotateToPlayer : MonoBehaviour
     private Vector3 shootDirection;
     private Quaternion rotation;
     private LayerMask layerGround;
-    [SerializeField] private float rotationSpeed = 5f;
-    private Coroutine rotateCoroutine;
     private Vector3 lastHitPoint;
+    [SerializeField] private InputActionReference lookAction; 
 
     private void Start()
     {
@@ -22,16 +23,31 @@ public class RotateToPlayer : MonoBehaviour
     }
     public void RotateOnShoot()
     {
-        Vector3 mousePosition = Input.mousePosition;
-        Ray ray = Camera.main.ScreenPointToRay(mousePosition); 
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
+        Vector2 stickInput = lookAction.action.ReadValue<Vector2>();
+        bool usingGamepad = Gamepad.current != null && stickInput.sqrMagnitude > 0.1f;
+        if (usingGamepad)
         {
-            Debug.Log("giro");
-            Vector3 lookDirection = (hit.point - transform.position).normalized;
-            lookDirection.y = 0f; 
-            transform.rotation = Quaternion.LookRotation(lookDirection);
+            Vector3 lookDir = new Vector3(stickInput.x, 0f, stickInput.y);
+
+            if (lookDir.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+                transform.rotation = targetRotation;
+            }
+        }
+        else
+        {
+            Vector3 mousePosition = Input.mousePosition;
+            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
+            {
+                Debug.Log("giro");
+                Vector3 lookDirection = (hit.point - transform.position).normalized;
+                lookDirection.y = 0f;
+                transform.rotation = Quaternion.LookRotation(lookDirection);
+            }
         }
     }
 

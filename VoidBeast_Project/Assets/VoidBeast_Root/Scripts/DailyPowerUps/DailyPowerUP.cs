@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DailyPowerUP : MonoBehaviour
@@ -18,6 +19,7 @@ public class DailyPowerUP : MonoBehaviour
     [SerializeField] AudioClip clickSound;
     string upgradeName;
     private int selectedIndex = -1;
+    [SerializeField] GameObject firstSelectedMenu;
 
     int PowerUpCost = 10;
     
@@ -29,6 +31,8 @@ public class DailyPowerUP : MonoBehaviour
 
         PlayerStats.instance.blockMovement = true;
         costMoneyText.text = PowerUpCost.ToString();
+        EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
+
     }
     public void ClosePowerUp()
     {
