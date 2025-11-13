@@ -17,10 +17,12 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject generalSettings;
     [SerializeField] GameObject keyboardControls;
     [SerializeField] GameObject ControllerControls;
-
+    [SerializeField] Slider SFXSlider;
+    [SerializeField] Slider musicSlider;
     [SerializeField] AudioClip ClickSound;
     [SerializeField] AudioClip unClickSound;
-
+    private float sfxVolume;
+    private float musicVolume;
 
     private bool idiomaActivado = false;
     private int idiomaActual = 0;
@@ -43,6 +45,8 @@ public class Menu : MonoBehaviour
 
         }
         int Id = PlayerPrefs.GetInt("LocaleKey", 0);
+        musicSlider.value = Settings.instance.GetMusicVolume();
+        SFXSlider.value = Settings.instance.GetSFXVolume();
     }
 
     public void ExitButton()
@@ -100,7 +104,16 @@ public class Menu : MonoBehaviour
         keyboardControls.SetActive(false);
         ControllerControls.SetActive(true);
     }
-
+    public void SetSFX()
+    {
+        sfxVolume = SFXSlider.value;
+        Settings.instance.SetSFXVolume(sfxVolume);
+    }
+    public void SetMusic()
+    {
+        musicVolume = musicSlider.value;
+        Settings.instance.SetMusicVolume(musicVolume);
+    }
     public void CambiarIdiomas()
     {
         Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);

@@ -13,6 +13,8 @@ public class BuildingHP : MonoBehaviour
     [SerializeField] public GameObject imageHP;
     private List<Vector3> attackPoints = new List<Vector3>();
     private List<bool> attackPointOccupied = new List<bool>();
+    [SerializeField] AudioClip deathSound;
+
     private void Awake()
     {
         deathCanvas.gameObject.SetActive(false);
@@ -24,6 +26,7 @@ public class BuildingHP : MonoBehaviour
     public void NewDayHealth()
     {
         currentBuildHP = buildHP;
+        UpdateHP();
     }
     public void TakeDamage(float damage)
     {
@@ -31,7 +34,10 @@ public class BuildingHP : MonoBehaviour
         UpdateHP();
         if (currentBuildHP <= 0 )
         {
+            Settings.instance.PlaySoundFXClip(deathSound, transform, 1f);
+
             deathCanvas.gameObject.SetActive(true);
+
             Time.timeScale = 0f;
         }
 

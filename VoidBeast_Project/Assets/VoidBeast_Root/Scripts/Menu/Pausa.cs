@@ -2,38 +2,40 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Localization.Settings;
+using System.Collections;
 public class Pausa : MonoBehaviour
 {
+    [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject pausePanel;
+    [SerializeField] GameObject optionsPanel;
     [SerializeField] GameObject controlsPanel;
     [SerializeField] GameObject generalSettings;
     [SerializeField] GameObject keyboardControls;
     [SerializeField] GameObject ControllerControls;
-
+    [SerializeField] Slider SFXSlider;
+    [SerializeField] Slider musicSlider;
     [SerializeField] AudioClip ClickSound;
     [SerializeField] AudioClip unClickSound;
-
+    float sfxVolume;
+    float musicVolume;
 
     private bool idiomaActivado = false;
     private int idiomaActual = 0;
 
 
-    public void ExitButton()
+    private void Start()
     {
-        generalSettings.SetActive(false);
-        Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
-
+        musicSlider.value = Settings.instance.GetMusicVolume();
+        SFXSlider.value = Settings.instance.GetSFXVolume();
     }
     public void SettingsButton()
     {
         Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
-        generalSettings.SetActive(true);
-
-
+        optionsPanel.SetActive(true);
+        pausePanel.SetActive(false);
 
     }
-
-
     public void ShowControls()
     {
         Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
@@ -42,6 +44,20 @@ public class Pausa : MonoBehaviour
         keyboardControls.SetActive(true);
         ControllerControls.SetActive(false);
         generalSettings.SetActive(false);
+    }
+    public void BackToGame()
+    {
+        Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
+
+        optionsPanel.SetActive(false);
+        pauseMenu.SetActive(false);
+    }
+    public void CloseOptions()
+    {
+        Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
+
+        optionsPanel.SetActive(false);
+        pausePanel.SetActive(true);
     }
     public void CloseControls()
     {
@@ -69,5 +85,38 @@ public class Pausa : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }
+    public void CambiarIdiomas()
+    {
+        Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
 
+        if (idiomaActivado)
+            return;
+
+        idiomaActual++;
+
+        if (idiomaActual >= LocalizationSettings.AvailableLocales.Locales.Count)
+            idiomaActual = 0;
+
+        StartCoroutine(SetIdLocal(idiomaActual));
+    }
+    public void SetSFX()
+    {
+        sfxVolume = SFXSlider.value;
+        Settings.instance.SetSFXVolume(sfxVolume);
+    }
+    public void SetMusic()
+    {
+        musicVolume = musicSlider.value;
+        Settings.instance.SetMusicVolume(musicVolume);
+    }
+    private IEnumerator SetIdLocal(int localId)
+    {
+        idiomaActivado = true;
+        yield return LocalizationSettings.InitializationOperation;
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[localId];
+        PlayerPrefs.SetInt("LocaleKey", localId);
+        PlayerPrefs.Save();
+        idiomaActivado = false;
+    }
+   
 }

@@ -14,6 +14,8 @@ public class DailyPowerUP : MonoBehaviour
     [SerializeField] TMP_Text[] infoText;
     [SerializeField] TMP_Text costMoneyText;
     public DailyPowerUpsSO[] selectedPowerUps;
+    [SerializeField] AudioClip startPickSound;
+    [SerializeField] AudioClip clickSound;
     string upgradeName;
     private int selectedIndex = -1;
 
@@ -23,6 +25,8 @@ public class DailyPowerUP : MonoBehaviour
     {
         gameObject.SetActive(true);
         PickPowerUps();
+        Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
+
         PlayerStats.instance.blockMovement = true;
         costMoneyText.text = PowerUpCost.ToString();
     }
@@ -30,6 +34,7 @@ public class DailyPowerUP : MonoBehaviour
     {
         gameObject.SetActive(false);
         PlayerStats.instance.blockMovement = false;
+        Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
 
     }
     public DailyPowerUpsSO OnClickPowerUp()
@@ -44,6 +49,8 @@ public class DailyPowerUP : MonoBehaviour
             DailyPowerUpsSO chosen = selectedPowerUps[selectedIndex];
             PlayerStats.instance.powerUpChosen = chosen;
             PlayerStats.instance.ApplyStats();
+            Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
+
             return chosen;
         }
         else

@@ -14,6 +14,7 @@ public class PlayerHP : MonoBehaviour
     float deathCountdown = 5f;
     [SerializeField] TMP_Text deathTimerText;
     [SerializeField] Image blackAndWhiteImage;
+    [SerializeField] AudioClip deathSound;
 
     void Start()
     {
@@ -39,6 +40,7 @@ public class PlayerHP : MonoBehaviour
 
         if (PlayerStats.instance.playerCurrentHealth <= 0)
             {
+            Settings.instance.PlaySoundFXClip(deathSound, transform, 1f);
             StartDeathTimer();
             return;
         }

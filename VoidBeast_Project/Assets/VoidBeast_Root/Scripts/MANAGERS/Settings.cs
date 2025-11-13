@@ -8,6 +8,8 @@ public class Settings : MonoBehaviour
     [SerializeField] AudioSource soundFXObject;
     [SerializeField] AudioMixer audioMixer;
     private AudioSource uniqueAudioSource;
+    [SerializeField] private float sfxVolume = 1f;
+    [SerializeField] private float musicVolume= 1f;
 
     void Awake()
     {
@@ -65,12 +67,21 @@ public class Settings : MonoBehaviour
     }
     public void SetMusicVolume(float volume)
     {
+        musicVolume = volume;
         audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20f);
     }
     public void SetSFXVolume(float volume)
     {
+        sfxVolume = volume;
         audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20f);
 
     }
-
+    public float GetSFXVolume()
+    {
+        return sfxVolume;
+    }
+    public float GetMusicVolume()
+    {
+        return musicVolume;
+    }
 }
