@@ -13,7 +13,7 @@ public class SpawnEnemy : MonoBehaviour
     [SerializeField] Transform MainBuild;
     [SerializeField] List<Transform> spawnersTransform = new List<Transform>();
     private int enemyCount;
-    private float waveCD = 5f;
+    private float waveCD = 2f;
     private float waveTimer;
     private int enemyRemain;
     private bool spawning = true;
@@ -71,7 +71,7 @@ public class SpawnEnemy : MonoBehaviour
     {
 
         if (enemyRemain > 0) {
-            int enemiesThisWave = Random.Range(1, enemyRemain);
+            int enemiesThisWave = Random.Range(1, enemyRemain/4);
             enemyRemain -= enemiesThisWave;
             for (int i = 0; i < enemiesThisWave; i++)
         {
@@ -90,7 +90,7 @@ public class SpawnEnemy : MonoBehaviour
     {
         int night = DayNightSystem.Instance.nightNumber;
 
-        float chancePuñetero = 0.2f; 
+        float chancePuñetero = 0.35f; 
 
     
         float roll = Random.value; 

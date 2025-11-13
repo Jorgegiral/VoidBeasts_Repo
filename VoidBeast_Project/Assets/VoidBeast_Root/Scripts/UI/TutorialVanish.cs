@@ -1,16 +1,21 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class TutorialVanish : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private float vanishTime = 5f;
+    [SerializeField] GameObject freeSeedText;
     void Start()
     {
-        
+        gameObject.SetActive(true);
+        StartCoroutine(VanishAfterTime());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator VanishAfterTime()
     {
-        
+        yield return new WaitForSeconds(vanishTime);
+        gameObject.SetActive(false);
+        freeSeedText.gameObject.SetActive(true);
     }
 }
