@@ -113,6 +113,7 @@ public class DayNightSystem : MonoBehaviour
             DayNightIcons[1].sprite = DayNightSprites[1];
             DayNightIcons[2].sprite = DayNightSprites[2];
             buildHP.imageHP.SetActive(true);
+            ParcelaManager.instance.freeSeedText.SetActive(false);
 
 
             foreach (Parcela p in parcelas)
