@@ -30,12 +30,6 @@ public class ParcelaManager : MonoBehaviour
                 selectedParcela.parcelas[i].plant = plantToBuy;
                 selectedParcela.parcelas[i].PlantIsFull();
                 selectedParcela.parcelas[i].Planted();
-                if (freeSeed)
-                {
-                    freeSeed = false;
-                    freeSeedText.SetActive(false);
-                }
-               
                 break;
             }
         }
@@ -48,7 +42,11 @@ public class ParcelaManager : MonoBehaviour
                 selectedParcela.parcelas[i].plant = plantToBuy;
                 selectedParcela.parcelas[i].PlantIsFull();
                 selectedParcela.parcelas[i].Planted();
-                if (freeSeed) freeSeed = false;
+                if (freeSeed)
+                {
+                    freeSeed = false;
+                    freeSeedText.SetActive(false);
+                }
                 break;
 
             }

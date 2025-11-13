@@ -12,7 +12,7 @@ public class PlayerStats : MonoBehaviour
     public float healthRegenTick;
     public float deathTimer = 5f;
     public float gunDamage;
-    public float gunAttackSpeed;
+    public float gunAttackSpeed = 2f;
     public int enemykilledCount;
     public bool menuOpened;
     public DailyPowerUpsSO powerUpChosen;
