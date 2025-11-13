@@ -90,7 +90,7 @@ public class PlayerFunctions : MonoBehaviour
         {
             ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
             seedMenu.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(firstSelectedOnSeed);
+                StartCoroutine(SelectFirstButtonDelayed());
 
                 seedOpened = true;
         }
@@ -138,6 +138,12 @@ public class PlayerFunctions : MonoBehaviour
         canShoot = false;
         yield return new WaitForSeconds(PlayerStats.instance.gunAttackSpeed);
         canShoot = true;
+    }
+    private IEnumerator SelectFirstButtonDelayed()
+    {
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(firstSelectedOnSeed);
     }
 }
 
