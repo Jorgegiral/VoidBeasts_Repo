@@ -9,6 +9,7 @@ public class Selection : MonoBehaviour
 
     void Update()
     {
+        if (DayNightSystem.Instance.isDay) {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, layerPlant | layerInteractable))
         {
@@ -30,6 +31,7 @@ public class Selection : MonoBehaviour
                 lastSelected.SetActive(false);
                 lastSelected = null;
             }
+        }
         }
     }
 }
