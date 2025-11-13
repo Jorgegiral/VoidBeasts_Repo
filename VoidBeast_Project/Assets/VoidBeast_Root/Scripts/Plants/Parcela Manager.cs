@@ -21,7 +21,6 @@ public class ParcelaManager : MonoBehaviour
                 return;
 
             MoneySystem.instance.BuyMoney(plantToBuy.precio);
-            Debug.Log("Comprado");
 
             for (int i = 0; i < selectedParcela.parcelas.Length; i++)
             {

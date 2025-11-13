@@ -17,7 +17,6 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] RotateToPlayer rotateToPlayer;
     [SerializeField] GameObject escapeMenu;
     [SerializeField] AudioClip shootSound;
-    bool menuOpened = false;
     bool seedOpened = false;
     LayerMask layerInteractable;
     LayerMask layerPlant;
@@ -114,18 +113,10 @@ public class PlayerFunctions : MonoBehaviour
             seedMenu.SetActive(false);
             seedOpened = false;
             PlayerStats.instance.blockMovement = false;
-        } 
-        else if (menuOpened)
-        {
-            escapeMenu.SetActive(false);
-            menuOpened = false;
-            PlayerStats.instance.blockMovement = false;
-
-        }
+        }   
         else 
         {
             escapeMenu.SetActive(true);
-            menuOpened = true;
             PlayerStats.instance.blockMovement = false;
         }
     }
