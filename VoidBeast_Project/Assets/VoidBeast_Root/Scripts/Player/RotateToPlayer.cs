@@ -42,7 +42,6 @@ public class RotateToPlayer : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
             {
-                Debug.Log("giro");
                 Vector3 lookDirection = (hit.point - transform.position).normalized;
                 lookDirection.y = 0f;
                 transform.rotation = Quaternion.LookRotation(lookDirection);

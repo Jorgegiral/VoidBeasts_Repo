@@ -6,14 +6,12 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] GameObject hitVFX;
     [SerializeField] float shootSpeed = 2f;
-    [SerializeField] Collider collider;
+    [SerializeField] Collider bulletCollider;
 
-    private Vector3 moveDirection;
 
     private void Awake()
     {
-        collider = GetComponent<Collider>();
-        moveDirection.y = 0f;
+        bulletCollider = GetComponent<Collider>();
         Destroy(gameObject, 5f);
 
     }
@@ -41,7 +39,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            Physics.IgnoreCollision(other.collider, collider);
+            Physics.IgnoreCollision(other.collider, bulletCollider);
         }
     }
 }

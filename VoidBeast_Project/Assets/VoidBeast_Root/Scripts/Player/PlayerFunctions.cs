@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] GameObject seedMenu;
     [SerializeField] RotateToPlayer rotateToPlayer;
     [SerializeField] GameObject escapeMenu;
+
     [SerializeField] AudioClip shootSound;
     bool seedOpened = false;
     LayerMask layerInteractable;
@@ -26,7 +28,8 @@ public class PlayerFunctions : MonoBehaviour
     private Animator anim; //Jorge
     [SerializeField] GameObject gun; //Jorge
     //[SerializeField] float gunTime = 0.5f;
-
+    [SerializeField] GameObject firstSelectedOnPause;
+    [SerializeField] GameObject firstSelectedOnSeed;
     [SerializeField] bool actionMode = true;
 
 
@@ -87,6 +90,8 @@ public class PlayerFunctions : MonoBehaviour
         {
             ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
             seedMenu.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(firstSelectedOnSeed);
+
                 seedOpened = true;
         }
     }
@@ -118,6 +123,8 @@ public class PlayerFunctions : MonoBehaviour
             escapeMenu.SetActive(true);
             PlayerStats.instance.menuOpened = true;
             Time.timeScale = 0f;
+            EventSystem.current.SetSelectedGameObject(firstSelectedOnPause);
+
         }
         else
         {

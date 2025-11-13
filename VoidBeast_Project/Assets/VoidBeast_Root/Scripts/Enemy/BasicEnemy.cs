@@ -13,8 +13,7 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] private float maxSpeed = 2f;
     private BuildingHP targetBuilding;
     public float raycastHeightOffset = 1f;
-    [SerializeField] private float retargetInterval = 5f; 
-    private float retargetTimer = 0f;
+
 
     [Header("Detection prio")]
     [SerializeField] float attackRange;

@@ -11,7 +11,13 @@ public class TutorialVanish : MonoBehaviour
         gameObject.SetActive(true);
         StartCoroutine(VanishAfterTime());
     }
-
+    private void Update()
+    {
+        if (PlayerStats.instance.menuOpened)
+        {
+            gameObject.SetActive (false);
+        }
+    }
     private IEnumerator VanishAfterTime()
     {
         yield return new WaitForSeconds(vanishTime);
