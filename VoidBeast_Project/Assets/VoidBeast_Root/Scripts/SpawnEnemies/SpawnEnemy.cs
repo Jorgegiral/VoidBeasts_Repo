@@ -59,7 +59,7 @@ public class SpawnEnemy : MonoBehaviour
         {
             enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
             enemyText.text = enemyCount.ToString();
-            if (enemyCount == 0 && finishedNight)
+            if (enemyRemain == 0 && enemyCount == 0 && finishedNight)
             {
                 DayNightSystem.Instance.ToDay();
                 finishedNight = false;
