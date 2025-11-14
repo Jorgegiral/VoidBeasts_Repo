@@ -29,6 +29,9 @@ public class DayNightSystem : MonoBehaviour
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
 
+    //provisional
+    [SerializeField]public  GameObject selection;
+
     public DailyPowerUP dailyPowerUP;
     public BuildingHP buildHP;
     void Awake()
