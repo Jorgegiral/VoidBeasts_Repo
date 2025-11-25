@@ -48,8 +48,9 @@ public class PlayerController : MonoBehaviour
         {
             Settings.instance.StopSingleSoundFX();
         }
+        Settings.instance.PlayUniqueSoundSFXClip(moveSound, transform, 1f);
 
-            anim.SetBool("isRunning", isMoving); //Jorge
+        anim.SetBool("isRunning", isMoving); //Jorge
 
 
     }
@@ -59,7 +60,6 @@ public class PlayerController : MonoBehaviour
         if (PlayerStats.instance.blockMovement) //Jorge
 
         return;
-        Settings.instance.PlayUniqueSoundSFXClip(moveSound, transform, 1f);
         moveInput = context.ReadValue<Vector2>();
         
     }

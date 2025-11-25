@@ -36,7 +36,7 @@ public class Selection : MonoBehaviour
             }
 
         }
-
+        if (DayNightSystem.Instance.isNight) DayNightSystem.Instance.selection.SetActive(false);
 
     }
 }

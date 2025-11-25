@@ -1,16 +1,14 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SeedShop : MonoBehaviour
 {
-    [SerializeField] GameObject firstSelectedMenu;
-    private void Start()
-    {
-        EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
 
-    }
     void Update()
     {
+        if(ParcelaManager.instance.freeSeed) ParcelaManager.instance.freeSeedText.SetActive(true);
         PlayerStats.instance.blockMovement = true;
     }
+
 }

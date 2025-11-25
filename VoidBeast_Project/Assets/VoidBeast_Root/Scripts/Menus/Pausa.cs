@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Settings;
 using System.Collections;
+using UnityEngine.EventSystems;
 public class Pausa : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
@@ -17,7 +17,7 @@ public class Pausa : MonoBehaviour
     [SerializeField] Slider musicSlider;
     [SerializeField] AudioClip ClickSound;
     [SerializeField] AudioClip unClickSound;
-    [SerializeField] GameObject firstSelectedOnOppen;
+    [SerializeField] GameObject firstSelectedOnOpen;
     [SerializeField] GameObject firstSelectedOnMenu;
     [SerializeField] GameObject firstSelectedOnControls;
 
@@ -33,12 +33,14 @@ public class Pausa : MonoBehaviour
     {
         musicSlider.value = Settings.instance.GetMusicVolume();
         SFXSlider.value = Settings.instance.GetSFXVolume();
+
     }
     public void SettingsButton()
     {
         Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
         optionsPanel.SetActive(true);
         pausePanel.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(firstSelectedOnMenu);
 
     }
     public void ShowControls()
@@ -49,6 +51,8 @@ public class Pausa : MonoBehaviour
         keyboardControls.SetActive(true);
         ControllerControls.SetActive(false);
         generalSettings.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(firstSelectedOnControls);
+
     }
     public void BackToGame()
     {
@@ -65,6 +69,8 @@ public class Pausa : MonoBehaviour
 
         optionsPanel.SetActive(false);
         pausePanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstSelectedOnOpen);
+
     }
     public void CloseControls()
     {
@@ -72,6 +78,8 @@ public class Pausa : MonoBehaviour
 
         controlsPanel.SetActive(false);
         generalSettings.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstSelectedOnMenu);
+
     }
     public void ShowKeyboardControls()
     {
