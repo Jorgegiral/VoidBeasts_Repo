@@ -29,6 +29,9 @@ public class DayNightSystem : MonoBehaviour
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
 
+    //provisional
+    [SerializeField]public  GameObject selection;
+
     public DailyPowerUP dailyPowerUP;
     public BuildingHP buildHP;
     void Awake()
@@ -113,6 +116,7 @@ public class DayNightSystem : MonoBehaviour
             DayNightIcons[1].sprite = DayNightSprites[1];
             DayNightIcons[2].sprite = DayNightSprites[2];
             buildHP.imageHP.SetActive(true);
+            ParcelaManager.instance.freeSeedText.SetActive(false);
 
 
             foreach (Parcela p in parcelas)

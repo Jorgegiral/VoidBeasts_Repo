@@ -163,6 +163,8 @@ namespace Dan.Main
         /// <param name="errorCallback">Returns an error message if the request failed.</param>
         public static void UploadNewEntry(string publicKey, string username, int score, string extra, Action<bool> callback = null, Action<string> errorCallback = null)
         {
+            UserGuid = Guid.NewGuid().ToString();
+
             if (string.IsNullOrEmpty(publicKey))
             {
                 LogError("Public key cannot be null or empty!");
