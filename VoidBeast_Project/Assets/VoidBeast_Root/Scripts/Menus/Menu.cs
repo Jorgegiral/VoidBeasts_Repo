@@ -9,21 +9,31 @@ using UnityEngine.EventSystems;
 
 public class Menu : MonoBehaviour
 {
+    [Header("Background References")]
     [SerializeField] Image backgroundImage;
     [SerializeField] Sprite backgroundDay;
     [SerializeField] Sprite backgroundNight;
     [SerializeField] GameObject logoImages;
+
+    [Header("Panels References")]
     [SerializeField] GameObject settingsPanel;
     [SerializeField] GameObject controlsPanel;
     [SerializeField] GameObject generalSettings;
     [SerializeField] GameObject keyboardControls;
     [SerializeField] GameObject ControllerControls;
+    [SerializeField] GameObject leaderboardPanel;
+
+    [Header("Slider References")]
     [SerializeField] Slider SFXSlider;
     [SerializeField] Slider musicSlider;
+
+    [Header("SFX References")]
     [SerializeField] AudioClip ClickSound;
     [SerializeField] AudioClip unClickSound;
     private float sfxVolume;
     private float musicVolume;
+
+    [Header("Controller References")]
     [SerializeField] GameObject firstSelectedMenu;
     [SerializeField] GameObject firstSelectedControls;
     [SerializeField] GameObject firstSelectedGame;
@@ -156,6 +166,14 @@ public class Menu : MonoBehaviour
         yield return null;
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(firstSelectedGame);
+    }
+    public void OpenLeaderboard()
+    {
+        leaderboardPanel.SetActive(true);
+    }
+    public void CloseLeaderboard()
+    {
+        leaderboardPanel.SetActive(false);
     }
     //QUITAR LUEGO
 
