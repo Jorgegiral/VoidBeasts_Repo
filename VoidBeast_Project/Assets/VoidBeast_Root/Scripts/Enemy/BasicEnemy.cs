@@ -8,23 +8,30 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] Transform target;
     [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
+    [SerializeField] float raycastHeightOffset = 1f;
+
+
+
+    [Header("Enemy Parameters")]
     [SerializeField] float enemyDamage;
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
-    private BuildingHP targetBuilding;
-    public float raycastHeightOffset = 1f;
-
-
-    [Header("Detection prio")]
     [SerializeField] float attackRange;
+    [SerializeField] float attackCD = 2;
 
-    private float attackCD = 2;
+
+
+    [Header("Enemy Sound")]
+    [SerializeField] AudioClip attackEnemySound;
+    [SerializeField] AudioClip moveEnemySound;
+
+
     private bool canAttack = true;
     private Vector3 assignedAttackPoint;
     private bool hasAttackPoint = false;
     private Animator anim; //Jorge
-    [SerializeField] AudioClip attackEnemySound;
-    [SerializeField] AudioClip moveEnemySound;
+    private BuildingHP targetBuilding;
+
 
     private void Awake()
     {

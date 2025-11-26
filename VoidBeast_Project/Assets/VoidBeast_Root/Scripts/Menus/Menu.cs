@@ -157,4 +157,12 @@ public class Menu : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(firstSelectedGame);
     }
+    //QUITAR LUEGO
+
+    public void EscenaDeTest()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(2);
+
+    }
 }
