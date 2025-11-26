@@ -6,15 +6,22 @@ using UnityEngine.UI;
 public class PlayerHP : MonoBehaviour
 {
     private float regenTimer = 0f;
+    [Header("References")]
     [SerializeField] Transform spawnpoint;
     [SerializeField] Image fillImage;       
     [SerializeField] Image backgroundImage;
-    [SerializeField] float invincibilityDurationSeconds;
-    bool isInvicible = false;
-    float deathCountdown = 5f;
     [SerializeField] TMP_Text deathTimerText;
     [SerializeField] Image blackAndWhiteImage;
     [SerializeField] AudioClip deathSound;
+
+    [Header("HP Options")]
+    [SerializeField] float invincibilityDurationSeconds;
+    [SerializeField] private Material damageMaterial;
+    [SerializeField] private Material baseMaterial;
+    [SerializeField] Renderer rend;
+
+    bool isInvicible = false;
+    float deathCountdown = 5f;
 
     void Start()
     {
@@ -33,6 +40,8 @@ public class PlayerHP : MonoBehaviour
         {
             return;
         }
+        rend.material = damageMaterial;
+        StartCoroutine(TakeDamageMaterial());
 
 
         PlayerStats.instance.playerCurrentHealth -= damage;
@@ -120,6 +129,11 @@ public class PlayerHP : MonoBehaviour
             PlayerStats.instance.isDeath = false; 
         }
     }
-
-
+    IEnumerator TakeDamageMaterial()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+        rend.material = baseMaterial;
+   }
 }
+
+
