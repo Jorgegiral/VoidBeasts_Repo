@@ -5,15 +5,19 @@ using UnityEngine;
 public class SpawnEnemy : MonoBehaviour
 {
 
+    [Header("Prefab Enemigos")]
     [SerializeField] GameObject enemyBasic;
     [SerializeField] GameObject enemyPuñetero;
-
-    [SerializeField] int enemyQuantity;
+    [Header("Referencias")]
     [SerializeField] TMP_Text enemyText;
     [SerializeField] Transform MainBuild;
+    [Header("Opciones de oleadas")]
+    [SerializeField] int enemyQuantity;
+    [SerializeField] private float waveCD = 2f;
+
+    [Header("Spawners")]
     [SerializeField] List<Transform> spawnersTransform = new List<Transform>();
     private int enemyCount;
-    private float waveCD = 2f;
     private float waveTimer;
     private int enemyRemain;
     private bool spawning = true;
