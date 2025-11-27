@@ -17,7 +17,7 @@ public class ToggleConstruction : MonoBehaviour
     private Animator anim;
 
     [Header("Test")]
-    public bool isActionMode;
+    public bool isActionMode = true;
     private void Start()
     {
         anim = GetComponent<Animator>();
