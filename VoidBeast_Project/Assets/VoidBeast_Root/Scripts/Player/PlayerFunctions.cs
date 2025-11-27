@@ -103,10 +103,7 @@ public class PlayerFunctions : MonoBehaviour
 
         Shoot();
     }
-    public void SwitchMode(InputAction.CallbackContext context)
-    {
-        //Modo construcción
-    }
+
     public void OnEscapeButton(InputAction.CallbackContext context)
     {
         if (!context.performed)
