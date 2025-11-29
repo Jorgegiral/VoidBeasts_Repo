@@ -6,7 +6,7 @@ public class ToggleConstruction : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject constructionShop;
-    [SerializeField] Grid showGrid;
+    [SerializeField] GameObject grid;
     [SerializeField] GameObject playerCam;
     [SerializeField] GameObject buildCam;
     [SerializeField] GameObject table;
@@ -21,6 +21,7 @@ public class ToggleConstruction : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
+        grid.SetActive(false);
     }
     public void TableActived()
     {
@@ -41,6 +42,7 @@ public class ToggleConstruction : MonoBehaviour
             constructionShop.SetActive(true);
             playerCam.SetActive(false);
             buildCam.SetActive(true);
+            grid.SetActive(true);
             anim.SetBool("isBuilding", true);
 
             isActionMode = false;
@@ -51,6 +53,7 @@ public class ToggleConstruction : MonoBehaviour
             constructionShop.SetActive(false);
             playerCam.SetActive(true);
             buildCam.SetActive(false);
+            grid.SetActive(false);
             anim.SetBool("isBuilding", false);
 
             isActionMode = true;
