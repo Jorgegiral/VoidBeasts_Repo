@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviour
     public int enemykilledCount;
     public bool menuOpened;
     public DailyPowerUpsSO powerUpChosen;
+    public bool isActionMode = true;
 
     void Awake()
     {

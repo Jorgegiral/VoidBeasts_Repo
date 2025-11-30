@@ -16,8 +16,6 @@ public class ToggleConstruction : MonoBehaviour
     [Header("Animation References")]
     private Animator anim;
 
-    [Header("Test")]
-    public bool isActionMode = true;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -36,7 +34,7 @@ public class ToggleConstruction : MonoBehaviour
     {
         if (!context.performed)
             return;
-        if (isActionMode)
+        if (PlayerStats.instance.isActionMode)
         {
             playerInput.SwitchCurrentActionMap("BuildMode");
             constructionShop.SetActive(true);
@@ -45,9 +43,9 @@ public class ToggleConstruction : MonoBehaviour
             grid.SetActive(true);
             anim.SetBool("isBuilding", true);
 
-            isActionMode = false;
+            PlayerStats.instance.isActionMode = false;
         }
-        else if (!isActionMode)
+        else if (!PlayerStats.instance.isActionMode)
         {
             playerInput.SwitchCurrentActionMap("ActionMode");
             constructionShop.SetActive(false);
@@ -56,7 +54,7 @@ public class ToggleConstruction : MonoBehaviour
             grid.SetActive(false);
             anim.SetBool("isBuilding", false);
 
-            isActionMode = true;
+            PlayerStats.instance.isActionMode = true;
 
         }
     }

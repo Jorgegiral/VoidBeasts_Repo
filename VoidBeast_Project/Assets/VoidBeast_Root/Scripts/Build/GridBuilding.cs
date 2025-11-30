@@ -22,51 +22,7 @@ public class GridBuilding : MonoBehaviour
         if (instance == null) { instance = this; }
 
     }
-    private void Update()
-    {
-        if (!buildingTemp)
-        {
-            return;
-        }
-        if(Input.GetMouseButtonDown(0))
-        {
-            if (EventSystem.current.IsPointerOverGameObject(0))
-            {
-                return ;
-            }
-            if(!buildingTemp.Placed)
-            {
-                Vector3 mousePos = Input.mousePosition;
-                Ray ray = Camera.main.ScreenPointToRay(mousePos);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
-                {
-                    Vector3 worldPoint = hit.point;
-
-                    Vector3Int cellPos = gridLayout.WorldToCell(worldPoint);
-                    if (prevPos != cellPos)
-                    {
-                        buildingTemp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos + new Vector3(0f, 0f, 1f));
-                        prevPos = cellPos;
-                        FollowBuilding();
-                    }
-                }
-            }  
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (buildingTemp.CanBePlaced())
-            {
-                buildingTemp.Place();
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ClearArea();
-            Destroy(buildingTemp.gameObject);
-        }
-    }
+  
     private void Start()
     {
         string tilepath = @"Tiles/";
@@ -105,6 +61,7 @@ public class GridBuilding : MonoBehaviour
     public void InitializeWithBuilding(GameObject building)
     {
         buildingTemp = Instantiate(building, Vector3.zero, Quaternion.identity).GetComponent<Building>();
+
         FollowBuilding();
     }
     private void FollowBuilding()
@@ -156,6 +113,56 @@ public class GridBuilding : MonoBehaviour
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
     }
+
+    public void MoveBuildAction(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        if (!buildingTemp) return;
+
+        if (EventSystem.current.IsPointerOverGameObject(0))
+            return;
+
+        if (!buildingTemp.Placed)
+        {
+                Vector3 mousePos = Input.mousePosition;
+                Ray ray = Camera.main.ScreenPointToRay(mousePos);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
+                {
+                    Vector3 worldPoint = hit.point;
+
+                    Vector3Int cellPos = gridLayout.WorldToCell(worldPoint);
+                    if (prevPos != cellPos)
+                    {
+                        buildingTemp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos + new Vector3(0f, 0f, 1f));
+                        prevPos = cellPos;
+                        FollowBuilding();
+                    }
+                }
+        }
+    }
+    public void BuildAction(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (!buildingTemp) return;
+
+        if (buildingTemp.CanBePlaced())
+        {
+            buildingTemp.Place();
+        }
+
+    }
+    public void CancelBuildAction(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (!buildingTemp) return;
+
+        ClearArea();
+        Destroy(buildingTemp.gameObject);
+    }
+
     public enum TileType
     {
         Empty,

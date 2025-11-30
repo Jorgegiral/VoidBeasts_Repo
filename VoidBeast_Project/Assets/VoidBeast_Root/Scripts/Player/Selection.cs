@@ -9,7 +9,7 @@ public class Selection : MonoBehaviour
 
     void Update()
     {
-        if (DayNightSystem.Instance.isDay)
+        if (DayNightSystem.Instance.isDay && PlayerStats.instance.isActionMode)
         {
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, layerPlant | layerInteractable))
