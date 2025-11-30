@@ -15,6 +15,7 @@ public class GridBuilding : MonoBehaviour
     private Vector3 prevPos;
     private BoundsInt prevArea;
     [SerializeField] LayerMask layerGround;
+    private Vector3 buildingOffset = new Vector3(-2f, 1f, -2f);
 
     private void Awake()
     {
@@ -51,16 +52,28 @@ public class GridBuilding : MonoBehaviour
                         FollowBuilding();
                     }
                 }
+            }  
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (buildingTemp.CanBePlaced())
+            {
+                buildingTemp.Place();
             }
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ClearArea();
+            Destroy(buildingTemp.gameObject);
         }
     }
     private void Start()
     {
-        string tilepath = @"Tiles\";
+        string tilepath = @"Tiles/";
         tileBases.Add(TileType.Empty, null);
-        tileBases.Add(TileType.White, Resources.Load<TileBase>(path:tilepath + "white"));
-        tileBases.Add(TileType.Red, Resources.Load<TileBase>(path: tilepath + "red"));
-        tileBases.Add(TileType.Green, Resources.Load<TileBase>(path: tilepath + "green"));
+        tileBases.Add(TileType.White, Resources.Load<TileBase>(tilepath + "white"));
+        tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilepath + "red"));
+        tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilepath + "green"));
     }
     private static void SetTilesBlock(BoundsInt area, TileType type, Tilemap tilemap)
     {
@@ -97,7 +110,7 @@ public class GridBuilding : MonoBehaviour
     private void FollowBuilding()
     {
         ClearArea();
-        buildingTemp.area.position = gridLayout.WorldToCell(buildingTemp.gameObject.transform.position);
+        buildingTemp.area.position = gridLayout.WorldToCell(buildingTemp.gameObject.transform.position + buildingOffset);
         BoundsInt buildingArea = buildingTemp.area;
 
         TileBase[] baseArray = GetTilesBlock(buildingArea, mainTilemap);
@@ -123,6 +136,25 @@ public class GridBuilding : MonoBehaviour
         TileBase[] toClear = new TileBase[prevArea.size.x * prevArea.size.y * prevArea.size.z];
         FillTiles(toClear, TileType.Empty);
         tempTilemap.SetTilesBlock(prevArea, toClear);
+    }
+    public bool CanTakeAre(BoundsInt area)
+    {
+        TileBase[] baseArray = GetTilesBlock(area, mainTilemap);
+        foreach(var col in baseArray)
+        {
+            if (col != tileBases[TileType.White]) 
+            {
+                Debug.Log("no se puede construir");
+                return false;
+            }
+
+        }
+        return true;
+    }
+    public void TakeArea(BoundsInt area)
+    {
+        SetTilesBlock(area, TileType.Empty,tempTilemap);
+        SetTilesBlock(area,TileType.Red,mainTilemap);
     }
     public enum TileType
     {
