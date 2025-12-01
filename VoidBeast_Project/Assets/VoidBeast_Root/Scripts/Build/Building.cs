@@ -4,7 +4,7 @@ public class Building : MonoBehaviour
 {
     public bool Placed { get; private set; }
     public BoundsInt area;
-    private Vector3Int buildingOffset = new Vector3Int(0, 0, 0);
+    private Vector3Int buildingOffset = new Vector3Int(-2, -2, 0);
 
 
     public bool CanBePlaced()

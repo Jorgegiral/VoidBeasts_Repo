@@ -15,7 +15,7 @@ public class GridBuilding : MonoBehaviour
     private Vector3 prevPos;
     private BoundsInt prevArea;
     [SerializeField] LayerMask layerGround;
-    private Vector3 buildingOffset = new Vector3(0f, 1f, 0f);
+    private Vector3 buildingOffset = new Vector3(-2f, 1f, -2f);
 
     private void Awake()
     {
