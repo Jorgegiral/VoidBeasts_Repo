@@ -43,6 +43,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Ray",
+                    "type": "Button",
+                    "id": "c1c296e1-c88e-4b56-aa4d-7653a3762790",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Melee",
                     "type": "Button",
                     "id": "8b92feb5-75e2-4604-a087-749adf7235a0",
@@ -52,9 +61,27 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Spin",
+                    "type": "Button",
+                    "id": "f0d64514-8a9b-4345-90ed-3514a111c840",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Throw Bomb",
                     "type": "Button",
                     "id": "06dec7a3-61e4-4bfc-9b02-c16c281a1908",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Mine",
+                    "type": "Button",
+                    "id": "d3819de4-3ae5-4c77-923b-6c198bc45dee",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -214,6 +241,28 @@
                 },
                 {
                     "name": "",
+                    "id": "bb3852c0-70c9-4f5e-9a41-23a76fd5cc3f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ray",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f2011e0a-9f56-47a1-8d4c-a06c092bd553",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ray",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d961bd6d-1572-45db-b814-206531b0c36a",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -236,6 +285,28 @@
                 },
                 {
                     "name": "",
+                    "id": "c1769425-76e5-4364-83df-efbec09f0be1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spin",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "22176319-1d5f-4b36-859d-d1248c66f3d4",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Spin",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b638d0fd-87f3-4d47-8a11-f1d75fee2377",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
@@ -253,6 +324,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Throw Bomb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f438d4ff-a639-4f7c-bc49-85ca06a5969e",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mine",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "147da427-f949-41f8-bd74-61cb285709c9",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mine",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

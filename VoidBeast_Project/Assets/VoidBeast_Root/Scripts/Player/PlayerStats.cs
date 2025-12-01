@@ -13,6 +13,12 @@ public class PlayerStats : MonoBehaviour
     public float deathTimer = 5f;
     public float gunDamage;
     public float gunAttackSpeed = 2f;
+    public float rayGunCooldown = 10f;
+    public float meleeAttackSpeed = 2f;
+    public float spinCooldown = 5f;
+    public float mineCooldown = 5f;
+    public float bombCooldown = 8f;
+
     public int enemykilledCount;
     public bool menuOpened;
     public DailyPowerUpsSO powerUpChosen;
