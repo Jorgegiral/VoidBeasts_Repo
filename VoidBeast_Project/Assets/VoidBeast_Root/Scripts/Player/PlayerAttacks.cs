@@ -51,7 +51,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     void RayGun()
     {
-        if (!canBomb) return;
+        if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
 
 
@@ -75,7 +75,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     void MeleeAttack()
     {
-        if (!canBomb) return;
+        if (!canMelee) return;
         rotateToPlayer.RotateOnShoot();
         StartCoroutine(MeleeCooldown());
 
@@ -83,7 +83,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     void SpinAttack()
     {
-        if (!canBomb) return;
+        if (!canSpin) return;
         rotateToPlayer.RotateOnShoot();
         StartCoroutine(SpinCooldown());
 
