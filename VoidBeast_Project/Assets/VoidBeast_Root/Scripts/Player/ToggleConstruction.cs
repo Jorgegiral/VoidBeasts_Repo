@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,28 +6,58 @@ public class ToggleConstruction : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject constructionShop;
-    [SerializeField] Grid showGrid;
+    [SerializeField] GameObject grid;
+    [SerializeField] GameObject playerCam;
+    [SerializeField] GameObject buildCam;
+    [SerializeField] GameObject table;
+
     public PlayerInput playerInput;
 
-    [Header("Test")]
-    public bool isActionMode;
+    [Header("Animation References")]
+    private Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+        grid.SetActive(false);
+    }
+    public void TableActived()
+    {
+        table.SetActive(true);
+    }
+
+    public void TableDesactived()
+    {
+        table.SetActive(false);
+    }
     public void SwitchMode(InputAction.CallbackContext context)
     {
         if (!context.performed)
             return;
-        if (isActionMode)
+        if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
         {
             playerInput.SwitchCurrentActionMap("BuildMode");
             constructionShop.SetActive(true);
-            isActionMode = false;
+            playerCam.SetActive(false);
+            buildCam.SetActive(true);
+            grid.SetActive(true);
+            anim.SetBool("isBuilding", true);
+
+            PlayerStats.instance.isActionMode = false;
         }
-        else if (!isActionMode)
+        else if (!PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
         {
             playerInput.SwitchCurrentActionMap("ActionMode");
             constructionShop.SetActive(false);
-            isActionMode = true;
+            playerCam.SetActive(true);
+            buildCam.SetActive(false);
+            grid.SetActive(false);
+            anim.SetBool("isBuilding", false);
+
+            PlayerStats.instance.isActionMode = true;
 
         }
     }
+
 }
 
