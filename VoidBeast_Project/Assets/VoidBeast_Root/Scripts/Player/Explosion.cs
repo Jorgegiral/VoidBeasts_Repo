@@ -7,6 +7,7 @@ public class Explosion : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
+            Debug.Log("damage");
             EnemyHP enemyHP = other.gameObject.GetComponent<EnemyHP>();
             if(isMine)
             {
