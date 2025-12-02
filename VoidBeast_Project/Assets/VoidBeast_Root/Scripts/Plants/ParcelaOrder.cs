@@ -46,4 +46,12 @@ public class ParcelaOrder : MonoBehaviour
             recolectVFX.SetActive(true);
         }
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (CompareTag("Grass"))
+        {
+            Destroy(collision.gameObject);
+
+        }
+    }
 }
