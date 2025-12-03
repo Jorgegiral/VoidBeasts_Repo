@@ -20,11 +20,14 @@ public class PlayerAttacks : MonoBehaviour
     private bool canSpin = true;
 
     [Header("Bomb config")]
+    [SerializeField] GameObject bombPrefab;
     private bool canBomb = true;
-    
+    public float forwardForce = 10f;   
+    public float upForce = 5f;
+
     [Header("Mine config")]
     private bool canMine = true;
-    [SerializeField] GameObject mineVFX;
+    [SerializeField] GameObject minePrefab;
     [SerializeField] Transform minePoint;
 
     [Header("Sounds")]
@@ -53,6 +56,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
+        StartCoroutine(RayCooldown());
 
 
     }
@@ -60,7 +64,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!canMine) return;
         GameObject tempMine;
-        tempMine = Instantiate(mineVFX, minePoint.transform.position, transform.rotation);
+        tempMine = Instantiate(minePrefab, minePoint.transform.position, transform.rotation);
         Destroy(tempMine,20f);
         StartCoroutine(MineCooldown());
 
@@ -69,6 +73,14 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!canBomb) return;
         rotateToPlayer.RotateOnShoot();
+        Vector3 bombHit = rotateToPlayer.GetLastHitPoint();
+        GameObject bomb = Instantiate(bombPrefab, shootPoint.position, Quaternion.identity);
+        Rigidbody bombrb = bomb.GetComponent<Rigidbody>();
+
+        Vector3 direction = (bombHit - shootPoint.position);
+        direction.y = 0f;
+        direction.Normalize();
+        bombrb.AddForce(direction * forwardForce + Vector3.up * upForce, ForceMode.VelocityChange);
         StartCoroutine(BombCooldown());
 
 
