@@ -8,7 +8,6 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] Transform target;
     [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
-    [SerializeField] float raycastHeightOffset = 1f;
 
 
 
