@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.Image;
 
 public class PlayerAttacks : MonoBehaviour
 {
@@ -22,8 +23,10 @@ public class PlayerAttacks : MonoBehaviour
     [Header("Bomb config")]
     [SerializeField] GameObject bombPrefab;
     private bool canBomb = true;
-    public float forwardForce = 10f;   
-    public float upForce = 5f;
+    private float minTime = 0.1f;
+    private float maxTime = 1f;
+    // public float forwardForce = 10f;   
+    // public float upForce = 5f;
 
     [Header("Mine config")]
     private bool canMine = true;
@@ -74,13 +77,13 @@ public class PlayerAttacks : MonoBehaviour
         if (!canBomb) return;
         rotateToPlayer.RotateOnShoot();
         Vector3 bombHit = rotateToPlayer.GetLastHitPoint();
-        GameObject bomb = Instantiate(bombPrefab, shootPoint.position, Quaternion.identity);
-        Rigidbody bombrb = bomb.GetComponent<Rigidbody>();
+        LaunchBomb(bombHit);
+     /*   Rigidbody bombrb = bomb.GetComponent<Rigidbody>();
 
         Vector3 direction = (bombHit - shootPoint.position);
         direction.y = 0f;
         direction.Normalize();
-        bombrb.AddForce(direction * forwardForce + Vector3.up * upForce, ForceMode.VelocityChange);
+        bombrb.AddForce(direction * forwardForce + Vector3.up * upForce, ForceMode.VelocityChange);*/
         StartCoroutine(BombCooldown());
 
 
@@ -110,7 +113,22 @@ public class PlayerAttacks : MonoBehaviour
     {
         gun.SetActive(false);
     }
+    private void LaunchBomb(Vector3 destination)
+    {
+        float distance = Vector3.Distance(destination,shootPoint.position);
+        Vector3 dir = destination - shootPoint.position;
 
+
+        float time = Mathf.Lerp(minTime, maxTime, Mathf.InverseLerp(0, 12, distance));
+        Vector3 dirXZ = new Vector3(dir.x,0,dir.z);
+        Vector3 velocidadXZ = dirXZ / time;
+        float velocidadY = (float)(dir.y +0.5f* 9.8 * time);
+        
+        GameObject bomb = Instantiate(bombPrefab, shootPoint.position, Quaternion.identity);
+        Rigidbody rb = bomb.GetComponent<Rigidbody>();
+        rb.linearVelocity = new Vector3(velocidadXZ.x, velocidadY, velocidadXZ.z);
+
+    }
 
     IEnumerator ShootCooldown()
     {
