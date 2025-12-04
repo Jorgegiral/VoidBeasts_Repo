@@ -1,24 +1,27 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Collider range;
+    [SerializeField] float range = 5f;
     [SerializeField] GameObject cannonPoint;
     [SerializeField] GameObject bulletVFX;
+    [SerializeField] LayerMask enemyLayer;
+
     [Header("testers")]
-    [SerializeField] Transform target;
+    [SerializeField] GameObject target;
     [SerializeField] float shootCD = 2f;
     private bool canShoot;
-    
 
+    private void Update()
+    {
+    }
     private void GetTarget()
     {
-        if(target == null)
-        {
-            
-        }
+        Collider[] targetTransform = Physics.OverlapSphere(transform.position, range, enemyLayer);
+        
     }
     private void ShootTarget()
     {
@@ -33,7 +36,13 @@ public class Tower : MonoBehaviour
     }
     private void RotateToTarget()
     {
-        transform.LookAt(target);
+        transform.LookAt(target.transform);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, range);
     }
     IEnumerator ShootCooldown()
     {

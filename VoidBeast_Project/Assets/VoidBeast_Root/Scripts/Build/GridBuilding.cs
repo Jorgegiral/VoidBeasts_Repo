@@ -112,6 +112,7 @@ public class GridBuilding : MonoBehaviour
     {
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
+       
     }
 
     public void MoveBuildAction(InputAction.CallbackContext context)
@@ -119,9 +120,6 @@ public class GridBuilding : MonoBehaviour
         if (!context.performed) return;
 
         if (!buildingTemp) return;
-
-        if (EventSystem.current.IsPointerOverGameObject(0))
-            return;
 
         if (!buildingTemp.Placed)
         {
@@ -161,6 +159,13 @@ public class GridBuilding : MonoBehaviour
 
         ClearArea();
         Destroy(buildingTemp.gameObject);
+    }
+    public void RotateBuildAction(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (!buildingTemp) return;
+
+        buildingTemp.gameObject.transform.Rotate(0, 90, 0);
     }
 
     public enum TileType
