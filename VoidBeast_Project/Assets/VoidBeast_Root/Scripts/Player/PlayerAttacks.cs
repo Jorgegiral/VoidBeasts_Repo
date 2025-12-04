@@ -78,12 +78,6 @@ public class PlayerAttacks : MonoBehaviour
         rotateToPlayer.RotateOnShoot();
         Vector3 bombHit = rotateToPlayer.GetLastHitPoint();
         LaunchBomb(bombHit);
-     /*   Rigidbody bombrb = bomb.GetComponent<Rigidbody>();
-
-        Vector3 direction = (bombHit - shootPoint.position);
-        direction.y = 0f;
-        direction.Normalize();
-        bombrb.AddForce(direction * forwardForce + Vector3.up * upForce, ForceMode.VelocityChange);*/
         StartCoroutine(BombCooldown());
 
 
