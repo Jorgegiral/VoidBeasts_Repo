@@ -15,7 +15,10 @@ public class GridBuilding : MonoBehaviour
     private Vector3 prevPos;
     private BoundsInt prevArea;
     [SerializeField] LayerMask layerGround;
-    private Vector3 buildingOffset = new Vector3(-2f, 1f, -2f);
+    private Vector3 buildingOffset;
+    private Vector3 buildingClickOffset;
+    private bool canRotate;
+
     GameObject[] grassObjects;
 
     private void Awake()
@@ -60,10 +63,12 @@ public class GridBuilding : MonoBehaviour
             arr[i] = tileBases[type];
         }
     }
-    public void InitializeWithBuilding(GameObject building)
+    public void InitializeWithBuilding(TypeBuild build)
     {
-        buildingTemp = Instantiate(building, Vector3.zero, Quaternion.identity).GetComponent<Building>();
-
+        buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
+        buildingOffset = build.placeOffSet;
+        buildingClickOffset = build.clickOffSet;
+        if (build.build.ToString() == "Wall") canRotate = true; else canRotate = false;
         FollowBuilding();
     }
     private void FollowBuilding()
@@ -136,7 +141,7 @@ public class GridBuilding : MonoBehaviour
                     Vector3Int cellPos = gridLayout.WorldToCell(worldPoint);
                     if (prevPos != cellPos)
                     {
-                        buildingTemp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos + new Vector3(0f, 0f, 1f));
+                        buildingTemp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos + buildingClickOffset);
                         prevPos = cellPos;
                         FollowBuilding();
                     }
@@ -179,8 +184,8 @@ public class GridBuilding : MonoBehaviour
     {
         if (!context.performed) return;
         if (!buildingTemp) return;
-
-        buildingTemp.gameObject.transform.Rotate(0, 90, 0);
+        if(!canRotate) return;
+        buildingTemp.transform.RotateAround(buildingTemp.transform.position, Vector3.up, 90f);
     }
 
     public enum TileType
