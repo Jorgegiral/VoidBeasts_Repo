@@ -16,11 +16,11 @@ public class GridBuilding : MonoBehaviour
     private BoundsInt prevArea;
     [SerializeField] LayerMask layerGround;
     private Vector3 buildingOffset = new Vector3(-2f, 1f, -2f);
+    GameObject[] grassObjects;
 
     private void Awake()
     {
         if (instance == null) { instance = this; }
-
     }
   
     private void Start()
@@ -30,6 +30,8 @@ public class GridBuilding : MonoBehaviour
         tileBases.Add(TileType.White, Resources.Load<TileBase>(tilepath + "white"));
         tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilepath + "red"));
         tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilepath + "green"));
+        grassObjects = GameObject.FindGameObjectsWithTag("Grass");
+
     }
     private static void SetTilesBlock(BoundsInt area, TileType type, Tilemap tilemap)
     {
@@ -112,9 +114,9 @@ public class GridBuilding : MonoBehaviour
     {
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
-       
+        EliminateGrass(area, mainTilemap);
     }
-
+    
     public void MoveBuildAction(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -140,6 +142,19 @@ public class GridBuilding : MonoBehaviour
                     }
                 }
         }
+    }
+    private void EliminateGrass(BoundsInt area, Tilemap mainTileMap)
+    {
+        foreach (var obj in grassObjects)
+        {
+            Vector3Int cell = mainTileMap.WorldToCell(obj.transform.position);
+
+            if (area.Contains(cell))
+            {
+                GameObject.Destroy(obj);
+            }
+        }
+
     }
     public void BuildAction(InputAction.CallbackContext context)
     {
