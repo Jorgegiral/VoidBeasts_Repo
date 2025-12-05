@@ -15,12 +15,15 @@ public class GridBuilding : MonoBehaviour
     private Vector3 prevPos;
     private BoundsInt prevArea;
     [SerializeField] LayerMask layerGround;
-    private Vector3 buildingOffset = new Vector3(-2f, 1f, -2f);
+    private Vector3 buildingOffset;
+    private Vector3 buildingClickOffset;
+    private bool canRotate;
+
+    GameObject[] grassObjects;
 
     private void Awake()
     {
         if (instance == null) { instance = this; }
-
     }
   
     private void Start()
@@ -30,6 +33,8 @@ public class GridBuilding : MonoBehaviour
         tileBases.Add(TileType.White, Resources.Load<TileBase>(tilepath + "white"));
         tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilepath + "red"));
         tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilepath + "green"));
+        grassObjects = GameObject.FindGameObjectsWithTag("Grass");
+
     }
     private static void SetTilesBlock(BoundsInt area, TileType type, Tilemap tilemap)
     {
@@ -58,10 +63,12 @@ public class GridBuilding : MonoBehaviour
             arr[i] = tileBases[type];
         }
     }
-    public void InitializeWithBuilding(GameObject building)
+    public void InitializeWithBuilding(TypeBuild build)
     {
-        buildingTemp = Instantiate(building, Vector3.zero, Quaternion.identity).GetComponent<Building>();
-
+        buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
+        buildingOffset = build.placeOffSet;
+        buildingClickOffset = build.clickOffSet;
+        if (build.build.ToString() == "Wall") canRotate = true; else canRotate = false;
         FollowBuilding();
     }
     private void FollowBuilding()
@@ -112,16 +119,14 @@ public class GridBuilding : MonoBehaviour
     {
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
+        EliminateGrass(area, mainTilemap);
     }
-
+    
     public void MoveBuildAction(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
 
         if (!buildingTemp) return;
-
-        if (EventSystem.current.IsPointerOverGameObject(0))
-            return;
 
         if (!buildingTemp.Placed)
         {
@@ -136,12 +141,25 @@ public class GridBuilding : MonoBehaviour
                     Vector3Int cellPos = gridLayout.WorldToCell(worldPoint);
                     if (prevPos != cellPos)
                     {
-                        buildingTemp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos + new Vector3(0f, 0f, 1f));
+                        buildingTemp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos + buildingClickOffset);
                         prevPos = cellPos;
                         FollowBuilding();
                     }
                 }
         }
+    }
+    private void EliminateGrass(BoundsInt area, Tilemap mainTileMap)
+    {
+        foreach (var obj in grassObjects)
+        {
+            Vector3Int cell = mainTileMap.WorldToCell(obj.transform.position);
+
+            if (area.Contains(cell))
+            {
+                GameObject.Destroy(obj);
+            }
+        }
+
     }
     public void BuildAction(InputAction.CallbackContext context)
     {
@@ -161,6 +179,13 @@ public class GridBuilding : MonoBehaviour
 
         ClearArea();
         Destroy(buildingTemp.gameObject);
+    }
+    public void RotateBuildAction(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (!buildingTemp) return;
+        if(!canRotate) return;
+        buildingTemp.transform.RotateAround(buildingTemp.transform.position, Vector3.up, 90f);
     }
 
     public enum TileType

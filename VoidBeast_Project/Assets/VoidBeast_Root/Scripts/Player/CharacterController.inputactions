@@ -425,6 +425,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "RotateBuild",
+                    "type": "Button",
+                    "id": "e9afe972-0ae6-4094-b48f-6fcf66bd5626",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "MoveBuild",
                     "type": "Button",
                     "id": "e98bf64a-7508-447f-9ba1-687fac217852",
@@ -564,6 +573,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "CancelBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "541996d5-dfed-4d60-b870-8a980fa2451d",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "234af982-7cae-4d4c-9b36-d52e13048ae9",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateBuild",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
