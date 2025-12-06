@@ -65,6 +65,7 @@ public class GridBuilding : MonoBehaviour
     }
     public void InitializeWithBuilding(TypeBuild build)
     {
+        if (buildingTemp != null) return;
         buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
         buildingOffset = build.placeOffSet;
         buildingClickOffset = build.clickOffSet;
@@ -120,6 +121,7 @@ public class GridBuilding : MonoBehaviour
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
         EliminateGrass(area, mainTilemap);
+        buildingTemp = null;
     }
     
     public void MoveBuildAction(InputAction.CallbackContext context)
