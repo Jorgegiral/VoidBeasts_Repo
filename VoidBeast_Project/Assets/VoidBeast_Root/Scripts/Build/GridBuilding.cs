@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -11,7 +13,8 @@ public class GridBuilding : MonoBehaviour
     public Tilemap mainTilemap;
     public Tilemap tempTilemap;
     private static Dictionary<TileType, TileBase> tileBases = new Dictionary<TileType, TileBase>();
-    private Building buildingTemp;
+    public Building buildingTemp;
+    
     private Vector3 prevPos;
     private BoundsInt prevArea;
     [SerializeField] LayerMask layerGround;
@@ -69,7 +72,7 @@ public class GridBuilding : MonoBehaviour
         buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
         buildingOffset = build.placeOffSet;
         buildingClickOffset = build.clickOffSet;
-        if (build.build.ToString() == "Wall") canRotate = true; else canRotate = false;
+        if (build.type.ToString() == "Wall") canRotate = true; else canRotate = false;
         FollowBuilding();
     }
     private void FollowBuilding()
@@ -120,7 +123,7 @@ public class GridBuilding : MonoBehaviour
     {
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
-        EliminateGrass(area, mainTilemap);
+        ReCalculateRoute();
         buildingTemp = null;
     }
     
@@ -150,17 +153,11 @@ public class GridBuilding : MonoBehaviour
                 }
         }
     }
-    private void EliminateGrass(BoundsInt area, Tilemap mainTileMap)
+    private void EliminateGrass()
     {
-        foreach (var obj in grassObjects)
-        {
-            Vector3Int cell = mainTileMap.WorldToCell(obj.transform.position);
-
-            if (area.Contains(cell))
-            {
-                GameObject.Destroy(obj);
-            }
-        }
+    }
+    private void ReCalculateRoute()
+    {
 
     }
     public void BuildAction(InputAction.CallbackContext context)

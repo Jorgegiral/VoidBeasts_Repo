@@ -45,7 +45,7 @@ public class ToggleConstruction : MonoBehaviour
 
             PlayerStats.instance.isActionMode = false;
         }
-        else if (!PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
+        else if (!PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay && GridBuilding.instance.buildingTemp == null)
         {
             playerInput.SwitchCurrentActionMap("ActionMode");
             constructionShop.SetActive(false);
