@@ -76,8 +76,10 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!canBomb) return;
         rotateToPlayer.RotateOnShoot();
+        anim.SetTrigger("ThrowBomb");
         Vector3 bombHit = rotateToPlayer.GetLastHitPoint();
         LaunchBomb(bombHit);
+
         StartCoroutine(BombCooldown());
 
 
