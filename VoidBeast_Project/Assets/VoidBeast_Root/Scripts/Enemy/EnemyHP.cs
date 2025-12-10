@@ -36,7 +36,6 @@ public class EnemyHP : MonoBehaviour
         enemyCurrentHealth -= damage;
         rend.material = damageMaterial;
         StartCoroutine(TakeDamageMaterial());
-        //PONER CAPA ROJA PARA FEEDBACK DE DAÑO
         if (enemyCurrentHealth < 0) 
         {
             BasicEnemy enemy = GetComponent<BasicEnemy>();
