@@ -20,7 +20,7 @@ public class PlayerAttacks : MonoBehaviour
     private bool canMelee = true;
     private bool canSpin = true;
     private float holdTimer;
-    private bool isHolding;
+    [SerializeField] private bool isHolding;
     [SerializeField]private float holdThreshold = 3f;
 
     [Header("Bomb config")]

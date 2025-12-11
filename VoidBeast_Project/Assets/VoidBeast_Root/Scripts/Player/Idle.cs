@@ -18,14 +18,14 @@ public class Idle : StateMachineBehaviour
         {
             idleTime += Time.deltaTime;
 
-            if (idleTime > timetillIdle && stateInfo.normalizedTime % 1 < 0.02f)
+            if (idleTime > timetillIdle && stateInfo.normalizedTime % 1 < 0.1f)
             {
                 nextIdle = true;
                 idleAnimation = Random.Range(1, numberOfIdle + 1);
 
             }
         }
-        else if(stateInfo.normalizedTime % 1 > 0.98)
+        else if(stateInfo.normalizedTime % 1 > 0.85)
         {
             ResetIdle();
         }
