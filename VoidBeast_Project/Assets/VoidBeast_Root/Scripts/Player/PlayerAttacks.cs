@@ -19,6 +19,9 @@ public class PlayerAttacks : MonoBehaviour
     [Header("Melee config")]
     private bool canMelee = true;
     private bool canSpin = true;
+    private float holdTimer;
+    [SerializeField] private bool isHolding;
+    [SerializeField]private float holdThreshold = 3f;
 
     [Header("Bomb config")]
     [SerializeField] GameObject bombPrefab;
@@ -43,6 +46,13 @@ public class PlayerAttacks : MonoBehaviour
     {
         anim = GetComponent<Animator>(); 
         gun.SetActive(false); 
+    }
+    private void Update()
+    {
+        if (isHolding)
+        {
+            holdTimer += Time.deltaTime;
+        }
     }
     void Shoot()
     {
@@ -76,8 +86,10 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!canBomb) return;
         rotateToPlayer.RotateOnShoot();
+        anim.SetTrigger("ThrowBomb");
         Vector3 bombHit = rotateToPlayer.GetLastHitPoint();
         LaunchBomb(bombHit);
+
         StartCoroutine(BombCooldown());
 
 
@@ -86,6 +98,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!canMelee) return;
         rotateToPlayer.RotateOnShoot();
+        anim.SetTrigger("Melee");
         StartCoroutine(MeleeCooldown());
 
 
@@ -94,6 +107,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!canSpin) return;
         rotateToPlayer.RotateOnShoot();
+        anim.SetTrigger("Spin");
         StartCoroutine(SpinCooldown());
 
 
@@ -176,17 +190,26 @@ public class PlayerAttacks : MonoBehaviour
     }
     public void OnMelee(InputAction.CallbackContext context)
     {
-
         if (PlayerStats.instance.isDeath) return;
 
-        Shoot();
-    }
-    public void OnSpin(InputAction.CallbackContext context)
-    {
+        if (context.started)
+        {
+            isHolding = true;
+            holdTimer = 0f;
+        }
+        else if (context.canceled)
+        {
+            isHolding = false;
 
-        if (PlayerStats.instance.isDeath) return;
-
-        Shoot();
+            if (holdTimer >= holdThreshold)
+            {
+                SpinAttack();
+            }
+            else
+            {
+                MeleeAttack();
+            }
+        }
     }
     public void OnBomb(InputAction.CallbackContext context)
     {
