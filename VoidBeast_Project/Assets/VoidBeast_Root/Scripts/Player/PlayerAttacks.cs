@@ -76,6 +76,7 @@ public class PlayerAttacks : MonoBehaviour
     void PlantMine()
     {
         if (!canMine) return;
+        anim.SetTrigger("Mine");
         GameObject tempMine;
         tempMine = Instantiate(minePrefab, minePoint.transform.position, transform.rotation);
         Destroy(tempMine,20f);
@@ -121,6 +122,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         gun.SetActive(false);
     }
+
     private void LaunchBomb(Vector3 destination)
     {
         float distance = Vector3.Distance(destination,shootPoint.position);
