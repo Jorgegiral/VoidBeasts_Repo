@@ -27,7 +27,15 @@ public class GridBuilding : MonoBehaviour
     {
         if (instance == null) { instance = this; }
     }
-  
+    private void Update()
+    {
+        if (buildingTemp != null)
+        {
+            FollowBuilding();
+
+        }
+    }
+
     private void Start()
     {
         string tilepath = @"Tiles/";
@@ -72,7 +80,7 @@ public class GridBuilding : MonoBehaviour
         buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
         buildingOffset = build.placeOffSet;
         buildingClickOffset = build.clickOffSet;
-        FollowBuilding();
+       // FollowBuilding();
     }
     private bool CheckIfAvailable(TypeBuild build)
     {
@@ -207,6 +215,7 @@ public class GridBuilding : MonoBehaviour
         if (!buildingTemp) return;
 
         ClearArea();
+        
         Destroy(buildingTemp.gameObject);
     }
 
