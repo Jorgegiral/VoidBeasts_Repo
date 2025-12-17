@@ -23,7 +23,6 @@ public class DailyPowerUP : MonoBehaviour
     private int selectedIndex = -1;
     [SerializeField] GameObject firstSelectedMenu;
 
-    int PowerUpCost = 10;
     
     public void StartPowerUp()
     {

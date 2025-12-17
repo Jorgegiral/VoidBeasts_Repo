@@ -4,19 +4,33 @@ using UnityEngine.EventSystems;
 public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler
 
 {
+    [Header("General Refs")]
     [SerializeField] GameObject etiqueta;
-    [SerializeField] Plants plantToWatch;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text costText;
-    [SerializeField] TMP_Text daysText;
+    [SerializeField] bool isPlant;
+    [Header("Plants Refs")]
     [SerializeField] TMP_Text earningsText;
+    [SerializeField] TMP_Text daysText;
+    [SerializeField] Plants plantToWatch;
+    [Header("Build Refs")]
+    [SerializeField] TMP_Text infoText;
+
+
 
     private void UpdateText()
     {
-        nameText.text = plantToWatch.plantName;
-        costText.text = plantToWatch.precio.ToString();
-        daysText.text = plantToWatch.numDias.ToString();
-        earningsText.text = plantToWatch.ganancias.ToString();
+        if ((isPlant))
+        {
+            nameText.text = plantToWatch.plantName;
+            costText.text = plantToWatch.precio.ToString();
+            daysText.text = plantToWatch.numDias.ToString();
+            earningsText.text = plantToWatch.ganancias.ToString();
+        }
+        else
+        {
+            //build
+        }
 
     }
     public void OnPointerEnter(PointerEventData eventData)

@@ -45,10 +45,10 @@ public class RotateToPlayer : MonoBehaviour
                 Vector3 lookDirection = (hit.point - transform.position).normalized;
                 lookDirection.y = 0f;
                 transform.rotation = Quaternion.LookRotation(lookDirection);
+                lastHitPoint = hit.point;
             }
         }
     }
-
 
 
     public Vector3 GetLastHitPoint()

@@ -9,28 +9,16 @@ using UnityEngine.UI;
 
 public class PlayerFunctions : MonoBehaviour
 {
-    [Header("Shoot config")]
-    [SerializeField] Transform shootPoint;
-    [SerializeField] List<GameObject> bulletVFX = new List<GameObject>();
-    private GameObject effectToSpawn;
-    [SerializeField] CinemachineCamera playerCam;
-    [SerializeField] CinemachineCamera buildCam;
+    [Header("References")]
     [SerializeField] GameObject seedMenu;
-    [SerializeField] RotateToPlayer rotateToPlayer;
     [SerializeField] GameObject escapeMenu;
-
-    [SerializeField] AudioClip shootSound;
     bool seedOpened = false;
     LayerMask layerInteractable;
     LayerMask layerPlant;
-    private bool canShoot = true;    
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
-    [SerializeField] GameObject gun; //Jorge
-    //[SerializeField] float gunTime = 0.5f;
     [SerializeField] GameObject firstSelectedOnPause;
     [SerializeField] GameObject firstSelectedOnSeed;
-    [SerializeField] bool actionMode = true;
 
 
     private void Awake()
@@ -38,39 +26,10 @@ public class PlayerFunctions : MonoBehaviour
         layerInteractable = LayerMask.GetMask("Interactable");
         layerPlant = LayerMask.GetMask("Plant");
 
-        effectToSpawn = bulletVFX[0];
         anim = GetComponent<Animator>(); //Jorge
-        gun.SetActive(false); //Jorge
         seedMenu.SetActive(false);
     }
 
-    void Shoot()
-    {
-        if (!canShoot) return;
-        rotateToPlayer.RotateOnShoot();
-        //gun.SetActive(true); //Jorge
-        anim.SetTrigger("Shoot"); //Jorge
-        GameObject bulletVFX;
-        bulletVFX = Instantiate(effectToSpawn,shootPoint.transform.position, transform.rotation);
-        Settings.instance.PlaySoundFXClip(shootSound, transform, 1f);
-        StartCoroutine(ShootCooldown());
-        //StartCoroutine(GunDelay());
-    }
-    public void GunActived()
-    {
-        gun.SetActive(true);
-    }
-
-    public void GunDesactived()
-    {
-        gun.SetActive(false);
-    }
-
-    /*System.Collections.IEnumerator GunDelay()
-    {
-        yield return new WaitForSecondsRealtime(gunTime);
-        gun.SetActive(false);
-    }*/
 
     public void OnInteract(InputAction.CallbackContext context)
     {
@@ -96,17 +55,8 @@ public class PlayerFunctions : MonoBehaviour
         }
     }
 }
-    public void OnShoot(InputAction.CallbackContext context)
-    {
 
-        if (PlayerStats.instance.isDeath) return;
 
-        Shoot();
-    }
-    public void SwitchMode(InputAction.CallbackContext context)
-    {
-        //Modo construcción
-    }
     public void OnEscapeButton(InputAction.CallbackContext context)
     {
         if (!context.performed)
@@ -133,12 +83,7 @@ public class PlayerFunctions : MonoBehaviour
             Time.timeScale = 1f;
         }
     }
-    IEnumerator ShootCooldown()
-    {
-        canShoot = false;
-        yield return new WaitForSeconds(PlayerStats.instance.gunAttackSpeed);
-        canShoot = true;
-    }
+
     private IEnumerator SelectFirstButtonDelayed()
     {
         yield return null;
