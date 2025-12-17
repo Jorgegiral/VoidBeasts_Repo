@@ -20,6 +20,8 @@ public class PlayerAttacks : MonoBehaviour
     private bool canMelee = true;
     private bool canSpin = true;
     private float holdTimer;
+    [SerializeField] Collider attackCollider; 
+    [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
     [SerializeField]private float holdThreshold = 3f;
 
@@ -28,8 +30,6 @@ public class PlayerAttacks : MonoBehaviour
     private bool canBomb = true;
     private float minTime = 0.1f;
     private float maxTime = 1f;
-    // public float forwardForce = 10f;   
-    // public float upForce = 5f;
 
     [Header("Mine config")]
     private bool canMine = true;
@@ -60,6 +60,8 @@ public class PlayerAttacks : MonoBehaviour
         rotateToPlayer.RotateOnShoot();
         //gun.SetActive(true); //Jorge
         anim.SetTrigger("Shoot"); //Jorge
+        anim.SetTrigger("Attack");
+
         Instantiate(bulletVFX, shootPoint.transform.position, transform.rotation);
         Settings.instance.PlaySoundFXClip(shootSound, transform, 1f);
         StartCoroutine(ShootCooldown());
@@ -69,6 +71,8 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
+        anim.SetTrigger("Attack");
+
         StartCoroutine(RayCooldown());
 
 
@@ -76,6 +80,8 @@ public class PlayerAttacks : MonoBehaviour
     void PlantMine()
     {
         if (!canMine) return;
+        anim.SetTrigger("Mine");
+        anim.SetTrigger("Attack");
         GameObject tempMine;
         tempMine = Instantiate(minePrefab, minePoint.transform.position, transform.rotation);
         Destroy(tempMine,20f);
@@ -87,6 +93,7 @@ public class PlayerAttacks : MonoBehaviour
         if (!canBomb) return;
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("ThrowBomb");
+        anim.SetTrigger("Attack");
         Vector3 bombHit = rotateToPlayer.GetLastHitPoint();
         LaunchBomb(bombHit);
 
@@ -99,6 +106,10 @@ public class PlayerAttacks : MonoBehaviour
         if (!canMelee) return;
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("Melee");
+        anim.SetInteger("ComboIndex", comboIndex);
+        comboIndex++;
+        if (comboIndex == 3) comboIndex = 0;
+        anim.SetTrigger("Attack");
         StartCoroutine(MeleeCooldown());
 
 
@@ -108,6 +119,8 @@ public class PlayerAttacks : MonoBehaviour
         if (!canSpin) return;
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("Spin");
+        anim.SetTrigger("Attack");
+
         StartCoroutine(SpinCooldown());
 
 
@@ -121,6 +134,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         gun.SetActive(false);
     }
+
     private void LaunchBomb(Vector3 destination)
     {
         float distance = Vector3.Distance(destination,shootPoint.position);
@@ -224,5 +238,17 @@ public class PlayerAttacks : MonoBehaviour
         if (PlayerStats.instance.isDeath) return;
 
         PlantMine();
+    }
+    public void EndAttack()
+    {
+      //  anim.Play("Vacio", 1);
+        anim.ResetTrigger("Attack");
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy")) 
+        {
+            other.GetComponent<EnemyHP>().TakeDamage(PlayerStats.instance.meleeDamage);
+        }
     }
 }

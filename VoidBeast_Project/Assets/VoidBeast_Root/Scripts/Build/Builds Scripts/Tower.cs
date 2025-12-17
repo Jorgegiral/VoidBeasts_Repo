@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Reflection.Emit;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,8 +16,6 @@ public class Tower : MonoBehaviour
     [SerializeField] float shootCD = 2f;
     [SerializeField] bool enemyIsInSight;
     private bool canShoot = true;
-
-
     private void Start()
     {
         StartCoroutine(TargetScanner());
@@ -73,8 +72,7 @@ public class Tower : MonoBehaviour
 
         transform.LookAt(target.transform);
     }
-
-    void OnDrawGizmosSelected()
+void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
@@ -93,4 +91,5 @@ public class Tower : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
     }
+
 }

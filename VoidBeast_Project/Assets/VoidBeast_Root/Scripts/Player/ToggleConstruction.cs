@@ -9,7 +9,8 @@ public class ToggleConstruction : MonoBehaviour
     [SerializeField] GameObject grid;
     [SerializeField] GameObject playerCam;
     [SerializeField] GameObject buildCam;
-    [SerializeField] GameObject table;
+    [SerializeField] GameObject tableRun;
+    [SerializeField] GameObject tableIdle;
 
     public PlayerInput playerInput;
 
@@ -23,12 +24,26 @@ public class ToggleConstruction : MonoBehaviour
     }
     public void TableActived()
     {
-        table.SetActive(true);
+        tableRun.SetActive(true);
+        tableIdle.SetActive(false);
+
     }
 
     public void TableDesactived()
     {
-        table.SetActive(false);
+        tableRun.SetActive(false);
+
+    }
+    public void TableIdleActivate()
+    {
+        tableIdle.SetActive(true);
+        tableRun.SetActive(false);
+
+    }
+    public void TableIdleDesactivated()
+    {
+        tableIdle.SetActive(false);
+
     }
     public void SwitchMode(InputAction.CallbackContext context)
     {
