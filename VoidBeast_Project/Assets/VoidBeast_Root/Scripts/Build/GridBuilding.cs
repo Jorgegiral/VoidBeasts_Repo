@@ -20,7 +20,6 @@ public class GridBuilding : MonoBehaviour
     [SerializeField] LayerMask layerGround;
     private Vector3 buildingOffset;
     private Vector3 buildingClickOffset;
-    private bool canRotate;
 
     GameObject[] grassObjects;
 
@@ -69,11 +68,42 @@ public class GridBuilding : MonoBehaviour
     public void InitializeWithBuilding(TypeBuild build)
     {
         if (buildingTemp != null) return;
+        if (!CheckIfAvailable(build)) return;
         buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
         buildingOffset = build.placeOffSet;
         buildingClickOffset = build.clickOffSet;
-        if (build.type.ToString() == "Wall") canRotate = true; else canRotate = false;
         FollowBuilding();
+    }
+    private bool CheckIfAvailable(TypeBuild build)
+    {
+        switch (build.type.ToString())
+        {
+            case ("Wall"):
+                if (UpgradeManager.instance.wallAvailable > 0)
+                {
+                    UpgradeManager.instance.wallAvailable--;
+                    return true;
+                }
+                return false;
+
+            case ("Tower"):
+                if (UpgradeManager.instance.towerAvailable > 0)
+                {
+                    UpgradeManager.instance.towerAvailable--;
+                    return true;
+                }
+                return false;
+
+            case ("Build"):
+                if (UpgradeManager.instance.cropAvailable > 0)
+                {
+                    UpgradeManager.instance.cropAvailable--;
+                    return true;
+                }
+                return false;
+        }
+
+        return false;
     }
     private void FollowBuilding()
     {
@@ -179,13 +209,7 @@ public class GridBuilding : MonoBehaviour
         ClearArea();
         Destroy(buildingTemp.gameObject);
     }
-    public void RotateBuildAction(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        if (!buildingTemp) return;
-        if(!canRotate) return;
-        buildingTemp.transform.RotateAround(buildingTemp.transform.position, Vector3.up, 90f);
-    }
+
 
     public enum TileType
     {

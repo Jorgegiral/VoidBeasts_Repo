@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Diagnostics;
+using System.Reflection.Emit;
 using UnityEngine;
 
 public class WallBehaviour : MonoBehaviour
@@ -13,6 +14,7 @@ public class WallBehaviour : MonoBehaviour
     bool rightRay;
     bool leftRay;
     bool modelUpdated;
+
     void Start()
     {
         
