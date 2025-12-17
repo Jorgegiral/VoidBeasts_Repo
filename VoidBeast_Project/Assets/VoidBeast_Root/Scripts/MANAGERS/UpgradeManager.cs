@@ -1,3 +1,6 @@
+using Newtonsoft.Json.Bson;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour
@@ -17,6 +20,11 @@ public class UpgradeManager : MonoBehaviour
     public int cropAvailable = 2;
     public TypeBuild wallBuild;
     public TypeBuild towerBuild;
+    public List<GameObject> walls = new List<GameObject>();
+    public List<GameObject> towers = new List<GameObject>();
+
+
+
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -32,6 +40,7 @@ public class UpgradeManager : MonoBehaviour
         {
             wallLevel++;
             wallBuild.Upgrade(wallLevel);
+            if (walls.Count > 0) SwapWallModelsOnUpgrade();
 
         }
     }
@@ -41,7 +50,8 @@ public class UpgradeManager : MonoBehaviour
         {
             towerLevel++;
             towerBuild.Upgrade(towerLevel);
-            Debug.Log("Upgraded");
+            if(towers.Count > 0) SwapTowerModelsOnUpgrade();
+
         }
     }
     public void UpgradeMainBuild(int precio)
@@ -51,6 +61,27 @@ public class UpgradeManager : MonoBehaviour
             mainBuildingLevel++;
         }
     }
+    public void SwapWallModelsOnUpgrade()
+    {
+        
+        for (int i = walls.Count - 1; i >= 0; i++)
+        {
+            Instantiate(wallBuild.build, walls[i].transform);
+            UnRegisterWall(walls[i]);
+            Destroy(walls[i]);
+
+        }
+
+    }
+    public void SwapTowerModelsOnUpgrade()
+    {
+        for (int i = towers.Count - 2; i >= 0; i++)
+        {
+            Instantiate(towerBuild.build, towers[0].transform);
+            UnRegisterTower(towers[0]);
+            Destroy(towers[0]);
+        }
+    }
     public void OpenUpgradeShop()
     {
         upgradeShop.gameObject.SetActive(true);
@@ -58,5 +89,23 @@ public class UpgradeManager : MonoBehaviour
     public void CloseUpgradeShop()
     {
         upgradeShop.gameObject.SetActive(false);
+    }
+    public void RegisterWall(GameObject wall)
+    {
+        walls.Add(wall);
+
+    }
+    public void UnRegisterWall(GameObject wall)
+    {
+        walls.Remove(wall);
+    }
+    public void RegisterTower(GameObject tower)
+    {
+        towers.Add(tower);
+    }
+    public void UnRegisterTower(GameObject tower)
+    {
+        towers.Remove(tower);
+
     }
 }

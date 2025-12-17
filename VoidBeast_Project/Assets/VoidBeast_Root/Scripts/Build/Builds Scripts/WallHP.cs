@@ -8,6 +8,7 @@ public class WallHP : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        UpgradeManager.instance.RegisterWall(gameObject);
     }
 
     public void TakeDamage(float enemyDamage)
@@ -16,6 +17,7 @@ public class WallHP : MonoBehaviour
         if (currentHealth < 0)
         {
             Destroy(gameObject);
+            UpgradeManager.instance.UnRegisterWall(gameObject);
         }
     }
 
