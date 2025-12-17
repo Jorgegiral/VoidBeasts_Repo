@@ -2,6 +2,7 @@ using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -75,11 +76,14 @@ public class UpgradeManager : MonoBehaviour
     }
     public void SwapTowerModelsOnUpgrade()
     {
-        for (int i = towers.Count - 2; i >= 0; i++)
+        List<GameObject> towersCopy = new List<GameObject>(towers);
+
+        for (int i = towersCopy.Count-1; i >= 0; i--)
         {
-            Instantiate(towerBuild.build, towers[0].transform);
-            UnRegisterTower(towers[0]);
-            Destroy(towers[0]);
+            Transform positionTower = towersCopy[i].transform;
+            Instantiate(towerBuild.build, positionTower.position,positionTower.rotation);
+            UnRegisterTower(towers[i]);
+            Destroy(towers[i]);
         }
     }
     public void OpenUpgradeShop()
