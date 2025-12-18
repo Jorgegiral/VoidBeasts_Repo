@@ -20,14 +20,22 @@ public class GridBuilding : MonoBehaviour
     [SerializeField] LayerMask layerGround;
     private Vector3 buildingOffset;
     private Vector3 buildingClickOffset;
-
+    bool isWall;
     GameObject[] grassObjects;
 
     private void Awake()
     {
         if (instance == null) { instance = this; }
     }
-  
+    private void Update()
+    {
+        if (buildingTemp != null)
+        {
+            FollowBuilding();
+
+        }
+    }
+
     private void Start()
     {
         string tilepath = @"Tiles/";
@@ -72,7 +80,7 @@ public class GridBuilding : MonoBehaviour
         buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
         buildingOffset = build.placeOffSet;
         buildingClickOffset = build.clickOffSet;
-        FollowBuilding();
+       // FollowBuilding();
     }
     private bool CheckIfAvailable(TypeBuild build)
     {
@@ -82,6 +90,7 @@ public class GridBuilding : MonoBehaviour
                 if (UpgradeManager.instance.wallAvailable > 0)
                 {
                     UpgradeManager.instance.wallAvailable--;
+                    isWall = true;
                     return true;
                 }
                 return false;
@@ -151,6 +160,12 @@ public class GridBuilding : MonoBehaviour
     }
     public void TakeArea(BoundsInt area)
     {
+        if (isWall)
+        {
+            WallBehaviour wall = buildingTemp.GetComponent<WallBehaviour>();
+            wall.ThrowRaycast();
+            Debug.Log("Raycast");
+        }
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
         ReCalculateRoute();
@@ -192,7 +207,6 @@ public class GridBuilding : MonoBehaviour
     }
     public void BuildAction(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
         if (!buildingTemp) return;
 
         if (buildingTemp.CanBePlaced())
@@ -207,6 +221,7 @@ public class GridBuilding : MonoBehaviour
         if (!buildingTemp) return;
 
         ClearArea();
+        
         Destroy(buildingTemp.gameObject);
     }
 
