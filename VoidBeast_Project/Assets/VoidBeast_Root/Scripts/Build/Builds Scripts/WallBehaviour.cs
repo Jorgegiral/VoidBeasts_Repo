@@ -12,7 +12,7 @@ public class WallBehaviour : MonoBehaviour
     bool southRay;
     bool rightRay;
     bool leftRay;
-    bool modelUpdated;
+    public bool modelUpdated;
 
     private void Awake()
     {
@@ -72,64 +72,31 @@ public class WallBehaviour : MonoBehaviour
         {
             wall.SetActive(false);
         }
-        switch (key)
+        int[] wallIndexByKey =
         {
-            case 0:
-                wallModels[0].SetActive(true);
-                break;
-            case 1:
-                wallModels[1].SetActive(true);
-                break;
-            case 2:
-                wallModels[1].SetActive(true);
-                break;
-            case 4:
-                wallModels[0].SetActive(true);
-                break;
-            case 8:
-                wallModels[0].SetActive(true);
-                break;
-            case 3:
-                wallModels[1].SetActive(true);
-                break;
-            case 7:
-                wallModels[8].SetActive(true);
-                break;
-            case 15:
-                wallModels[10].SetActive(true);
-                break;
-            case 6:
-                wallModels[2].SetActive(true);
-                break;
-            case 10:
-                wallModels[4].SetActive(true);
-                break;
-            case 5:
-                wallModels[3].SetActive(true);
-                break;
-            case 12:
-                wallModels[0].SetActive(true);
-                break;
-            case 9:
-                wallModels[5].SetActive(true);
-                break;
-            case 14:
-                wallModels[6].SetActive(true);
-                break;
-            case 13:
-                wallModels[7].SetActive(true);
-                break;
-            case 11:
-                wallModels[9].SetActive(true);
-                break;
-
-
-        }
-
+            0,  
+            1, 
+            1,  
+            1, 
+            0,  
+            3,  
+            2, 
+            8,  
+            0,  
+            5,  
+            4,  
+            9,  
+            0,  
+            7,  
+            6,  
+            10  
+        };
+        wallModels[wallIndexByKey[key]].SetActive(true);
         northRay = false;
         southRay = false;
         rightRay = false;
         leftRay = false;
+        key = 0;
     }
     IEnumerator UpdateCooldown()
     {
