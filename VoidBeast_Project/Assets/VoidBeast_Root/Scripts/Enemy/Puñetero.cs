@@ -14,6 +14,8 @@ public class Puñetero : MonoBehaviour
     private Animator anim;
     [Header("Detection prio")]
     [SerializeField] float attackRange;
+    [SerializeField] Transform attackPoint;
+
 
     private float attackCD = 2;
     private bool canAttack = true;
@@ -74,7 +76,7 @@ public class Puñetero : MonoBehaviour
         Settings.instance.PlaySoundFXClip(attackEnemySound, transform, 1f);
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, playerLayer))
+        if (Physics.Raycast(attackPoint.position, transform.forward, out hit, attackRange, playerLayer))
         {
 
             var health = hit.collider.GetComponent<PlayerHP>();

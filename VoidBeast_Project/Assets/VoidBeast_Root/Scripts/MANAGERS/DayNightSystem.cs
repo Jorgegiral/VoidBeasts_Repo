@@ -132,7 +132,7 @@ public class DayNightSystem : MonoBehaviour
     public int EnemyQuantityScale()
     {
         //por ahora asi
-        enemyQuantity = Mathf.RoundToInt(3 + Mathf.Pow(nightNumber, 1.5f));
+        enemyQuantity = Mathf.RoundToInt(15 + Mathf.Pow(nightNumber, 1.5f));
         return enemyQuantity;
     }
     public void RegisterParcela(Parcela newParcela)

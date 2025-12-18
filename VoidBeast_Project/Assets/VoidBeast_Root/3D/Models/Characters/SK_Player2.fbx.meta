@@ -31,7 +31,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: AN_Idel_3
+      name: AN_Player_Idle3
       takeName: AN_Idel_3
       internalID: 8385658970723037454
       firstFrame: 0
@@ -60,7 +60,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: AN_Idel2
+      name: AN_Player_Idle2
       takeName: AN_Idel2
       internalID: -1291056857779826794
       firstFrame: 0
@@ -71,7 +71,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -118,7 +118,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: AN_Mine
+      name: AN_Player_Mine
       takeName: AN_Mine
       internalID: -8276335344840405471
       firstFrame: 0
@@ -176,7 +176,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: AN_Bomb
+      name: AN_Player_Bomb
       takeName: AN_Bomb
       internalID: -7640200698989867746
       firstFrame: 0

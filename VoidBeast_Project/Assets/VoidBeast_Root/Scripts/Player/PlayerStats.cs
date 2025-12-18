@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats instance;
+    [Header("Player General Stats")]
+
     public float playerSpeed;
     public float playerMaxHealth;
     public float playerCurrentHealth;
@@ -11,11 +13,29 @@ public class PlayerStats : MonoBehaviour
     public float healthRegen;
     public float healthRegenTick;
     public float deathTimer = 5f;
+
+    [Header("Player Damage Stats")]
     public float gunDamage;
+    public float mineDamage;
+    public float bombDamage;
+    public float meleeDamage;
+    public float SpinDamage;
+
+
+    [Header("Player Cooldown Stats")]
+
     public float gunAttackSpeed = 2f;
+    public float rayGunCooldown = 10f;
+    public float meleeAttackSpeed = 2f;
+    public float spinCooldown = 5f;
+    public float mineCooldown = 5f;
+    public float bombCooldown = 8f;
+
+    [Header("Stats Functions")]
     public int enemykilledCount;
     public bool menuOpened;
     public DailyPowerUpsSO powerUpChosen;
+    public bool isActionMode = true;
 
     void Awake()
     {

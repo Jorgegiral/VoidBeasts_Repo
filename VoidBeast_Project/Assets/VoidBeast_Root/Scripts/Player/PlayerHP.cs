@@ -8,7 +8,7 @@ public class PlayerHP : MonoBehaviour
     private float regenTimer = 0f;
     [Header("References")]
     [SerializeField] Transform spawnpoint;
-    [SerializeField] Image fillImage;       
+    [SerializeField] Image fillImage;
     [SerializeField] Image backgroundImage;
     [SerializeField] TMP_Text deathTimerText;
     [SerializeField] Image blackAndWhiteImage;
@@ -45,23 +45,23 @@ public class PlayerHP : MonoBehaviour
 
 
         PlayerStats.instance.playerCurrentHealth -= damage;
-            UpdateHP();
+        UpdateHP();
 
         if (PlayerStats.instance.playerCurrentHealth <= 0)
-            {
+        {
             Settings.instance.PlaySoundFXClip(deathSound, transform, 1f);
             StartDeathTimer();
             return;
         }
-            UpdateHP();
-            BecomeTemporarilyInvincible();
-            isInvicible=false;
-        
+        UpdateHP();
+        BecomeTemporarilyInvincible();
+        isInvicible = false;
+
     }
     public void HealDamage(float heal)
     {
         PlayerStats.instance.playerCurrentHealth += heal;
-        if(PlayerStats.instance.playerCurrentHealth > PlayerStats.instance.playerMaxHealth)
+        if (PlayerStats.instance.playerCurrentHealth > PlayerStats.instance.playerMaxHealth)
         {
             PlayerStats.instance.playerCurrentHealth = PlayerStats.instance.playerMaxHealth;
         }
@@ -126,14 +126,14 @@ public class PlayerHP : MonoBehaviour
 
             PlayerStats.instance.playerCurrentHealth = PlayerStats.instance.playerMaxHealth;
             UpdateHP();
-            PlayerStats.instance.isDeath = false; 
+            PlayerStats.instance.isDeath = false;
         }
     }
     IEnumerator TakeDamageMaterial()
     {
         yield return new WaitForSecondsRealtime(0.2f);
         rend.material = baseMaterial;
-   }
+    }
 }
 
 
