@@ -23,6 +23,8 @@ public class UpgradeManager : MonoBehaviour
     public TypeBuild towerBuild;
     public List<GameObject> walls = new List<GameObject>();
     public List<GameObject> towers = new List<GameObject>();
+    private int maxTowerLevel = 3;
+    private int maxWallLevel = 3;
 
 
 
@@ -37,23 +39,24 @@ public class UpgradeManager : MonoBehaviour
 
     public void UpgradeWall(int precio)
     {
-        if(precio <= MoneySystem.instance.money && wallLevel != 2)
-        {
+        if (wallLevel >= maxWallLevel) return;
+        if (precio > MoneySystem.instance.money) return;
+            MoneySystem.instance.money -= precio;
             wallLevel++;
             wallBuild.Upgrade(wallLevel);
             if (walls.Count > 0) SwapWallModelsOnUpgrade();
 
-        }
     }
     public void UpgradeTower(int precio)
     {
-        if (precio <= MoneySystem.instance.money && towerLevel != 2)
-        {
+        if (towerLevel >= maxTowerLevel) return;
+        if (precio > MoneySystem.instance.money) return;
+            MoneySystem.instance.money -= precio;
             towerLevel++;
             towerBuild.Upgrade(towerLevel);
             if(towers.Count > 0) SwapTowerModelsOnUpgrade();
 
-        }
+        
     }
     public void UpgradeMainBuild(int precio)
     {
@@ -67,23 +70,26 @@ public class UpgradeManager : MonoBehaviour
         
         for (int i = walls.Count - 1; i >= 0; i++)
         {
-            Instantiate(wallBuild.build, walls[i].transform);
-            UnRegisterWall(walls[i]);
-            Destroy(walls[i]);
+            Vector3 position = walls[i].transform.position;
+            Quaternion rotation = walls[i].transform.rotation;
+            Instantiate(wallBuild.build, position, rotation);
+            WallHP wallHP = walls[i].GetComponent<WallHP>();
+            wallHP.TakeDamage(100000);
 
         }
 
     }
     public void SwapTowerModelsOnUpgrade()
     {
-        List<GameObject> towersCopy = new List<GameObject>(towers);
 
-        for (int i = towersCopy.Count-1; i >= 0; i--)
+        for (int i = towers.Count-1; i >= 0; i--)
         {
-            Transform positionTower = towersCopy[i].transform;
-            Instantiate(towerBuild.build, positionTower.position,positionTower.rotation);
-            UnRegisterTower(towers[i]);
-            Destroy(towers[i]);
+            Vector3 position = towers[i].transform.position;
+            Quaternion rotation = towers[i].transform.rotation;
+            Instantiate(towerBuild.build, position, rotation);
+            TowerHP towerHP = towers[i].GetComponent<TowerHP>();
+            towerHP.TakeDamage(100000);
+            
         }
     }
     public void OpenUpgradeShop()
