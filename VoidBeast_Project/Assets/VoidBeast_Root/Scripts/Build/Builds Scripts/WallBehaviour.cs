@@ -22,43 +22,35 @@ public class WallBehaviour : MonoBehaviour
     public void ThrowRaycast()
     {
         if (modelUpdated) { return; }
-        modelUpdated = true;
+        northRay = false;
+        southRay = false;
+        rightRay = false;
+        leftRay = false;
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin.position, Vector3.forward, out hit, rayRange,wallLayer))
         {
             northRay = true;
-            WallBehaviour wall = hit.collider.GetComponentInParent<WallBehaviour>();
-                wall.ThrowRaycast();
-            Debug.Log("N");
             
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.right, out hit, rayRange, wallLayer))
         {
             rightRay = true;
 
-            WallBehaviour wall = hit.collider.GetComponentInParent<WallBehaviour>();
-            wall.ThrowRaycast();
-            Debug.Log("R");
-
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.left, out hit, rayRange, wallLayer))
         {
             leftRay = true;
-            WallBehaviour wall = hit.collider.GetComponentInParent<WallBehaviour>();
-            wall.ThrowRaycast();
-            Debug.Log("L");
 
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.back, out hit, rayRange, wallLayer))
         {
             southRay = true;
-            WallBehaviour wall = hit.collider.GetComponentInParent<WallBehaviour>();
-            wall.ThrowRaycast();
-            Debug.Log("S");
 
         }
         ChoseModel();
+
         StartCoroutine(UpdateCooldown());
+        
 
     }
     private void ChoseModel()
@@ -68,6 +60,7 @@ public class WallBehaviour : MonoBehaviour
         if (southRay) key += 2;
         if (rightRay) key += 4;
         if (leftRay) key += 8;
+
         foreach (GameObject wall in wallModels)
         {
             wall.SetActive(false);
@@ -92,16 +85,14 @@ public class WallBehaviour : MonoBehaviour
             10  
         };
         wallModels[wallIndexByKey[key]].SetActive(true);
-        northRay = false;
-        southRay = false;
-        rightRay = false;
-        leftRay = false;
         key = 0;
     }
     IEnumerator UpdateCooldown()
     {
         modelUpdated = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         modelUpdated = false;
     }
+
+
 }

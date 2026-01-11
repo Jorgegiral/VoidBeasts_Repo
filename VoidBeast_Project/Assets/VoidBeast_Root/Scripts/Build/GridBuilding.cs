@@ -164,7 +164,6 @@ public class GridBuilding : MonoBehaviour
         {
             WallBehaviour wall = buildingTemp.GetComponent<WallBehaviour>();
             wall.ThrowRaycast();
-            Debug.Log("Raycast");
         }
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
