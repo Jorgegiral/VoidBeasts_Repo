@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
 
@@ -8,12 +10,16 @@ public class WallBehaviour : MonoBehaviour
     [SerializeField] LayerMask wallLayer;
     [SerializeField] float rayRange;
     [SerializeField] Transform rayOrigin;
+
+    [SerializeField] List<GameObject> hittedWalls = new List<GameObject>();
+    [SerializeField] int key;
     bool northRay;
     bool southRay;
     bool rightRay;
     bool leftRay;
-    public bool modelUpdated;
-
+    [SerializeField] int currentWallIndex = 0;
+    [SerializeField] int[] wallIndexByKey;
+    private bool isSetting = false;
     private void Awake()
     {
         if (rayOrigin == null)
@@ -21,78 +27,123 @@ public class WallBehaviour : MonoBehaviour
     }
     public void ThrowRaycast()
     {
-        if (modelUpdated) { return; }
         northRay = false;
         southRay = false;
         rightRay = false;
         leftRay = false;
+        hittedWalls.Clear();
+
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin.position, Vector3.forward, out hit, rayRange,wallLayer))
         {
             northRay = true;
-            
+            hittedWalls.Add(hit.collider.gameObject);
+            Debug.Log("N Parent");
+
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.right, out hit, rayRange, wallLayer))
         {
             rightRay = true;
+            hittedWalls.Add(hit.collider.gameObject);
+            Debug.Log("R Parent");
 
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.left, out hit, rayRange, wallLayer))
         {
             leftRay = true;
-
+            hittedWalls.Add(hit.collider.gameObject);
+            Debug.Log("L Parent");
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.back, out hit, rayRange, wallLayer))
         {
             southRay = true;
+            hittedWalls.Add(hit.collider.gameObject);
+            Debug.Log("S Parent");
 
         }
         ChoseModel();
+        ChangeModelNeighbours();
+    }
+    public void ThrowRaycastNeighbours()
+    {
+        if (isSetting) return;
+        isSetting = true;
+        hittedWalls.Clear();
 
-        StartCoroutine(UpdateCooldown());
-        
+        RaycastHit hit;
+        if (Physics.Raycast(rayOrigin.position, Vector3.forward, out hit, rayRange, wallLayer))
+        {
+            northRay = true;
+            Debug.Log("N neigh");
+            
+
+        }
+        if (Physics.Raycast(rayOrigin.position, Vector3.right, out hit, rayRange, wallLayer))
+        {
+            rightRay = true;
+            Debug.Log("R neigh");
+
+        }
+        if (Physics.Raycast(rayOrigin.position, Vector3.left, out hit, rayRange, wallLayer))
+        {
+            leftRay = true;
+            Debug.Log("L neigh");
+
+        }
+        if (Physics.Raycast(rayOrigin.position, -Vector3.forward, out hit, rayRange, wallLayer))
+        {
+            southRay = true;
+            Debug.Log("S neigh");
+
+        }
+        ChoseModel();
+    }
+    public void ChangeModelNeighbours()
+    {
+        foreach (GameObject wall in hittedWalls)
+        {
+            WallBehaviour neighbour = wall.GetComponentInParent<WallBehaviour>();
+            if (neighbour != null)
+            {
+                neighbour.ThrowRaycastNeighbours();
+            }
+            isSetting = false;
+        }
 
     }
     private void ChoseModel()
     {
-        int key = 0;
+        key = 0;
         if (northRay) key += 1;
         if (southRay) key += 2;
         if (rightRay) key += 4;
         if (leftRay) key += 8;
-
-        foreach (GameObject wall in wallModels)
+        northRay = false;
+        southRay = false;
+        rightRay = false;
+        leftRay = false;
+        if (key < 0 || key >= wallIndexByKey.Length)
         {
-            wall.SetActive(false);
+            Debug.LogError($"Key fuera de rango: {key}");
+            return;
         }
-        int[] wallIndexByKey =
+        int nextWallIndex = wallIndexByKey[key];
+
+        if (currentWallIndex == nextWallIndex)
+            return;
+        if (nextWallIndex < 0 || nextWallIndex >= wallModels.Length)
         {
-            0,  
-            1, 
-            1,  
-            1, 
-            0,  
-            3,  
-            2, 
-            8,  
-            0,  
-            5,  
-            4,  
-            9,  
-            0,  
-            7,  
-            6,  
-            10  
-        };
-        wallModels[wallIndexByKey[key]].SetActive(true);
-        key = 0;
+            Debug.LogError($"Índice de muro inválido: {nextWallIndex}");
+            return;
+        }
+
+        wallModels[nextWallIndex].SetActive(true);
+
+        currentWallIndex = nextWallIndex;
     }
-    IEnumerator UpdateCooldown()
+    IEnumerator WaitSettings()
     {
-        modelUpdated = true;
-        yield return new WaitForSeconds(0.1f);
-        modelUpdated = false;
+        yield return new WaitForSeconds(1f);
+        isSetting = false;
     }
-
-
 }
