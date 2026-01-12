@@ -17,9 +17,8 @@ public class WallBehaviour : MonoBehaviour
     bool southRay;
     bool rightRay;
     bool leftRay;
-    [SerializeField] int currentWallIndex = 0;
+    [SerializeField] int currentWallIndex = 1;
     [SerializeField] int[] wallIndexByKey;
-    private bool isSetting = false;
     private void Awake()
     {
         if (rayOrigin == null)
@@ -66,31 +65,32 @@ public class WallBehaviour : MonoBehaviour
     }
     public void ThrowRaycastNeighbours()
     {
-        if (isSetting) return;
-        isSetting = true;
         hittedWalls.Clear();
-
+        northRay = false;
+        southRay = false;
+        rightRay = false;
+        leftRay = false;
         RaycastHit hit;
-        if (Physics.Raycast(rayOrigin.position, Vector3.forward, out hit, rayRange, wallLayer))
+        if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out hit, rayRange, wallLayer))
         {
             northRay = true;
             Debug.Log("N neigh");
             
 
         }
-        if (Physics.Raycast(rayOrigin.position, Vector3.right, out hit, rayRange, wallLayer))
+        if (Physics.Raycast(rayOrigin.position, rayOrigin.right, out hit, rayRange, wallLayer))
         {
             rightRay = true;
             Debug.Log("R neigh");
 
         }
-        if (Physics.Raycast(rayOrigin.position, Vector3.left, out hit, rayRange, wallLayer))
+        if (Physics.Raycast(rayOrigin.position, -rayOrigin.right, out hit, rayRange, wallLayer))
         {
             leftRay = true;
             Debug.Log("L neigh");
 
         }
-        if (Physics.Raycast(rayOrigin.position, -Vector3.forward, out hit, rayRange, wallLayer))
+        if (Physics.Raycast(rayOrigin.position, -rayOrigin.forward, out hit, rayRange, wallLayer))
         {
             southRay = true;
             Debug.Log("S neigh");
@@ -106,13 +106,23 @@ public class WallBehaviour : MonoBehaviour
             if (neighbour != null)
             {
                 neighbour.ThrowRaycastNeighbours();
+
             }
-            isSetting = false;
+
         }
 
     }
     private void ChoseModel()
     {
+        if (wallIndexByKey == null || wallIndexByKey.Length != 16)
+        {
+            Debug.LogError(
+                $"WallBehaviour inválido en: {gameObject.name}\n" +
+                $"Path: {gameObject.transform.root.name}",
+                this
+            );
+            return;
+        }
         key = 0;
         if (northRay) key += 1;
         if (southRay) key += 2;
@@ -136,14 +146,16 @@ public class WallBehaviour : MonoBehaviour
             Debug.LogError($"Índice de muro inválido: {nextWallIndex}");
             return;
         }
-
+        DisableAllModels();
         wallModels[nextWallIndex].SetActive(true);
-
         currentWallIndex = nextWallIndex;
+
     }
-    IEnumerator WaitSettings()
+    void DisableAllModels()
     {
-        yield return new WaitForSeconds(1f);
-        isSetting = false;
+        for (int i = 0; i < wallModels.Length; i++)
+        {
+            wallModels[i].SetActive(false);
+        }
     }
 }
