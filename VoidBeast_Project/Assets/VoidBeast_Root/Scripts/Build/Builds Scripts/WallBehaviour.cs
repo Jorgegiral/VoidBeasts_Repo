@@ -114,15 +114,7 @@ public class WallBehaviour : MonoBehaviour
     }
     private void ChoseModel()
     {
-        if (wallIndexByKey == null || wallIndexByKey.Length != 16)
-        {
-            Debug.LogError(
-                $"WallBehaviour inválido en: {gameObject.name}\n" +
-                $"Path: {gameObject.transform.root.name}",
-                this
-            );
-            return;
-        }
+
         key = 0;
         if (northRay) key += 1;
         if (southRay) key += 2;
@@ -132,20 +124,12 @@ public class WallBehaviour : MonoBehaviour
         southRay = false;
         rightRay = false;
         leftRay = false;
-        if (key < 0 || key >= wallIndexByKey.Length)
-        {
-            Debug.LogError($"Key fuera de rango: {key}");
-            return;
-        }
+
         int nextWallIndex = wallIndexByKey[key];
 
         if (currentWallIndex == nextWallIndex)
             return;
-        if (nextWallIndex < 0 || nextWallIndex >= wallModels.Length)
-        {
-            Debug.LogError($"Índice de muro inválido: {nextWallIndex}");
-            return;
-        }
+
         DisableAllModels();
         wallModels[nextWallIndex].SetActive(true);
         currentWallIndex = nextWallIndex;
