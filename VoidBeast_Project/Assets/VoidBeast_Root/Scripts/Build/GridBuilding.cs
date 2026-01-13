@@ -14,7 +14,6 @@ public class GridBuilding : MonoBehaviour
     public Tilemap tempTilemap;
     private static Dictionary<TileType, TileBase> tileBases = new Dictionary<TileType, TileBase>();
     public Building buildingTemp;
-    
     private Vector3 prevPos;
     private BoundsInt prevArea;
     [SerializeField] LayerMask layerGround;
@@ -22,6 +21,7 @@ public class GridBuilding : MonoBehaviour
     private Vector3 buildingClickOffset;
     bool isWall;
     GameObject[] grassObjects;
+    public NavMeshSurface surface;
 
     private void Awake()
     {
@@ -202,7 +202,7 @@ public class GridBuilding : MonoBehaviour
     }
     private void ReCalculateRoute()
     {
-
+        
     }
     public void BuildAction(InputAction.CallbackContext context)
     {
