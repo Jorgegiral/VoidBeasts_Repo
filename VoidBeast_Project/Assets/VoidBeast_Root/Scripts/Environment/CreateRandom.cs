@@ -42,6 +42,7 @@ public class CreateRandom : MonoBehaviour
                 );
         };
     }
+    [ContextMenu("Clear")]
 
     public void Clear()
     {
