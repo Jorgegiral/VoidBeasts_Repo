@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 public class CreateRandom : MonoBehaviour
 {
-    public GameObject enviroElements;
+    public GameObject[] enviroElements;
     [SerializeField] int density;
     [SerializeField, UnityEngine.Range(0, 1)] float rotateTowardsNormal;
     [SerializeField] Vector2 rotationRange;
@@ -16,6 +16,10 @@ public class CreateRandom : MonoBehaviour
     [SerializeField] Vector3 minScale;
     [SerializeField] Vector3 maxScale;
 
+    private void Start()
+    {
+        Generate();
+    }
 #if UNITY_EDITOR
     [ContextMenu("Generate")]
 
@@ -27,11 +31,11 @@ public class CreateRandom : MonoBehaviour
             float sampleX = Random.Range(xRange.x, xRange.y);
             float sampleY = Random.Range(zRange.x, zRange.y);
             Vector3 rayStart = new Vector3(sampleX, 2, sampleY);
-            if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, Mathf.Infinity))
+            if (!Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, Mathf.Infinity))
                 continue;
             if (hit.point.y < 0)
                 continue;
-            GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(this.enviroElements, transform);
+            GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(this.enviroElements[Random.Range(0,enviroElements.Length)], transform);
             instantiatedPrefab.transform.position = hit.point;
             instantiatedPrefab.transform.Rotate(Vector3.up, Random.Range(rotationRange.x,rotationRange.y),Space.Self);
             instantiatedPrefab.transform.rotation = Quaternion.Lerp(transform.rotation, transform.rotation * Quaternion.FromToRotation(instantiatedPrefab.transform.up, hit.normal), rotateTowardsNormal);

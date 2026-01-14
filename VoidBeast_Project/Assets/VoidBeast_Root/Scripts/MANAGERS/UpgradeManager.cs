@@ -26,7 +26,11 @@ public class UpgradeManager : MonoBehaviour
     public GameObject[] mainBuildModels;
     private int maxTowerLevel = 3;
     private int maxWallLevel = 3;
-
+    public bool isPistolUnlocked;
+    public bool isSpinUnlocked;
+    public bool isMineUnlocked;
+    public bool isBombUnlocked;
+    public bool isRayUnlocked;
 
 
     private void Awake()
