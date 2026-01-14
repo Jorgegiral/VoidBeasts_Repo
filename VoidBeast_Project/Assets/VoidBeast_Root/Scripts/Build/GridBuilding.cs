@@ -169,6 +169,7 @@ public class GridBuilding : MonoBehaviour
         SetTilesBlock(area,TileType.Red,mainTilemap);
         ReCalculateRoute();
         buildingTemp = null;
+        isWall = false;
     }
     
     public void MoveBuildAction(InputAction.CallbackContext context)

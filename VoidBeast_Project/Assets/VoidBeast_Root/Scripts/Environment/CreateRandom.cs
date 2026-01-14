@@ -15,7 +15,8 @@ public class CreateRandom : MonoBehaviour
     [SerializeField] Vector2 zRange;
     [SerializeField] Vector3 minScale;
     [SerializeField] Vector3 maxScale;
-
+    [SerializeField] Vector3 centerPoint = Vector3.zero;
+    [SerializeField] float forbiddenRadius = 3f;
     private void Start()
     {
         Generate();
@@ -30,10 +31,12 @@ public class CreateRandom : MonoBehaviour
         {
             float sampleX = Random.Range(xRange.x, xRange.y);
             float sampleY = Random.Range(zRange.x, zRange.y);
-            Vector3 rayStart = new Vector3(sampleX, 2, sampleY);
+            Vector3 rayStart = new Vector3(sampleX, 1, sampleY);
             if (!Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, Mathf.Infinity))
                 continue;
             if (hit.point.y < 0)
+                continue;
+            if (Vector3.Distance(hit.point, centerPoint) < forbiddenRadius)
                 continue;
             GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(this.enviroElements[Random.Range(0,enviroElements.Length)], transform);
             instantiatedPrefab.transform.position = hit.point;
