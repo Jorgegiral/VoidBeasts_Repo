@@ -16,16 +16,21 @@ public class UpgradeManager : MonoBehaviour
     public int mainBuildingLevel = 1;
     public int wallLevel = 0;
     public int towerLevel = 0;
-    public int wallAvailable = 25;
-    public int towerAvailable = 2;
-    public int cropAvailable = 2;
+    public int wallAvailable = 10;
+    public int towerAvailable = 0;
+    public int cropAvailable = 1;
     public TypeBuild wallBuild;
     public TypeBuild towerBuild;
     public List<GameObject> walls = new List<GameObject>();
     public List<GameObject> towers = new List<GameObject>();
+    public GameObject[] mainBuildModels;
     private int maxTowerLevel = 3;
     private int maxWallLevel = 3;
-
+    public bool isPistolUnlocked;
+    public bool isSpinUnlocked;
+    public bool isMineUnlocked;
+    public bool isBombUnlocked;
+    public bool isRayUnlocked;
 
 
     private void Awake()
@@ -63,6 +68,29 @@ public class UpgradeManager : MonoBehaviour
         if (precio <= MoneySystem.instance.money && mainBuildingLevel != 6)
         {
             mainBuildingLevel++;
+        }
+        if(mainBuildingLevel == 2)
+        {
+            wallAvailable += 5;
+            cropAvailable += 1;
+        }
+        if (mainBuildingLevel == 3)
+        {
+            towerAvailable += 1;
+        }
+        if (mainBuildingLevel == 4)
+        {
+            wallAvailable += 5;
+        }
+        if (mainBuildingLevel == 5)
+        {
+            cropAvailable += 1;
+            wallAvailable += 5;
+        }
+        if (mainBuildingLevel == 6)
+        {
+            wallAvailable += 10;
+            towerAvailable += 1;
         }
     }
     public void SwapWallModelsOnUpgrade()
