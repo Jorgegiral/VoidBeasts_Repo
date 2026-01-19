@@ -20,8 +20,6 @@ public class GridBuilding : MonoBehaviour
     private Vector3 buildingOffset;
     private Vector3 buildingClickOffset;
     bool isWall;
-    GameObject[] grassObjects;
-    public NavMeshSurface surface;
 
     private void Awake()
     {
@@ -43,7 +41,6 @@ public class GridBuilding : MonoBehaviour
         tileBases.Add(TileType.White, Resources.Load<TileBase>(tilepath + "white"));
         tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilepath + "red"));
         tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilepath + "green"));
-        grassObjects = GameObject.FindGameObjectsWithTag("Grass");
 
     }
     private static void SetTilesBlock(BoundsInt area, TileType type, Tilemap tilemap)
@@ -167,7 +164,6 @@ public class GridBuilding : MonoBehaviour
         }
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
-        ReCalculateRoute();
         buildingTemp = null;
         isWall = false;
     }
@@ -198,13 +194,7 @@ public class GridBuilding : MonoBehaviour
                 }
         }
     }
-    private void EliminateGrass()
-    {
-    }
-    private void ReCalculateRoute()
-    {
-        
-    }
+
     public void BuildAction(InputAction.CallbackContext context)
     {
         if (!buildingTemp) return;
