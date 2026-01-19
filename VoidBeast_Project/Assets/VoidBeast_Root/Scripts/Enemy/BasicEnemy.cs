@@ -8,7 +8,6 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] Transform target;
     [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
-    [SerializeField] float raycastHeightOffset = 1f;
 
 
 
@@ -18,6 +17,7 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] private float maxSpeed = 2f;
     [SerializeField] float attackRange;
     [SerializeField] float attackCD = 2;
+    [SerializeField] Transform attackPoint;
 
 
 
@@ -141,8 +141,7 @@ public class BasicEnemy : MonoBehaviour
 
         Settings.instance.PlaySoundFXClip(attackEnemySound, transform, 1f);
         RaycastHit hit;
-        Vector3 rayOrigin = transform.position + Vector3.up * raycastHeightOffset;
-        if (Physics.Raycast(rayOrigin, transform.forward, out hit, attackRange, attackLayer))
+        if (Physics.Raycast(attackPoint.position, transform.forward, out hit, attackRange, attackLayer))
         {
 
             var health = hit.collider.GetComponent<BuildingHP>();

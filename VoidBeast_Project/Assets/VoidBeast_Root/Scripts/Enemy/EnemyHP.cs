@@ -21,9 +21,10 @@ public class EnemyHP : MonoBehaviour
     {
         enemyMaxHealth = Random.Range(minHealth, maxHealth);
         enemyMaxHealth = ScaleEnemyHP();
+        EnemyManager.instance.Register(gameObject);
+
         enemyCurrentHealth = enemyMaxHealth;
     }
-
 
     float ScaleEnemyHP()
     {
@@ -35,16 +36,15 @@ public class EnemyHP : MonoBehaviour
         enemyCurrentHealth -= damage;
         rend.material = damageMaterial;
         StartCoroutine(TakeDamageMaterial());
-        //PONER CAPA ROJA PARA FEEDBACK DE DAÑO
         if (enemyCurrentHealth < 0) 
         {
             BasicEnemy enemy = GetComponent<BasicEnemy>();
             GameObject tempSmoke = Instantiate(smokeVFX,transform.position,transform.rotation);
             Destroy(tempSmoke,1f);
-            PlayerStats.instance.enemykilledCount++;
             if (enemy != null)
             {
                 Settings.instance.PlaySoundFXClip(deathEnemySound, transform, 1f);
+                EnemyManager.instance.UnRegister(gameObject);
 
                 enemy.OnDeath();
 
@@ -52,6 +52,7 @@ public class EnemyHP : MonoBehaviour
             else
             {
                 Settings.instance.PlaySoundFXClip(deathEnemySound, transform, 1f);
+                EnemyManager.instance.UnRegister(gameObject);
 
                 Destroy(gameObject);
             }

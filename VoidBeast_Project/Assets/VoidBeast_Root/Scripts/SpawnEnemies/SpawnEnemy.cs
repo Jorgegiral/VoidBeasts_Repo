@@ -6,8 +6,7 @@ public class SpawnEnemy : MonoBehaviour
 {
 
     [Header("Prefab Enemigos")]
-    [SerializeField] GameObject enemyBasic;
-    [SerializeField] GameObject enemyPuñetero;
+    [SerializeField] GameObject[] enemy;
     [Header("Referencias")]
     [SerializeField] TMP_Text enemyText;
     [SerializeField] Transform MainBuild;
@@ -61,7 +60,7 @@ public class SpawnEnemy : MonoBehaviour
         }
         if (DayNightSystem.Instance.isNight)
         {
-            enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+            enemyCount = EnemyManager.instance.enemies.Count;
             enemyText.text = enemyCount.ToString();
             if (enemyRemain == 0 && enemyCount == 0 && finishedNight)
             {
@@ -98,7 +97,7 @@ public class SpawnEnemy : MonoBehaviour
 
     
         float roll = Random.value; 
-        return roll < chancePuñetero ? enemyPuñetero : enemyBasic;
+        return roll < chancePuñetero ? enemy[0] : enemy[1];
     }
 
     private Transform SelectOneFromTheList()
