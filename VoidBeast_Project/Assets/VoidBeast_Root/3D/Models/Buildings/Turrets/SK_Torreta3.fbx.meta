@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: fbc998b2c0cf6a040be4e06e277f3dbd
+guid: 11d17297654d2cf4b9a489599aabd7f7
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
-    materialImportMode: 2
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature|AN_Torreta2
-      takeName: Armature|AN_Torreta2
-      internalID: 1401759091414319694
+      name: Armature|AN_Torreta3
+      takeName: Armature|AN_Torreta3
+      internalID: 7080489139824181581
       firstFrame: 0
-      lastFrame: 31
+      lastFrame: 16
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
