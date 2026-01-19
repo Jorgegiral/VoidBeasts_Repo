@@ -2,6 +2,7 @@ using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -15,14 +16,21 @@ public class UpgradeManager : MonoBehaviour
     public int mainBuildingLevel = 1;
     public int wallLevel = 0;
     public int towerLevel = 0;
-    public int wallAvailable = 25;
-    public int towerAvailable = 2;
-    public int cropAvailable = 2;
+    public int wallAvailable = 10;
+    public int towerAvailable = 0;
+    public int cropAvailable = 1;
     public TypeBuild wallBuild;
     public TypeBuild towerBuild;
     public List<GameObject> walls = new List<GameObject>();
     public List<GameObject> towers = new List<GameObject>();
-
+    public GameObject[] mainBuildModels;
+    private int maxTowerLevel = 3;
+    private int maxWallLevel = 3;
+    public bool isPistolUnlocked;
+    public bool isSpinUnlocked;
+    public bool isMineUnlocked;
+    public bool isBombUnlocked;
+    public bool isRayUnlocked;
 
 
     private void Awake()
@@ -36,23 +44,24 @@ public class UpgradeManager : MonoBehaviour
 
     public void UpgradeWall(int precio)
     {
-        if(precio <= MoneySystem.instance.money && wallLevel != 2)
-        {
+        if (wallLevel >= maxWallLevel) return;
+        if (precio > MoneySystem.instance.money) return;
+            MoneySystem.instance.money -= precio;
             wallLevel++;
             wallBuild.Upgrade(wallLevel);
             if (walls.Count > 0) SwapWallModelsOnUpgrade();
 
-        }
     }
     public void UpgradeTower(int precio)
     {
-        if (precio <= MoneySystem.instance.money && towerLevel != 2)
-        {
+        if (towerLevel >= maxTowerLevel) return;
+        if (precio > MoneySystem.instance.money) return;
+            MoneySystem.instance.money -= precio;
             towerLevel++;
             towerBuild.Upgrade(towerLevel);
             if(towers.Count > 0) SwapTowerModelsOnUpgrade();
 
-        }
+        
     }
     public void UpgradeMainBuild(int precio)
     {
@@ -60,26 +69,55 @@ public class UpgradeManager : MonoBehaviour
         {
             mainBuildingLevel++;
         }
+        if(mainBuildingLevel == 2)
+        {
+            wallAvailable += 5;
+            cropAvailable += 1;
+        }
+        if (mainBuildingLevel == 3)
+        {
+            towerAvailable += 1;
+        }
+        if (mainBuildingLevel == 4)
+        {
+            wallAvailable += 5;
+        }
+        if (mainBuildingLevel == 5)
+        {
+            cropAvailable += 1;
+            wallAvailable += 5;
+        }
+        if (mainBuildingLevel == 6)
+        {
+            wallAvailable += 10;
+            towerAvailable += 1;
+        }
     }
     public void SwapWallModelsOnUpgrade()
     {
         
         for (int i = walls.Count - 1; i >= 0; i++)
         {
-            Instantiate(wallBuild.build, walls[i].transform);
-            UnRegisterWall(walls[i]);
-            Destroy(walls[i]);
+            Vector3 position = walls[i].transform.position;
+            Quaternion rotation = walls[i].transform.rotation;
+            Instantiate(wallBuild.build, position, rotation);
+            WallHP wallHP = walls[i].GetComponent<WallHP>();
+            wallHP.TakeDamage(100000);
 
         }
 
     }
     public void SwapTowerModelsOnUpgrade()
     {
-        for (int i = towers.Count - 2; i >= 0; i++)
+
+        for (int i = towers.Count-1; i >= 0; i--)
         {
-            Instantiate(towerBuild.build, towers[0].transform);
-            UnRegisterTower(towers[0]);
-            Destroy(towers[0]);
+            Vector3 position = towers[i].transform.position;
+            Quaternion rotation = towers[i].transform.rotation;
+            Instantiate(towerBuild.build, position, rotation);
+            TowerHP towerHP = towers[i].GetComponent<TowerHP>();
+            towerHP.TakeDamage(100000);
+            
         }
     }
     public void OpenUpgradeShop()

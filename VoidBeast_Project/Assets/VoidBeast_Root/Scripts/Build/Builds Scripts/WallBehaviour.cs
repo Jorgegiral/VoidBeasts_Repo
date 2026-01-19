@@ -1,5 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Reflection.Emit;
 using UnityEngine;
 
@@ -9,77 +10,136 @@ public class WallBehaviour : MonoBehaviour
     [SerializeField] LayerMask wallLayer;
     [SerializeField] float rayRange;
     [SerializeField] Transform rayOrigin;
+
+    [SerializeField] List<GameObject> hittedWalls = new List<GameObject>();
+    [SerializeField] int key;
     bool northRay;
     bool southRay;
     bool rightRay;
     bool leftRay;
-    bool modelUpdated;
-
-    void Start()
+    [SerializeField] int currentWallIndex = 1;
+    [SerializeField] int[] wallIndexByKey;
+    private void Awake()
     {
-        
+        if (rayOrigin == null)
+            rayOrigin = transform;
     }
     public void ThrowRaycast()
     {
-        if (modelUpdated) { return; }
+        northRay = false;
+        southRay = false;
+        rightRay = false;
+        leftRay = false;
+        hittedWalls.Clear();
 
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin.position, Vector3.forward, out hit, rayRange,wallLayer))
         {
             northRay = true;
-            var wall = hit.collider.GetComponent<WallBehaviour>();
-            if (wall != null)
-            {
-                wall.ThrowRaycast();
-            }
+            hittedWalls.Add(hit.collider.gameObject);
+            Debug.Log("N Parent");
+
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.right, out hit, rayRange, wallLayer))
         {
             rightRay = true;
+            hittedWalls.Add(hit.collider.gameObject);
+            Debug.Log("R Parent");
 
-            var wall = hit.collider.GetComponent<WallBehaviour>();
-            if (wall != null)
-            {
-                wall.ThrowRaycast();
-            }
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.left, out hit, rayRange, wallLayer))
         {
             leftRay = true;
-            var wall = hit.collider.GetComponent<WallBehaviour>();
-            if (wall != null)
-            {
-                wall.ThrowRaycast();
-            }
+            hittedWalls.Add(hit.collider.gameObject);
+            Debug.Log("L Parent");
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.back, out hit, rayRange, wallLayer))
         {
             southRay = true;
-            var wall = hit.collider.GetComponent<WallBehaviour>();
-            if (wall != null)
-            {
-                wall.ThrowRaycast();
-            }
+            hittedWalls.Add(hit.collider.gameObject);
+            Debug.Log("S Parent");
+
         }
         ChoseModel();
-        UpdateCooldown();
+        ChangeModelNeighbours();
+    }
+    public void ThrowRaycastNeighbours()
+    {
+        hittedWalls.Clear();
+        northRay = false;
+        southRay = false;
+        rightRay = false;
+        leftRay = false;
+        RaycastHit hit;
+        if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out hit, rayRange, wallLayer))
+        {
+            northRay = true;
+            Debug.Log("N neigh");
+            
+
+        }
+        if (Physics.Raycast(rayOrigin.position, rayOrigin.right, out hit, rayRange, wallLayer))
+        {
+            rightRay = true;
+            Debug.Log("R neigh");
+
+        }
+        if (Physics.Raycast(rayOrigin.position, -rayOrigin.right, out hit, rayRange, wallLayer))
+        {
+            leftRay = true;
+            Debug.Log("L neigh");
+
+        }
+        if (Physics.Raycast(rayOrigin.position, -rayOrigin.forward, out hit, rayRange, wallLayer))
+        {
+            southRay = true;
+            Debug.Log("S neigh");
+
+        }
+        ChoseModel();
+    }
+    public void ChangeModelNeighbours()
+    {
+        foreach (GameObject wall in hittedWalls)
+        {
+            WallBehaviour neighbour = wall.GetComponentInParent<WallBehaviour>();
+            if (neighbour != null)
+            {
+                neighbour.ThrowRaycastNeighbours();
+
+            }
+
+        }
 
     }
     private void ChoseModel()
     {
 
-
-
-
+        key = 0;
+        if (northRay) key += 1;
+        if (southRay) key += 2;
+        if (rightRay) key += 4;
+        if (leftRay) key += 8;
         northRay = false;
         southRay = false;
         rightRay = false;
         leftRay = false;
+
+        int nextWallIndex = wallIndexByKey[key];
+
+        if (currentWallIndex == nextWallIndex)
+            return;
+
+        DisableAllModels();
+        wallModels[nextWallIndex].SetActive(true);
+        currentWallIndex = nextWallIndex;
+
     }
-    IEnumerator UpdateCooldown()
+    void DisableAllModels()
     {
-        modelUpdated = true;
-        yield return new WaitForSeconds(0.5f);
-        modelUpdated = false;
+        for (int i = 0; i < wallModels.Length; i++)
+        {
+            wallModels[i].SetActive(false);
+        }
     }
 }
