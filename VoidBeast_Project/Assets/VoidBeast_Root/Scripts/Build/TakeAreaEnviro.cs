@@ -1,21 +1,34 @@
+using System.Collections;
 using UnityEngine;
 
 public class TakeAreaEnviro : MonoBehaviour
 {
     public bool Placed { get; private set; }
     public BoundsInt area;
-    private void Start()
-    {
-        Place();
-    }
+    public Vector3 offset;
+
     public void Place()
     {
+        if (GridBuilding.instance == null) return;
+
+        var grid = GridBuilding.instance.gridLayout;
+
+        Vector3Int cellPos = grid.WorldToCell(transform.position);
+        Vector3 snappedWorldPos = grid.CellToWorld(cellPos) + grid.cellSize / 2f;
+        transform.position = snappedWorldPos;
+        transform.position += offset;
+        area.position = cellPos;
+
         Placed = true;
-        area.position = GridBuilding.instance.gridLayout.WorldToCell(gameObject.transform.position);
         GridBuilding.instance.TakeArea(area);
     }
     public bool CanBePlaced()
     {
         return GridBuilding.instance.CanTakeAre(area);
+    }
+    private IEnumerator Start()
+    {
+        yield return null; 
+        Place();
     }
 }

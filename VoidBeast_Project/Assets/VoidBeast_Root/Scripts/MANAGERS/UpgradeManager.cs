@@ -67,30 +67,29 @@ public class UpgradeManager : MonoBehaviour
     {
         if (precio <= MoneySystem.instance.money && mainBuildingLevel != 6)
         {
+            MoneySystem.instance.money -= precio;
             mainBuildingLevel++;
         }
-        if(mainBuildingLevel == 2)
+        switch (mainBuildingLevel)
         {
-            wallAvailable += 5;
-            cropAvailable += 1;
-        }
-        if (mainBuildingLevel == 3)
-        {
-            towerAvailable += 1;
-        }
-        if (mainBuildingLevel == 4)
-        {
-            wallAvailable += 5;
-        }
-        if (mainBuildingLevel == 5)
-        {
-            cropAvailable += 1;
-            wallAvailable += 5;
-        }
-        if (mainBuildingLevel == 6)
-        {
-            wallAvailable += 10;
-            towerAvailable += 1;
+            case 2:
+                wallAvailable += 5;
+                cropAvailable += 1;
+                break;
+            case 3:
+                towerAvailable += 1;
+                break;
+            case 4:
+                wallAvailable += 5;
+                break;
+            case 5:
+                cropAvailable += 1;
+                wallAvailable += 5;
+                break;
+            case 6:
+                wallAvailable += 10;
+                towerAvailable += 1;
+                break;
         }
     }
     public void SwapWallModelsOnUpgrade()
@@ -118,6 +117,25 @@ public class UpgradeManager : MonoBehaviour
             TowerHP towerHP = towers[i].GetComponent<TowerHP>();
             towerHP.TakeDamage(100000);
             
+        }
+    }
+    public void ExpandBuildArea(int extraWidth, int extraHeight)
+    {
+        BoundsInt bounds = GridBuilding.instance.mainTilemap.cellBounds;
+
+        bounds.xMin -= extraWidth / 2;
+        bounds.xMax += extraWidth / 2;
+        bounds.yMax += extraHeight; 
+        bounds.yMin -= extraHeight / 2;
+
+        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        {
+            for (int y = bounds.yMin; y < bounds.yMax; y++)
+            {
+                Vector3Int pos = new Vector3Int(x, y, 0);
+ //               if (GridBuilding.instance.mainTilemap.GetTile(pos) == null)
+   //                 GridBuilding.instance.mainTilemap.SetTile(pos,GridBuilding.TileType.Red;
+            }
         }
     }
     public void OpenUpgradeShop()
