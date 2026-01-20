@@ -8,6 +8,8 @@ public class Dialogue : MonoBehaviour
     public string[] text;
     public float textSpeed = 0.1f;
     int index;
+    bool waitForAction = false;
+    public bool allowClick = true;
 
     void Start()
     {
@@ -17,6 +19,10 @@ public class Dialogue : MonoBehaviour
 
     void Update()
     {
+
+        if (!allowClick) return;
+        if (waitForAction) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             if (dialogueText.text == text[index])
@@ -59,5 +65,24 @@ public class Dialogue : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+    public void ForceNextText()
+    {
+        StopAllCoroutines();
+        NextText();
+    }
+    public void WaitForAction()
+    {
+        waitForAction = true;
+    }
+
+    public void ContinueAfterAction()
+    {
+        waitForAction = false;
+        NextText();
+    }
+    public int GetCurrentIndex()
+    {
+        return index;
     }
 }

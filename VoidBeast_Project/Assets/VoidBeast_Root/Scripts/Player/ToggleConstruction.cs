@@ -17,6 +17,7 @@ public class ToggleConstruction : MonoBehaviour
     [Header("Animation References")]
     private Animator anim;
 
+    bool tutorialTabDone = false; //Jorge
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -49,7 +50,21 @@ public class ToggleConstruction : MonoBehaviour
     {
         if (!context.performed)
             return;
-        if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
+        if (TutorialManager.instance != null)
+        {
+            if (TutorialManager.instance.step == 1)
+            {
+                if (!tutorialTabDone)
+                {
+                    tutorialTabDone = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
+        }
+        if (TutorialManager.instance == null || TutorialManager.instance.step >= 1)
+        {
+            
+            if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
         {
             playerInput.SwitchCurrentActionMap("BuildMode");
             constructionShop.SetActive(true);
@@ -73,6 +88,6 @@ public class ToggleConstruction : MonoBehaviour
 
         }
     }
-
+    }
 }
 
