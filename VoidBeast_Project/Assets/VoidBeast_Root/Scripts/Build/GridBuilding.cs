@@ -172,7 +172,19 @@ public class GridBuilding : MonoBehaviour
         buildingTemp = null;
         isWall = false;
     }
-    
+    public void UnTakeArea(BoundsInt area)
+    {
+        if (isWall)
+        {
+            WallBehaviour wall = buildingTemp.GetComponent<WallBehaviour>();
+            wall.ThrowRaycast();
+        }
+        SetTilesBlock(area, TileType.Empty, tempTilemap);
+        SetTilesBlock(area, TileType.White, mainTilemap);
+        buildingTemp = null;
+        isWall = false;
+    }
+
     public void MoveBuildAction(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
