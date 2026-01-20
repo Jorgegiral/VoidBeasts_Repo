@@ -28,7 +28,6 @@ public class Building : MonoBehaviour
         if(destroyDebrisCollider != null)
         {
             StartCoroutine(debrisCD());
-
         }
         
     }

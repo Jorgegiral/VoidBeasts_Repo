@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,7 +21,7 @@ public class ToggleConstruction : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
-        grid.SetActive(false);
+        StartCoroutine(DisableGridDelayed());
     }
     public void TableActived()
     {
@@ -73,6 +74,10 @@ public class ToggleConstruction : MonoBehaviour
 
         }
     }
-
+    private IEnumerator DisableGridDelayed()
+    {
+        yield return new WaitForSeconds(0.1f);
+        grid.SetActive(false);
+    }
 }
 
