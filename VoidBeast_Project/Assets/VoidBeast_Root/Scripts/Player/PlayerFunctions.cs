@@ -19,7 +19,7 @@ public class PlayerFunctions : MonoBehaviour
     private Animator anim; //Jorge
     [SerializeField] GameObject firstSelectedOnPause;
     [SerializeField] GameObject firstSelectedOnSeed;
-
+    public bool parcelaSelection = false; //Jorge
 
     private void Awake()
     {
@@ -52,6 +52,15 @@ public class PlayerFunctions : MonoBehaviour
                 StartCoroutine(SelectFirstButtonDelayed());
 
                 seedOpened = true;
+                
+            if (TutorialManager.instance.step == 5)
+            {
+                if (!parcelaSelection)
+                {
+                    parcelaSelection = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
         }
     }
 }
@@ -74,7 +83,6 @@ public class PlayerFunctions : MonoBehaviour
             PlayerStats.instance.menuOpened = true;
             Time.timeScale = 0f;
             EventSystem.current.SetSelectedGameObject(firstSelectedOnPause);
-
         }
         else
         {

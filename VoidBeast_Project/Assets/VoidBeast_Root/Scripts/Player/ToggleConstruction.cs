@@ -17,7 +17,9 @@ public class ToggleConstruction : MonoBehaviour
     [Header("Animation References")]
     private Animator anim;
 
-    bool tutorialTabDone = false; //Jorge
+    //Jorge:
+    bool tutorialTabDone = false;
+    bool tutorialTabClose = false;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -60,7 +62,16 @@ public class ToggleConstruction : MonoBehaviour
                     TutorialManager.instance.CompleteStep();
                 }
             }
+            if (TutorialManager.instance.step == 4)
+            {
+                if (!tutorialTabClose)
+                {
+                    tutorialTabClose = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
         }
+
         if (TutorialManager.instance == null || TutorialManager.instance.step >= 1)
         {
             

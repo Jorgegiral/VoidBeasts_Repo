@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
@@ -5,6 +6,7 @@ public class TutorialManager : MonoBehaviour
     public static TutorialManager instance;
     public Dialogue dialogue;
     public int step = 0;
+
     private void Awake()
     {
         instance = this;
@@ -18,26 +20,43 @@ public class TutorialManager : MonoBehaviour
 
     void StartStep()
     {
+        dialogue.ResetAdvanceSettings();
+        dialogue.allowClick = true;
         switch (step)
         {
             case 0: // moverse
-                //dialogue.WaitForAction();
-                //CheckMovement();
+                dialogue.WaitForAction();
                 break;
 
             case 1: // TAB construcción
-                //dialogue.WaitForAction();
+                dialogue.WaitForAction();
                 break;
-            case 2:
-                // "Ataca con click izquierdo"
-                break;
-
-            case 3: // interactuar con E
-                //dialogue.WaitForAction();
+            case 2:// TAB construcción 2
+                dialogue.WaitForAction();
                 break;
 
-            case 8: // atacar
-                //dialogue.WaitForAction();
+            case 3: //Comprar parcela
+                dialogue.WaitForAction();
+                break;
+
+            case 4: // Arrastrar parcela
+                dialogue.WaitForAction();
+                break;
+
+            case 5: // Tab otra vez
+                dialogue.WaitForAction();
+                break;
+
+            case 6: // Interactuar
+                dialogue.WaitForAction();
+                break;
+
+            case 7: // Plantar
+                dialogue.WaitForAction();
+                break;
+
+            case 8: // Sin dinero
+                dialogue.AllowClickAdvance();
                 break;
         }
     }
@@ -47,32 +66,17 @@ public class TutorialManager : MonoBehaviour
         dialogue.ForceNextText();
         StartStep();
     }
-    /*
-    void CheckMovement()
+
+    IEnumerator ExploreTime(float seconds)
     {
-        if (Input.GetAxisRaw("Horizontal") != 0 ||
-            Input.GetAxisRaw("Vertical") != 0)
-        {
-            dialogue.ContinueAfterAction();
-        }
-    }
-    
-    // Estos métodos los llamas desde el gameplay REAL
-    public void OnBuildModeOpened()
-    {
-        if (dialogue.GetCurrentIndex() == 1)
-            dialogue.ContinueAfterAction();
+        yield return new WaitForSeconds(seconds);
+        CompleteStep();
     }
 
-    public void OnInteract()
+    public void OnTutorialButtonPressed()
     {
-        if (dialogue.GetCurrentIndex() == 3)
-            dialogue.ContinueAfterAction();
-    }
+        if (step != 2) return;
 
-    public void OnAttack()
-    {
-        if (dialogue.GetCurrentIndex() == 8)
-            dialogue.ContinueAfterAction();
-    }*/
+        CompleteStep();
+    }
 }
