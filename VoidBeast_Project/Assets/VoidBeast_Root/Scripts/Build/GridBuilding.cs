@@ -72,6 +72,11 @@ public class GridBuilding : MonoBehaviour
             arr[i] = tileBases[type];
         }
     }
+    public TileBase GetTileColor(TileType type)
+    {
+        TileBase tileBaseColor = tileBases[type];
+        return tileBaseColor;
+    }
     public void InitializeWithBuilding(TypeBuild build)
     {
         if (buildingTemp != null) return;
