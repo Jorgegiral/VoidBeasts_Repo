@@ -22,6 +22,19 @@ public class TakeAreaEnviro : MonoBehaviour
         Placed = true;
         GridBuilding.instance.TakeArea(area);
     }
+    public void Destroyed()
+    {
+        if (GridBuilding.instance == null) return;
+        var grid = GridBuilding.instance.gridLayout;
+        Vector3Int cellPos = grid.WorldToCell(transform.position);
+        Vector3 snappedWorldPos = grid.CellToWorld(cellPos) + grid.cellSize / 2f;
+        transform.position = snappedWorldPos;
+        transform.position += offset;
+        area.position = cellPos;
+        Placed = false;
+        GridBuilding.instance.UnTakeArea(area);
+        gameObject.SetActive(false);
+    }
     public bool CanBePlaced()
     {
         return GridBuilding.instance.CanTakeAre(area);

@@ -15,6 +15,9 @@ public class PlayerFunctions : MonoBehaviour
     bool seedOpened = false;
     LayerMask layerInteractable;
     LayerMask layerPlant;
+    LayerMask layerDestroyable;
+    LayerMask layerWall;
+
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
     [SerializeField] GameObject firstSelectedOnPause;
@@ -25,7 +28,8 @@ public class PlayerFunctions : MonoBehaviour
     {
         layerInteractable = LayerMask.GetMask("Interactable");
         layerPlant = LayerMask.GetMask("Plant");
-
+        layerDestroyable = LayerMask.GetMask("Destroyable");
+        layerWall = LayerMask.GetMask("Wall");
         anim = GetComponent<Animator>(); //Jorge
         seedMenu.SetActive(false);
     }
@@ -45,11 +49,10 @@ public class PlayerFunctions : MonoBehaviour
             }
         }
         if (DayNightSystem.Instance.isDay) { 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerPlant))
-        {
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerPlant))
+            {
             ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
             seedMenu.SetActive(true);
-                StartCoroutine(SelectFirstButtonDelayed());
 
                 seedOpened = true;
                 
@@ -62,7 +65,6 @@ public class PlayerFunctions : MonoBehaviour
                 }
             }
         }
-    }
 }
 
 
@@ -92,11 +94,5 @@ public class PlayerFunctions : MonoBehaviour
         }
     }
 
-    private IEnumerator SelectFirstButtonDelayed()
-    {
-        yield return null;
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(firstSelectedOnSeed);
-    }
 }
 

@@ -16,7 +16,6 @@ public class DayNightSystem : MonoBehaviour
     public bool isNight;
     public bool startNight;
     public bool startDay;
-    public int enemyQuantity;
     [SerializeField] TMP_Text dayNightText;
     [SerializeField] Volume globalVolume;
     [SerializeField] Light globalLight;
@@ -107,7 +106,6 @@ public class DayNightSystem : MonoBehaviour
         {
             isDay = false;
             isNight = true;
-            EnemyQuantityScale();
             dayNumber++;
             globalLight.colorTemperature = 15000;
             playerCam.gameObject.SetActive(false);
@@ -129,12 +127,7 @@ public class DayNightSystem : MonoBehaviour
         MusicManager.instance.PlayNightSong();
         UpdateDayNightUI();
     }
-    public int EnemyQuantityScale()
-    {
-        //por ahora asi
-        enemyQuantity = Mathf.RoundToInt(15 + Mathf.Pow(nightNumber, 1.5f));
-        return enemyQuantity;
-    }
+
     public void RegisterParcela(Parcela newParcela)
     {
         if (!parcelas.Contains(newParcela))
