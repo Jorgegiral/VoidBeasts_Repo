@@ -62,7 +62,7 @@ public class ToggleConstruction : MonoBehaviour
                     TutorialManager.instance.CompleteStep();
                 }
             }
-            if (TutorialManager.instance.step == 4)
+            if (TutorialManager.instance.step == 5)
             {
                 if (!tutorialTabClose)
                 {

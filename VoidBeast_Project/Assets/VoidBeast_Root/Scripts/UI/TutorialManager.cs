@@ -9,6 +9,8 @@ public class TutorialManager : MonoBehaviour
     public int step = 0;
     public GameObject arrow;
     public GameObject arrow1;
+    [SerializeField] private GameObject dialoguetext;
+    private RectTransform rectTransform;
     private void Awake()
     {
         instance = this;
@@ -16,13 +18,11 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        //dialogue.allowClick = false;
         StartStep();
+        rectTransform = dialoguetext.GetComponent<RectTransform>();
     }
-
     void StartStep()
     {
-        //dialogue.allowClick = true;
         switch (step)
         {
             case 0: // moverse
@@ -35,38 +35,56 @@ public class TutorialManager : MonoBehaviour
 
             case 2: //Comprar parcela
                 dialogue.WaitForAction();
+                rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
                 arrow.SetActive(true);
                 break;
 
-            case 3: // Arrastrar parcela
+            case 3: // Poner parcela
                 dialogue.WaitForAction();
                 arrow.SetActive(false);
                 break;
 
-            case 4: // Tab otra vez
+            case 4: // Cancelar
                 dialogue.WaitForAction();
                 break;
 
-            case 5: // Interactuar
+            case 5: // Tab otra vez
                 dialogue.WaitForAction();
                 break;
 
-            case 6: // Plantar  
+            case 6: //  Interactuar
+                dialogue.WaitForAction();
+                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
+                break;
+
+            case 7: // Plantar 
                 dialogue.WaitForAction();
                 arrow1.SetActive(true);
+                rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
                 break;
 
-            case 7: // salide de plantar
+            case 8: // salir de plantar
                 dialogue.WaitForAction();
                 arrow1.SetActive(false);
                 break;
 
-            case 8: // Banco
+            case 9: // Banco
+                dialogue.WaitForAction();
+                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
+                break;
+
+            case 10: // Mata los enemigos
                 dialogue.WaitForAction();
                 break;
 
-            case 9: // Mata los enemigos con CLICK IZQ
+            case 11: // Mejora
                 dialogue.WaitForAction();
+                rectTransform.offsetMin = new Vector2(1250f, rectTransform.offsetMin.y);
+                break;
+
+            case 12: // recoleccion
+                dialogue.WaitForAction();
+                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
         }
     }
@@ -77,16 +95,10 @@ public class TutorialManager : MonoBehaviour
         StartStep();
     }
 
-    IEnumerator ExploreTime(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        CompleteStep();
-    }
-
     public void OnTutorialButtonPressed()
     {
         if (step != 2) return;
-
         CompleteStep();
     }
+    
 }
