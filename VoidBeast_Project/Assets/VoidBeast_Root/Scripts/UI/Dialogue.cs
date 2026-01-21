@@ -8,6 +8,9 @@ public class Dialogue : MonoBehaviour
     public string[] text;
     public float textSpeed = 0.1f;
     int index;
+    bool waitForAction = false;
+    bool canAdvanceByClick = true;
+    public bool allowClick = true;
 
     void Start()
     {
@@ -17,6 +20,10 @@ public class Dialogue : MonoBehaviour
 
     void Update()
     {
+
+        if (!allowClick) return;
+        /*if (waitForAction) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             if (dialogueText.text == text[index])
@@ -28,6 +35,20 @@ public class Dialogue : MonoBehaviour
                 StopAllCoroutines();
                 dialogueText.text = text[index];
             }
+        }*/
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (dialogueText.text != text[index])
+            {
+                StopAllCoroutines();
+                dialogueText.text = text[index];
+                return;
+            }
+
+            if (waitForAction) return;
+            if (!canAdvanceByClick) return;
+
+            NextText();
         }
     }
 
@@ -59,5 +80,30 @@ public class Dialogue : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+    public void ForceNextText()
+    {
+        StopAllCoroutines();
+        dialogueText.text = text[index];
+        NextText();
+    }
+    public void WaitForAction()
+    {
+        canAdvanceByClick = false;
+        waitForAction = true;
+    }
+    public void AllowClickAdvance()
+    {
+        canAdvanceByClick = true;
+        waitForAction = false;
+    }
+    public void ResetAdvanceSettings()
+    {
+        waitForAction = false;
+        canAdvanceByClick = false;
+    }
+    public int GetCurrentIndex()
+    {
+        return index;
     }
 }

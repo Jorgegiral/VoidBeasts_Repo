@@ -22,7 +22,7 @@ public class PlayerFunctions : MonoBehaviour
     private Animator anim; //Jorge
     [SerializeField] GameObject firstSelectedOnPause;
     [SerializeField] GameObject firstSelectedOnSeed;
-
+    public bool parcelaSelection = false; //Jorge
 
     private void Awake()
     {
@@ -55,21 +55,14 @@ public class PlayerFunctions : MonoBehaviour
             seedMenu.SetActive(true);
 
                 seedOpened = true;
-                if (seedOpened)
+                
+            if (TutorialManager.instance.step == 5)
+            {
+                if (!parcelaSelection)
                 {
-                    seedMenu.SetActive(false);
-                    seedOpened = false;
-                    PlayerStats.instance.blockMovement = false;
+                    parcelaSelection = true;
+                    TutorialManager.instance.CompleteStep();
                 }
-            }
-            if (Physics.Raycast(transform.position, Vector3.forward, out hit, 3, layerDestroyable))
-            {
-                TakeAreaEnviro enviroHitted = hit.collider.GetComponentInParent<TakeAreaEnviro>();
-                enviroHitted.Destroyed();
-            }
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerWall))
-            {
-
             }
         }
 }
@@ -92,7 +85,6 @@ public class PlayerFunctions : MonoBehaviour
             PlayerStats.instance.menuOpened = true;
             Time.timeScale = 0f;
             EventSystem.current.SetSelectedGameObject(firstSelectedOnPause);
-
         }
         else
         {

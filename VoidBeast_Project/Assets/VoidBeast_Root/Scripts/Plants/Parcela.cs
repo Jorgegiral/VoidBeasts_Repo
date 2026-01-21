@@ -17,7 +17,7 @@ public class Parcela : MonoBehaviour
     private GameObject tempPlant;
     [SerializeField] AudioClip plantSound;
     [SerializeField] AudioClip starSound;
-
+    bool canPlant = false;
     private void Start()
     {
         render = GetComponent<Renderer>();
@@ -42,6 +42,15 @@ public class Parcela : MonoBehaviour
         Settings.instance.PlaySoundFXClip(plantSound, transform, 1f);
         Settings.instance.PlaySoundFXClip(starSound, transform, 1f);
 
+        //Jorge:
+        if (TutorialManager.instance.step == 6)
+        {
+            if (!canPlant)
+            {
+                canPlant = true;
+                TutorialManager.instance.CompleteStep();
+            }
+        }
 
         Destroy(tempVFX, 1);
        dayCount = plant.numDias;
