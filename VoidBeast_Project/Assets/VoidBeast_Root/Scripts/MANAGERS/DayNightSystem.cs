@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+
 
 public class DayNightSystem : MonoBehaviour
 {
@@ -17,6 +19,8 @@ public class DayNightSystem : MonoBehaviour
     public bool startNight;
     public bool startDay;
     public int enemyQuantity;
+    [SerializeField] float lightTransitionDuration = 3f;
+    Coroutine lightCoroutine;
     [SerializeField] TMP_Text dayNightText;
     [SerializeField] Volume globalVolume;
     [SerializeField] Light globalLight;
@@ -73,7 +77,8 @@ public class DayNightSystem : MonoBehaviour
             isDay = true;
             isNight = false;
             nightNumber++;
-            globalLight.colorTemperature = 5000;
+            if (lightCoroutine != null) StopCoroutine(lightCoroutine);
+            lightCoroutine = StartCoroutine(ChangeLightTemperature(5000));
             playerCam.gameObject.SetActive(true);
             nightCam.gameObject.SetActive(false);
             DayNightIcons[0].sprite = DayNightSprites[0];
@@ -109,7 +114,8 @@ public class DayNightSystem : MonoBehaviour
             isNight = true;
             EnemyQuantityScale();
             dayNumber++;
-            globalLight.colorTemperature = 15000;
+            if (lightCoroutine != null) StopCoroutine(lightCoroutine);
+            lightCoroutine = StartCoroutine(ChangeLightTemperature(15000));
             playerCam.gameObject.SetActive(false);
             nightCam.gameObject.SetActive(true);
             DayNightIcons[0].sprite = DayNightSprites[1];
@@ -148,6 +154,22 @@ public class DayNightSystem : MonoBehaviour
         {
             parcelasOrder.Add(newParcela);
         }
+    }
+
+    IEnumerator ChangeLightTemperature(float targetTemperature)
+    {
+        float startTemp = globalLight.colorTemperature;
+        float elapsed = 0f;
+
+        while (elapsed < lightTransitionDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / lightTransitionDuration;
+            globalLight.colorTemperature = Mathf.Lerp(startTemp, targetTemperature, t);
+            yield return null;
+        }
+
+        globalLight.colorTemperature = targetTemperature;
     }
 }
 
