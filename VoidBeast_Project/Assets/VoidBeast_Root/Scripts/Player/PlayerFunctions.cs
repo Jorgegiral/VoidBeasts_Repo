@@ -85,7 +85,7 @@ public class PlayerFunctions : MonoBehaviour
                 Building area = hit.collider.GetComponentInParent<Building>();
                 area.Destroyed();
                 adaptWall.ThrowRaycastNeighbours();
-                hit.collider.gameObject.SetActive(false);
+                adaptWall.gameObject.SetActive(false);
                 UpgradeManager.instance.wallAvailable++;
             }
         }

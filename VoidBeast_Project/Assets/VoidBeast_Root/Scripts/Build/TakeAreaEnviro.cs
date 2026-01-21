@@ -23,6 +23,7 @@ public class TakeAreaEnviro : MonoBehaviour
 
         Placed = true;
         GridBuilding.instance.TakeArea(area);
+        SetArea(area);
     }
     public void SetArea(BoundsInt area)
     {

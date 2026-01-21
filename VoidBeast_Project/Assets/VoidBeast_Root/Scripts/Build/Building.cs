@@ -31,7 +31,7 @@ public class Building : MonoBehaviour
         {
             StartCoroutine(debrisCD());
         }
-
+        SetArea(areaTemp);
     }
     public void SetArea(BoundsInt area)
     {
