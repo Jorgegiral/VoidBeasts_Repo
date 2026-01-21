@@ -2,6 +2,7 @@ using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 public class UpgradeManager : MonoBehaviour
@@ -31,6 +32,7 @@ public class UpgradeManager : MonoBehaviour
     public bool isMineUnlocked;
     public bool isBombUnlocked;
     public bool isRayUnlocked;
+    public BoundsInt bounds;
 
 
     private void Awake()
@@ -39,10 +41,9 @@ public class UpgradeManager : MonoBehaviour
         wallBuild.build = wallBuild.levelModels[wallLevel];
         towerBuild.build = towerBuild.levelModels[towerLevel];
 
+}
 
-    }
-
-    public void UpgradeWall(int precio)
+public void UpgradeWall(int precio)
     {
         if (wallLevel >= maxWallLevel) return;
         if (precio > MoneySystem.instance.money) return;
@@ -67,30 +68,35 @@ public class UpgradeManager : MonoBehaviour
     {
         if (precio <= MoneySystem.instance.money && mainBuildingLevel != 6)
         {
+            MoneySystem.instance.money -= precio;
             mainBuildingLevel++;
         }
-        if(mainBuildingLevel == 2)
+        switch (mainBuildingLevel)
         {
-            wallAvailable += 5;
-            cropAvailable += 1;
-        }
-        if (mainBuildingLevel == 3)
-        {
-            towerAvailable += 1;
-        }
-        if (mainBuildingLevel == 4)
-        {
-            wallAvailable += 5;
-        }
-        if (mainBuildingLevel == 5)
-        {
-            cropAvailable += 1;
-            wallAvailable += 5;
-        }
-        if (mainBuildingLevel == 6)
-        {
-            wallAvailable += 10;
-            towerAvailable += 1;
+            case 2:
+                ExpandBuildArea(2, 2);
+                wallAvailable += 5;
+                cropAvailable += 1;
+                break;
+            case 3:
+                ExpandBuildArea(2, 2);
+                towerAvailable += 1;
+                break;
+            case 4:
+                ExpandBuildArea(4, 4);
+                wallAvailable += 5;
+                break;
+            case 5:
+                ExpandBuildArea(2, 2);
+                cropAvailable += 1;
+                wallAvailable += 5;
+                break;
+            case 6:
+                ExpandBuildArea(4, 4);
+                wallAvailable += 10;
+                towerAvailable += 1;
+                break;
+            default: break;
         }
     }
     public void SwapWallModelsOnUpgrade()
@@ -120,6 +126,30 @@ public class UpgradeManager : MonoBehaviour
             
         }
     }
+    public void ExpandBuildArea(int extraWidth, int extraHeight)
+    {
+        
+
+        bounds.xMin -= extraWidth / 2;
+        bounds.xMax += extraWidth / 2;
+        bounds.yMax += extraHeight /2; 
+        bounds.yMin -= extraHeight / 2;
+
+        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        {
+            for (int y = bounds.yMin; y < bounds.yMax; y++)
+            {
+                Vector3Int pos = new Vector3Int(x, y, 0);
+                if (GridBuilding.instance.mainTilemap.GetTile(pos) == null) 
+                {
+                    GridBuilding.instance.mainTilemap.SetTile(pos, GridBuilding.instance.GetTileColor(GridBuilding.TileType.White));
+                }
+        }
+        }
+    }
+
+
+
     public void OpenUpgradeShop()
     {
         upgradeShop.gameObject.SetActive(true);
