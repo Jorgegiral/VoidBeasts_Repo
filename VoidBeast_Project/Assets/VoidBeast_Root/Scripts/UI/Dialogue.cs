@@ -8,9 +8,9 @@ public class Dialogue : MonoBehaviour
     public string[] text;
     public float textSpeed = 0.1f;
     int index;
-    bool waitForAction = false;
-    bool canAdvanceByClick = true;
-    public bool allowClick = true;
+    public bool waitForAction = false;
+    public bool canAdvanceByClick = true;
+    //public bool allowClick = true;
 
     void Start()
     {
@@ -21,7 +21,7 @@ public class Dialogue : MonoBehaviour
     void Update()
     {
 
-        if (!allowClick) return;
+        //if (!allowClick) return;
         /*if (waitForAction) return;
 
         if (Input.GetMouseButtonDown(0))
@@ -96,11 +96,6 @@ public class Dialogue : MonoBehaviour
     {
         canAdvanceByClick = true;
         waitForAction = false;
-    }
-    public void ResetAdvanceSettings()
-    {
-        waitForAction = false;
-        canAdvanceByClick = false;
     }
     public int GetCurrentIndex()
     {
