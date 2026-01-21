@@ -20,6 +20,8 @@ public class GridBuilding : MonoBehaviour
     private Vector3 buildingOffset;
     private Vector3 buildingClickOffset;
     bool isWall;
+    bool parcela = false; //Jorge
+    private TypeBuild currentBuildType;
 
     private void Awake()
     {
@@ -79,6 +81,9 @@ public class GridBuilding : MonoBehaviour
     {
         if (buildingTemp != null) return;
         if (!CheckIfAvailable(build)) return;
+
+        currentBuildType = build; // Jorge
+
         buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
         buildingOffset = build.placeOffSet;
         buildingClickOffset = build.clickOffSet;
@@ -207,8 +212,24 @@ public class GridBuilding : MonoBehaviour
         if (buildingTemp.CanBePlaced())
         {
             buildingTemp.Place();
-        }
 
+            //Jorge:
+
+            if (TutorialManager.instance != null)
+            {
+
+                if (!parcela)
+                {
+                    if (TutorialManager.instance.step == 3 &&
+                        currentBuildType.type == TypeBuild.BuildType.Build)
+                    {
+                        TutorialManager.instance.CompleteStep();
+                    }
+                }
+
+                currentBuildType = null;
+            }
+        }
     }
     public void CancelBuildAction(InputAction.CallbackContext context)
     {

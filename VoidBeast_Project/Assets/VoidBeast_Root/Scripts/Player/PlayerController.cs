@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private Transform cameraFollowTransform;
     private Rigidbody rb;
     private Vector2 moveInput;
-
+    bool hasMovedTutorial = false;
     private Animator anim; //Jorge
 
     private void Start()
@@ -23,6 +23,18 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(TutorialManager.instance != null)
+        {
+            if(TutorialManager.instance.step == 0) { 
+            if (!hasMovedTutorial && moveInput != Vector2.zero)
+            {
+
+                hasMovedTutorial = true;
+                TutorialManager.instance.CompleteStep();
+            }
+        }
+        }
+
 
         if (PlayerStats.instance.blockMovement)
         {
