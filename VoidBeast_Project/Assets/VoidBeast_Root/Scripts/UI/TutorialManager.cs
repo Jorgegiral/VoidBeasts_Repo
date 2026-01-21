@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,7 +7,8 @@ public class TutorialManager : MonoBehaviour
     public static TutorialManager instance;
     public Dialogue dialogue;
     public int step = 0;
-
+    public GameObject arrow;
+    public GameObject arrow1;
     private void Awake()
     {
         instance = this;
@@ -28,34 +30,43 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case 1: // TAB construcción
-                dialogue.AllowClickAdvance();
-                break;
-            case 2:// TAB construcción 2
                 dialogue.WaitForAction();
                 break;
 
-            case 3: //Comprar parcela
+            case 2: //Comprar parcela
+                dialogue.WaitForAction();
+                arrow.SetActive(true);
+                break;
+
+            case 3: // Arrastrar parcela
+                dialogue.WaitForAction();
+                arrow.SetActive(false);
+                break;
+
+            case 4: // Tab otra vez
                 dialogue.WaitForAction();
                 break;
 
-            case 4: // Arrastrar parcela
+            case 5: // Interactuar
                 dialogue.WaitForAction();
                 break;
 
-            case 5: // Tab otra vez
+            case 6: // Plantar  
+                dialogue.WaitForAction();
+                arrow1.SetActive(true);
+                break;
+
+            case 7: // salide de plantar
+                dialogue.WaitForAction();
+                arrow1.SetActive(false);
+                break;
+
+            case 8: // Banco
                 dialogue.WaitForAction();
                 break;
 
-            case 6: // Interactuar
+            case 9: // Mata los enemigos con CLICK IZQ
                 dialogue.WaitForAction();
-                break;
-
-            case 7: // Plantar
-                dialogue.WaitForAction();
-                break;
-
-            case 8: // Sin dinero
-                dialogue.AllowClickAdvance();
                 break;
         }
     }

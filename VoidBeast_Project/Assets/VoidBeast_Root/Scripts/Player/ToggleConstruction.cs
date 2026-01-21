@@ -24,7 +24,6 @@ public class ToggleConstruction : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
-        StartCoroutine(DisableGridDelayed());
     }
     public void TableActived()
     {

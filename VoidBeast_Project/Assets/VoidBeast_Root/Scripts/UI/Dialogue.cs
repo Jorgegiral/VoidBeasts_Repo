@@ -1,13 +1,14 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class Dialogue : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
     public string[] text;
     public float textSpeed = 0.1f;
-    int index;
+    public int index;
     public bool waitForAction = false;
     public bool canAdvanceByClick = true;
     //public bool allowClick = true;
@@ -20,22 +21,6 @@ public class Dialogue : MonoBehaviour
 
     void Update()
     {
-
-        //if (!allowClick) return;
-        /*if (waitForAction) return;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (dialogueText.text == text[index])
-            {
-                NextText();
-            }
-            else
-            {
-                StopAllCoroutines();
-                dialogueText.text = text[index];
-            }
-        }*/
         if (Input.GetMouseButtonDown(0))
         {
             if (dialogueText.text != text[index])
