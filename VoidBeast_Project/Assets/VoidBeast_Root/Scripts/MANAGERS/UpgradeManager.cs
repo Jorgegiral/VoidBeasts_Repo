@@ -1,4 +1,3 @@
-using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -46,10 +45,11 @@ public void UpgradeWall(int precio)
     {
         if (wallLevel >= maxWallLevel) return;
         if (precio > MoneySystem.instance.money) return;
+        if (walls.Count <= 0) return;
             MoneySystem.instance.money -= precio;
             wallLevel++;
             wallBuild.Upgrade(wallLevel);
-            if (walls.Count > 0) SwapWallModelsOnUpgrade();
+            SwapWallModelsOnUpgrade();
 
     }
     public void UpgradeTower(int precio)
@@ -109,17 +109,28 @@ public void UpgradeWall(int precio)
     }
     public void SwapWallModelsOnUpgrade()
     {
-        
-        for (int i = walls.Count - 1; i >= 0; i++)
+
+        List<GameObject> newWalls = new List<GameObject>();
+
+        foreach (var wall in walls.ToList())
         {
-            Vector3 position = walls[i].transform.position;
-            Quaternion rotation = walls[i].transform.rotation;
-            Instantiate(wallBuild.build, position, rotation);
-            WallHP wallHP = walls[i].GetComponent<WallHP>();
+            Vector3 position = wall.transform.position;
+            Quaternion rotation = wall.transform.rotation;
+            GameObject newWall = Instantiate(wallBuild.build, position, rotation);
+            newWalls.Add(newWall);
+            WallHP wallHP = wall.GetComponent<WallHP>();
             wallHP.TakeDamage(100000);
-
         }
-
+        walls = newWalls;
+        AdaptModels();
+    }
+    public void AdaptModels()
+    {
+        foreach (var wall in walls)
+        {
+            WallBehaviour refresh = wall.GetComponent<WallBehaviour>();
+            refresh.ThrowRaycastNeighbours();
+        }
     }
     public void SwapTowerModelsOnUpgrade()
     {
@@ -168,8 +179,8 @@ public void UpgradeWall(int precio)
     }
     public void RegisterWall(GameObject wall)
     {
-        walls.Add(wall);
-
+        if (!walls.Contains(wall))
+            walls.Add(wall);
     }
     public void UnRegisterWall(GameObject wall)
     {

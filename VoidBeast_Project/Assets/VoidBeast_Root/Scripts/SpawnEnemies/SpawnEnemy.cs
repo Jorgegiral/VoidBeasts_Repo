@@ -15,8 +15,8 @@ public class SpawnEnemy : MonoBehaviour
     [Header("Spawners")]
     [SerializeField] List<Transform> allSpawners;
 
-    [SerializeField]private int enemyRemain;
-    private bool spawning;
+    private int enemyRemain;
+    private bool spawning = false;
     [SerializeField] private bool finishedNight = false;
     private Coroutine spawnCoroutine;
     void Update()
@@ -36,6 +36,7 @@ public class SpawnEnemy : MonoBehaviour
                 DayNightSystem.Instance.ToDay();
                 finishedNight = false;
                 enemyRemain = 0;
+                spawning = false;
             }
         }
 
