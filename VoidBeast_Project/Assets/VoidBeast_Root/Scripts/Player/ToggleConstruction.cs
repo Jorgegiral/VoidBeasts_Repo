@@ -99,7 +99,13 @@ public class ToggleConstruction : MonoBehaviour
             PlayerStats.instance.isActionMode = true;
 
         }
+
     }
+    }
+    private IEnumerator DisableGridDelayed()
+    {
+        yield return new WaitForSeconds(0.1f);
+        grid.SetActive(false);
     }
 }
 
