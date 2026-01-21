@@ -14,14 +14,13 @@ public class TutorialManager : MonoBehaviour
 
     void Start()
     {
-        dialogue.allowClick = false;
+        //dialogue.allowClick = false;
         StartStep();
     }
 
     void StartStep()
     {
-        dialogue.ResetAdvanceSettings();
-        dialogue.allowClick = true;
+        //dialogue.allowClick = true;
         switch (step)
         {
             case 0: // moverse
@@ -29,7 +28,7 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case 1: // TAB construcción
-                dialogue.WaitForAction();
+                dialogue.AllowClickAdvance();
                 break;
             case 2:// TAB construcción 2
                 dialogue.WaitForAction();
