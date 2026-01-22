@@ -44,7 +44,7 @@ public class Parcela : MonoBehaviour
         Settings.instance.PlaySoundFXClip(starSound, transform, 1f);
 
         //Jorge:
-        if (TutorialManager.instance.step == 7)
+        if (TutorialManager.instance.step == 9)
         {
             if (!canPlant)
             {

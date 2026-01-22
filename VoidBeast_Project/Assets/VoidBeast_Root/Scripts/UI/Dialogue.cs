@@ -28,7 +28,7 @@ public class Dialogue : MonoBehaviour
                 dialogueText.text = text[index];
                 return;
             }
-            if (TutorialManager.instance.step == 4 || TutorialManager.instance.step == 12)
+            if (TutorialManager.instance.step == 1 || TutorialManager.instance.step == 5 || TutorialManager.instance.step == 8 || TutorialManager.instance.step == 14)
             {
                 TutorialManager.instance.CompleteStep();
                 return;
