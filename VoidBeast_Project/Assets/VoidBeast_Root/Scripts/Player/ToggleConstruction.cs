@@ -72,7 +72,7 @@ public class ToggleConstruction : MonoBehaviour
             }
         }
 
-        if (TutorialManager.instance == null || TutorialManager.instance.step >= 1)
+        if (TutorialManager.instance == null || TutorialManager.instance.step >= 2)
         {
             
             if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)

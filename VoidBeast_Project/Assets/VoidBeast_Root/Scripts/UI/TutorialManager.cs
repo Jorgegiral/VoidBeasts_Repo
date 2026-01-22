@@ -58,15 +58,16 @@ public class TutorialManager : MonoBehaviour
 
             case 6: // Tab otra vez
                 dialogue.WaitForAction();
-                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
             case 7: //  Interactuar
                 dialogue.WaitForAction();
+                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
             case 8: //explicación plantar
                 dialogue.WaitForAction();
+                rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
                 bloqueo.SetActive(true);
                 break;
 
@@ -83,12 +84,11 @@ public class TutorialManager : MonoBehaviour
 
             case 11: // Banco
                 dialogue.WaitForAction();
-                rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
+                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
             case 12: // Mata los enemigos
                 dialogue.WaitForAction();
-                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
             case 13: // Mejora
