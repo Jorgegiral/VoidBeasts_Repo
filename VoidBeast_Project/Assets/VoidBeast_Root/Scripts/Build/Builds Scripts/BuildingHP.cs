@@ -20,6 +20,7 @@ public class BuildingHP : MonoBehaviour
     Renderer[] renderers;
 
     [SerializeField] string damagePropertyName = "_DamageAmount";
+    [SerializeField] string intensityPropertyName = "_IntensityStains";
     private void Awake()
     {      
         renderers = GetComponentsInChildren<Renderer>();//Jorge
@@ -118,6 +119,7 @@ public class BuildingHP : MonoBehaviour
             fillImage.fillAmount = fill;
         //codigo Jorge:
         float damageAmount = (1f - fill) * 2;
+        float IntensityStains = (1f - fill);
         /*
         rend.GetPropertyBlock(mpb);
         mpb.SetFloat(damagePropertyName, damageAmount);
@@ -126,6 +128,7 @@ public class BuildingHP : MonoBehaviour
         {
             r.GetPropertyBlock(mpb);
             mpb.SetFloat(damagePropertyName, damageAmount);
+            mpb.SetFloat(intensityPropertyName, IntensityStains);
             r.SetPropertyBlock(mpb);
         }
     }

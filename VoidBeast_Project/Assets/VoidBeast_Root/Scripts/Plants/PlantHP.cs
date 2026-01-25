@@ -8,10 +8,21 @@ public class PlantHP : MonoBehaviour
     [SerializeField] float maxPlantHP;
     [SerializeField] Parcela plantParcela;
     [SerializeField] private Image healthbar;
+    [SerializeField] private GameObject healthob;
+    private DayNightSystem dayNightSystem;
     private void Start()
     {
         plantHP = maxPlantHP;
+        dayNightSystem = DayNightSystem.Instance;
         UpdateHealthBar();
+    }
+
+    private void Update()
+    {
+        if (dayNightSystem != null)
+        {
+            healthob.SetActive(!dayNightSystem.isDay);
+        }
     }
     public void TakeDamage(float damage)
     {
@@ -26,6 +37,7 @@ public class PlantHP : MonoBehaviour
     }
     void UpdateHealthBar()
     {
+
         float health = plantHP / maxPlantHP;
         health = Mathf.Clamp01(health);
         Color fullColor = new Color(0f, 1f, 0.6f);
