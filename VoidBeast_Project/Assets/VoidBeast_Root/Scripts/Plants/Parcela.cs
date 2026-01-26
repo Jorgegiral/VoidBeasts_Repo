@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -43,7 +44,7 @@ public class Parcela : MonoBehaviour
         Settings.instance.PlaySoundFXClip(starSound, transform, 1f);
 
         //Jorge:
-        if (TutorialManager.instance.step == 6)
+        if (TutorialManager.instance.step == 9)
         {
             if (!canPlant)
             {
@@ -59,11 +60,12 @@ public class Parcela : MonoBehaviour
     public void GrowedPlant()
     {
         Vector3 yoffset = new Vector3(0, 0.3f, 0);
-        if (nightCount == 0) {
+        if (nightCount == 0) 
+        {
            Destroy(tempPlant);
            tempPlant = Instantiate(plant.plantGameObject[0], transform.position + yoffset, transform.rotation);
-            
-         }
+        }
+
         if (nightCount == 1)
         {
            Destroy(tempPlant);
