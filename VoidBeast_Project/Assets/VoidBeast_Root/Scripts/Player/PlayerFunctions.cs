@@ -35,11 +35,16 @@ public class PlayerFunctions : MonoBehaviour
         anim = GetComponent<Animator>(); //Jorge
         seedMenu.SetActive(false);
     }
+    private void Update()
+    {
+        Debug.DrawRay(transform.position + new Vector3(0, 1, 0), transform.forward * 3, Color.red);
 
+    }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
+        if (!context.performed) return;
 
         RaycastHit hit;
 
@@ -59,11 +64,13 @@ public class PlayerFunctions : MonoBehaviour
                 }
             }
         }
-        if (DayNightSystem.Instance.isDay) { 
+
+        if (DayNightSystem.Instance.isDay)
+        {
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerPlant))
             {
-            ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
-            seedMenu.SetActive(true);
+                ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
+                seedMenu.SetActive(true);
 
                 seedOpened = true;
                 
@@ -71,9 +78,28 @@ public class PlayerFunctions : MonoBehaviour
             {
                 if (!parcelaSelection)
                 {
-                    parcelaSelection = true;
-                    TutorialManager.instance.CompleteStep();
+                    if (!parcelaSelection)
+                    {
+                        parcelaSelection = true;
+                        TutorialManager.instance.CompleteStep();
+                    }
                 }
+            }
+            if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), transform.TransformDirection(Vector3.forward), out hit, 3, layerDestroyable))
+            {
+                TakeAreaEnviro areaEnviro = hit.collider.GetComponentInParent<TakeAreaEnviro>();
+                areaEnviro.Destroyed();
+
+                hit.collider.gameObject.SetActive(false);
+            }
+            if (Physics.Raycast(transform.position + new Vector3(0, 0.3f, 0), transform.TransformDirection(Vector3.forward), out hit, 3, layerWall))
+            {
+                WallBehaviour adaptWall = hit.collider.GetComponentInParent<WallBehaviour>();
+                Building area = hit.collider.GetComponentInParent<Building>();
+                area.Destroyed();
+                adaptWall.ThrowRaycastNeighbours();
+                adaptWall.gameObject.SetActive(false);
+                UpgradeManager.instance.wallAvailable++;
             }
         }
     }

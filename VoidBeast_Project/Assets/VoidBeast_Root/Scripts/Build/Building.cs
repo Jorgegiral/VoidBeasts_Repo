@@ -6,6 +6,7 @@ public class Building : MonoBehaviour
     public bool Placed { get; private set; }
     public BoundsInt area;
     public GameObject destroyDebrisCollider;
+    private BoundsInt occupiedArea;
 
     public bool CanBePlaced()
     {
@@ -23,13 +24,23 @@ public class Building : MonoBehaviour
         Vector3Int positionInt = GridBuilding.instance.gridLayout.LocalToCell(transform.position);
         BoundsInt areaTemp = area;
         areaTemp.position = positionInt;
+
         Placed = true;
         GridBuilding.instance.TakeArea(areaTemp);
-        if(destroyDebrisCollider != null)
+        if (destroyDebrisCollider != null)
         {
             StartCoroutine(debrisCD());
         }
-        
+        SetArea(areaTemp);
+    }
+    public void SetArea(BoundsInt area)
+    {
+        occupiedArea = area;
+    }
+    public void Destroyed()
+    {
+        GridBuilding.instance.UnTakeArea(occupiedArea);
+
     }
     IEnumerator debrisCD()
     {
