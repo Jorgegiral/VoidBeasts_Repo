@@ -1,13 +1,16 @@
-using UnityEngine;
-using TMPro;
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Dialogue : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
     public string[] text;
     public float textSpeed = 0.1f;
-    int index;
+    public int index;
+    public bool waitForAction = false;
 
     void Start()
     {
@@ -19,15 +22,20 @@ public class Dialogue : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (dialogueText.text == text[index])
-            {
-                NextText();
-            }
-            else
+            if (dialogueText.text != text[index])
             {
                 StopAllCoroutines();
                 dialogueText.text = text[index];
+                return;
             }
+            if (TutorialManager.instance.step == 1 || TutorialManager.instance.step == 5 || TutorialManager.instance.step == 8 || TutorialManager.instance.step == 14)
+            {
+                TutorialManager.instance.CompleteStep();
+                return;
+            }
+            if (waitForAction) return;
+
+            NextText();
         }
     }
 
@@ -42,7 +50,7 @@ public class Dialogue : MonoBehaviour
         foreach (char letter in text[index].ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(textSpeed);
+            yield return new WaitForSecondsRealtime(textSpeed);
         }
     }
 
@@ -59,5 +67,19 @@ public class Dialogue : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+    public void ForceNextText()
+    {
+        StopAllCoroutines();
+        dialogueText.text = text[index];
+        NextText();
+    }
+    public void WaitForAction()
+    {
+        waitForAction = true;
+    }
+    public int GetCurrentIndex()
+    {
+        return index;
     }
 }
