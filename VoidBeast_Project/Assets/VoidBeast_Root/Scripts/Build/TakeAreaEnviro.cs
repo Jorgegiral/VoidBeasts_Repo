@@ -6,6 +6,8 @@ public class TakeAreaEnviro : MonoBehaviour
     public bool Placed { get; private set; }
     public BoundsInt area;
     public Vector3 offset;
+    private BoundsInt occupiedArea;
+
 
     public void Place()
     {
@@ -21,6 +23,16 @@ public class TakeAreaEnviro : MonoBehaviour
 
         Placed = true;
         GridBuilding.instance.TakeArea(area);
+        SetArea(area);
+    }
+    public void SetArea(BoundsInt area)
+    {
+        occupiedArea = area;
+    }
+    public void Destroyed()
+    {
+        GridBuilding.instance.UnTakeArea(occupiedArea);
+
     }
     public bool CanBePlaced()
     {

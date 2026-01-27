@@ -8,6 +8,7 @@ public class DebrisDestroyer : MonoBehaviour
         {
             other.gameObject.SetActive(false);
         }
+
     }
     private void OnTriggerStay(Collider other)
     {
@@ -15,5 +16,6 @@ public class DebrisDestroyer : MonoBehaviour
         {
             other.gameObject.SetActive(false);
         }
+
     }
 }
