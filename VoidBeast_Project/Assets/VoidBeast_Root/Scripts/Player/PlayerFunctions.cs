@@ -21,8 +21,10 @@ public class PlayerFunctions : MonoBehaviour
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
     [SerializeField] GameObject firstSelectedOnPause;
-    [SerializeField] GameObject firstSelectedOnSeed;
-    public bool parcelaSelection = false; //Jorge
+    [SerializeField] GameObject firstSelectedOnSeed; 
+    bool parcelaSelection = false; //Jorge
+    bool closeSeed = false;
+    bool nightSelect = false;
 
     private void Awake()
     {
@@ -51,6 +53,15 @@ public class PlayerFunctions : MonoBehaviour
             if (DayNightSystem.Instance != null && DayNightSystem.Instance.isDay)
             {
                 DayNightSystem.Instance.ToNight();
+
+                if (TutorialManager.instance.step == 11)
+                {
+                    if (!nightSelect)
+                    {
+                        nightSelect = true;
+                        TutorialManager.instance.CompleteStep();
+                    }
+                }
             }
         }
 
@@ -62,8 +73,10 @@ public class PlayerFunctions : MonoBehaviour
                 seedMenu.SetActive(true);
 
                 seedOpened = true;
-
-                if (TutorialManager.instance.step == 5)
+                
+            if (TutorialManager.instance.step == 7)
+            {
+                if (!parcelaSelection)
                 {
                     if (!parcelaSelection)
                     {
@@ -90,6 +103,7 @@ public class PlayerFunctions : MonoBehaviour
             }
         }
     }
+}
 
 
     public void OnEscapeButton(InputAction.CallbackContext context)
@@ -101,8 +115,18 @@ public class PlayerFunctions : MonoBehaviour
         {
             seedMenu.SetActive(false);
             seedOpened = false;
-            PlayerStats.instance.blockMovement = false;
-        }   
+            PlayerStats.instance.blockMovement = false;            
+            //Jorge:
+
+            if (TutorialManager.instance.step == 10)
+            {
+                if (!closeSeed)
+                {
+                    closeSeed = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
+        }
         else if(!PlayerStats.instance.menuOpened)
         {
             escapeMenu.SetActive(true);

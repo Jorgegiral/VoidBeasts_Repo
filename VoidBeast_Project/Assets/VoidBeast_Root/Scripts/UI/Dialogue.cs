@@ -1,16 +1,16 @@
-using UnityEngine;
-using TMPro;
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Dialogue : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
     public string[] text;
     public float textSpeed = 0.1f;
-    int index;
+    public int index;
     public bool waitForAction = false;
-    public bool canAdvanceByClick = true;
-    //public bool allowClick = true;
 
     void Start()
     {
@@ -20,22 +20,6 @@ public class Dialogue : MonoBehaviour
 
     void Update()
     {
-
-        //if (!allowClick) return;
-        /*if (waitForAction) return;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (dialogueText.text == text[index])
-            {
-                NextText();
-            }
-            else
-            {
-                StopAllCoroutines();
-                dialogueText.text = text[index];
-            }
-        }*/
         if (Input.GetMouseButtonDown(0))
         {
             if (dialogueText.text != text[index])
@@ -44,9 +28,12 @@ public class Dialogue : MonoBehaviour
                 dialogueText.text = text[index];
                 return;
             }
-
+            if (TutorialManager.instance.step == 1 || TutorialManager.instance.step == 5 || TutorialManager.instance.step == 8 || TutorialManager.instance.step == 14)
+            {
+                TutorialManager.instance.CompleteStep();
+                return;
+            }
             if (waitForAction) return;
-            if (!canAdvanceByClick) return;
 
             NextText();
         }
@@ -63,7 +50,7 @@ public class Dialogue : MonoBehaviour
         foreach (char letter in text[index].ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(textSpeed);
+            yield return new WaitForSecondsRealtime(textSpeed);
         }
     }
 
@@ -89,13 +76,7 @@ public class Dialogue : MonoBehaviour
     }
     public void WaitForAction()
     {
-        canAdvanceByClick = false;
         waitForAction = true;
-    }
-    public void AllowClickAdvance()
-    {
-        canAdvanceByClick = true;
-        waitForAction = false;
     }
     public int GetCurrentIndex()
     {

@@ -24,7 +24,6 @@ public class ToggleConstruction : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
-        StartCoroutine(DisableGridDelayed());
     }
     public void TableActived()
     {
@@ -55,7 +54,7 @@ public class ToggleConstruction : MonoBehaviour
             return;
         if (TutorialManager.instance != null)
         {
-            if (TutorialManager.instance.step == 1)
+            if (TutorialManager.instance.step == 2)
             {
                 if (!tutorialTabDone)
                 {
@@ -63,7 +62,7 @@ public class ToggleConstruction : MonoBehaviour
                     TutorialManager.instance.CompleteStep();
                 }
             }
-            if (TutorialManager.instance.step == 4)
+            if (TutorialManager.instance.step == 6)
             {
                 if (!tutorialTabClose)
                 {
@@ -73,7 +72,7 @@ public class ToggleConstruction : MonoBehaviour
             }
         }
 
-        if (TutorialManager.instance == null || TutorialManager.instance.step >= 1)
+        if (TutorialManager.instance == null || TutorialManager.instance.step >= 2)
         {
             
             if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
