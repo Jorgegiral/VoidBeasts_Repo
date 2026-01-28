@@ -10,7 +10,9 @@ public class TutorialManager : MonoBehaviour
     public GameObject arrow;
     public GameObject arrow1;
     public GameObject arrow2;
+    public GameObject arrow3;
     public GameObject bloqueo;
+    public GameObject bloqueo2;
     [SerializeField] private GameObject dialoguetext;
     private RectTransform rectTransform;
     private void Awake()
@@ -31,43 +33,44 @@ public class TutorialManager : MonoBehaviour
                 dialogue.WaitForAction();
                 break;
 
-            case 1: //notificación
+            case 1: // TAB construcción
                 dialogue.WaitForAction();
-                arrow2.SetActive(true);
                 break;
 
-            case 2: // TAB construcción
-                dialogue.WaitForAction();
-                arrow2.SetActive(false);
-                break;
-
-            case 3: //Comprar parcela
+            case 2: //Comprar parcela
                 dialogue.WaitForAction();
                 rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
+                bloqueo2.SetActive(true);
                 arrow.SetActive(true);
                 break;
 
-            case 4: // Poner parcela
+            case 3: // Poner parcela
                 dialogue.WaitForAction();
                 arrow.SetActive(false);
                 break;
 
-            case 5: // Cancelar
+            case 4: // Cancelar
                 dialogue.WaitForAction();
                 break;
 
-            case 6: // Tab otra vez
+            case 5: // Tab otra vez
                 dialogue.WaitForAction();
                 break;
 
-            case 7: //  Interactuar
+            case 6: //  Interactuar
                 dialogue.WaitForAction();
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
-            case 8: //explicación plantar
+            case 7: // Notificacion
                 dialogue.WaitForAction();
                 rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
+                arrow2.SetActive(true);
+                break;
+
+            case 8: //explicación plantar
+                dialogue.WaitForAction();
+                arrow2.SetActive(false);
                 bloqueo.SetActive(true);
                 break;
 
@@ -84,6 +87,7 @@ public class TutorialManager : MonoBehaviour
 
             case 11: // Banco
                 dialogue.WaitForAction();
+                bloqueo2.SetActive(false);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
@@ -115,7 +119,7 @@ public class TutorialManager : MonoBehaviour
 
     public void OnTutorialButtonPressed()
     {
-        if (step != 3) return;
+        if (step != 2) return;
         CompleteStep();
     }
     

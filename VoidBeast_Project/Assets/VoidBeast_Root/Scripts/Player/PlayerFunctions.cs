@@ -74,7 +74,7 @@ public class PlayerFunctions : MonoBehaviour
 
                 seedOpened = true;
                 
-            if (TutorialManager.instance.step == 7)
+            if (TutorialManager.instance.step == 6)
             {
                 if (!parcelaSelection)
                 {

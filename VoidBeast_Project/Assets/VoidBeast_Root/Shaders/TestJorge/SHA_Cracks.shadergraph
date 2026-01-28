@@ -39,6 +39,12 @@
     "m_CategoryData": [
         {
             "m_Id": "a44a734ad4be49b09605b9a6699cc3e9"
+        },
+        {
+            "m_Id": "49696e0b646c4cf89ee8df4edd7b71b0"
+        },
+        {
+            "m_Id": "0c8d4e3935cb4bb79efa8070bd6889f4"
         }
     ],
     "m_Nodes": [
@@ -1231,6 +1237,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "0c8d4e3935cb4bb79efa8070bd6889f4",
+    "m_Name": "Cracks",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "dbd8f8f7380d4ef9b7682b051dd69975"
+        },
+        {
+            "m_Id": "06be402bb98742fbbbba264c3d004c53"
+        }
+    ]
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "0ca6c45f66ec4c31b03725d8a50e43db",
     "m_Id": 3,
@@ -1260,7 +1281,7 @@
     "m_Title": "Cracks",
     "m_Position": {
         "x": -2319.0,
-        "y": -143.00006103515626
+        "y": -143.0
     }
 }
 
@@ -2373,7 +2394,7 @@
     "m_Title": "Base Color",
     "m_Position": {
         "x": -1723.0,
-        "y": -766.9999389648438
+        "y": -767.0
     }
 }
 
@@ -2648,6 +2669,24 @@
         "z": 0.0,
         "w": 0.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "49696e0b646c4cf89ee8df4edd7b71b0",
+    "m_Name": "Textures",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "7c792949a3d845bd92f20965f18dd21a"
+        },
+        {
+            "m_Id": "c23f75f701414aab8311c8cd21357c3a"
+        },
+        {
+            "m_Id": "59def10187554c2e9a60de6bfc021d64"
+        }
+    ]
 }
 
 {
@@ -3258,8 +3297,8 @@
     "m_ObjectId": "5afd0cbf7f304644939cae31dc9ab156",
     "m_Title": "Normal",
     "m_Position": {
-        "x": -1413.9998779296875,
-        "y": -61.00006103515625
+        "x": -1414.0,
+        "y": -61.0
     }
 }
 
@@ -4918,25 +4957,10 @@
     "m_Name": "",
     "m_ChildObjectList": [
         {
-            "m_Id": "dbd8f8f7380d4ef9b7682b051dd69975"
-        },
-        {
-            "m_Id": "06be402bb98742fbbbba264c3d004c53"
-        },
-        {
             "m_Id": "9068c207cac7423d9edede095a0be93c"
         },
         {
             "m_Id": "36cba59b36814eeea76927bf2e262d5e"
-        },
-        {
-            "m_Id": "7c792949a3d845bd92f20965f18dd21a"
-        },
-        {
-            "m_Id": "c23f75f701414aab8311c8cd21357c3a"
-        },
-        {
-            "m_Id": "59def10187554c2e9a60de6bfc021d64"
         },
         {
             "m_Id": "2a7ae99f028c4eacb4ef967cefaef352"
@@ -5301,7 +5325,7 @@
     "m_Title": "Metallic /Smoothness",
     "m_Position": {
         "x": -1424.0,
-        "y": 377.00006103515627
+        "y": 377.0
     }
 }
 
@@ -6352,10 +6376,10 @@
     "m_Guid": {
         "m_GuidSerialized": "5145fdec-4138-4795-a865-5c488d328a01"
     },
-    "m_Name": "Escala Manchas",
+    "m_Name": "ScaleStains",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Escala Manchas",
-    "m_DefaultReferenceName": "_Escala_Manchas",
+    "m_RefNameGeneratedByDisplayName": "ScaleStains",
+    "m_DefaultReferenceName": "_ScaleStains",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
