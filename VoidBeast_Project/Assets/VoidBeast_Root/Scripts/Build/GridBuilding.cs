@@ -44,6 +44,7 @@ public class GridBuilding : MonoBehaviour
         tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilepath + "red"));
         tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilepath + "green"));
 
+
     }
     private static void SetTilesBlock(BoundsInt area, TileType type, Tilemap tilemap)
     {

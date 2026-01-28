@@ -15,6 +15,7 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Ray config")]
     private bool canRay = true;
+    [SerializeField] GameObject RayPanel;
 
     [Header("Melee config")]
     private bool canMelee = true;
@@ -24,17 +25,23 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
     [SerializeField]private float holdThreshold = 3f;
+    [SerializeField] GameObject SpinPanel;
+
 
     [Header("Bomb config")]
     [SerializeField] GameObject bombPrefab;
     private bool canBomb = true;
     private float minTime = 0.1f;
     private float maxTime = 1f;
+    [SerializeField] GameObject BombPanel;
+
 
     [Header("Mine config")]
     private bool canMine = true;
     [SerializeField] GameObject minePrefab;
     [SerializeField] Transform minePoint;
+    [SerializeField] GameObject MinePanel;
+
 
     [Header("Sounds")]
     [SerializeField] AudioClip shootSound;
