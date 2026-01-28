@@ -54,7 +54,7 @@ public class PlayerFunctions : MonoBehaviour
             {
                 DayNightSystem.Instance.ToNight();
 
-                if (TutorialManager.instance.step == 11)
+                if ( TutorialManager.instance != null && TutorialManager.instance.step == 11)
                 {
                     if (!nightSelect)
                     {
