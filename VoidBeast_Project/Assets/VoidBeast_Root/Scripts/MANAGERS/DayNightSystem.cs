@@ -27,6 +27,7 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] LocalizedString dayText;   
     [SerializeField] LocalizedString nightText;
     [SerializeField] Sprite[] DayNightSprites;
+    float lightTransitionDuration = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
 
@@ -49,9 +50,6 @@ public class DayNightSystem : MonoBehaviour
         nightNumber = 1;
         isDay = true;
         isNight = false;
-        DayNightIcons[0].sprite = DayNightSprites[0];
-        DayNightIcons[1].sprite = DayNightSprites[0];
-        DayNightIcons[2].sprite = DayNightSprites[3];
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
     }
@@ -74,13 +72,9 @@ public class DayNightSystem : MonoBehaviour
             isDay = true;
             isNight = false;
             nightNumber++;
-            if (lightCoroutine != null) StopCoroutine(lightCoroutine);
-            lightCoroutine = StartCoroutine(ChangeLightTemperature(5000));
+            StartCoroutine(ChangeLightTemperature(5000));
             playerCam.gameObject.SetActive(true);
             nightCam.gameObject.SetActive(false);
-            DayNightIcons[0].sprite = DayNightSprites[0];
-            DayNightIcons[1].sprite = DayNightSprites[0];
-            DayNightIcons[2].sprite = DayNightSprites[3];
             ParcelaManager.instance.freeSeed = true;
             ParcelaManager.instance.freeSeedText.SetActive(true);
             MoneySystem.instance.UpdateMoneyText();
@@ -110,13 +104,9 @@ public class DayNightSystem : MonoBehaviour
             isDay = false;
             isNight = true;
             dayNumber++;
-            if (lightCoroutine != null) StopCoroutine(lightCoroutine);
-            lightCoroutine = StartCoroutine(ChangeLightTemperature(15000));
+            StartCoroutine(ChangeLightTemperature(15000));
             playerCam.gameObject.SetActive(false);
             nightCam.gameObject.SetActive(true);
-            DayNightIcons[0].sprite = DayNightSprites[1];
-            DayNightIcons[1].sprite = DayNightSprites[1];
-            DayNightIcons[2].sprite = DayNightSprites[2];
             buildHP.imageHP.SetActive(true);
             ParcelaManager.instance.freeSeedText.SetActive(false);
 

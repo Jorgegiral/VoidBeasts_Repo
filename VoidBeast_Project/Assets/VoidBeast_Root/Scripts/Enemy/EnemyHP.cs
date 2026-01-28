@@ -29,11 +29,10 @@ public class EnemyHP : MonoBehaviour
         enemyCurrentHealth = enemyMaxHealth;
         UpdateHealthBar();
     }
-
     private void LateUpdate()
-    {
-        healthob.transform.rotation = Quaternion.LookRotation(healthob.transform.position - Camera.main.transform.position);
-    }
+       {
+           healthob.transform.rotation = Quaternion.LookRotation(healthob.transform.position - Camera.main.transform.position);
+       }
     float ScaleEnemyHP()
     {
         enemyMaxHealth += DayNightSystem.Instance.nightNumber * 2;
