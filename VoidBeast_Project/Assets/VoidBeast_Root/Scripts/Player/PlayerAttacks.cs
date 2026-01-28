@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.UI.Image;
 
 public class PlayerAttacks : MonoBehaviour
@@ -15,7 +16,7 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Ray config")]
     private bool canRay = true;
-    [SerializeField] GameObject RayPanel;
+    [SerializeField] Image RayPanel;
 
     [Header("Melee config")]
     private bool canMelee = true;
@@ -25,7 +26,7 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
     [SerializeField]private float holdThreshold = 3f;
-    [SerializeField] GameObject SpinPanel;
+    [SerializeField] Image SpinPanel;
 
 
     [Header("Bomb config")]
@@ -33,14 +34,14 @@ public class PlayerAttacks : MonoBehaviour
     private bool canBomb = true;
     private float minTime = 0.1f;
     private float maxTime = 1f;
-    [SerializeField] GameObject BombPanel;
+    [SerializeField] Image BombPanel;
 
 
     [Header("Mine config")]
     private bool canMine = true;
     [SerializeField] GameObject minePrefab;
     [SerializeField] Transform minePoint;
-    [SerializeField] GameObject MinePanel;
+    [SerializeField] Image MinePanel;
 
 
     [Header("Sounds")]
@@ -117,6 +118,7 @@ public class PlayerAttacks : MonoBehaviour
         comboIndex++;
         if (comboIndex == 3) comboIndex = 0;
         anim.SetTrigger("Attack");
+        BombPanel.fillAmount = 0;
         StartCoroutine(MeleeCooldown());
 
 
@@ -174,6 +176,7 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator BombCooldown()
     {
         canBomb = false;
+        BombPanel.fillAmount = 0;
         yield return new WaitForSeconds(PlayerStats.instance.bombCooldown);
         canBomb = true;
     }
