@@ -28,7 +28,8 @@ public class Dialogue : MonoBehaviour
                 dialogueText.text = text[index];
                 return;
             }
-            if (TutorialManager.instance.step == 4 || TutorialManager.instance.step == 7 || TutorialManager.instance.step == 8 || TutorialManager.instance.step == 14)
+            if (TutorialManager.instance.step == 4 || TutorialManager.instance.step == 7 || TutorialManager.instance.step == 8 || 
+                TutorialManager.instance.step == 14 || TutorialManager.instance.step == 15 || TutorialManager.instance.step == 16)
             {
                 TutorialManager.instance.CompleteStep();
                 return;

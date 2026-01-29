@@ -11,8 +11,10 @@ public class TutorialManager : MonoBehaviour
     public GameObject arrow1;
     public GameObject arrow2;
     public GameObject arrow3;
+    public GameObject arrow4;
     public GameObject bloqueo;
     public GameObject bloqueo2;
+    public GameObject close;
     [SerializeField] private GameObject dialoguetext;
     private RectTransform rectTransform;
     private void Awake()
@@ -88,25 +90,35 @@ public class TutorialManager : MonoBehaviour
             case 11: // Banco
                 dialogue.WaitForAction();
                 bloqueo2.SetActive(false);
+                arrow3.SetActive(true);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
             case 12: // Mata los enemigos
                 dialogue.WaitForAction();
+                arrow3.SetActive(false);
                 break;
 
             case 13: // Mejora
                 dialogue.WaitForAction();
-                rectTransform.offsetMin = new Vector2(1250f, rectTransform.offsetMin.y);
+                close.SetActive(false);
+                rectTransform.offsetMin = new Vector2(596f, rectTransform.offsetMin.y);
                 break;
 
             case 14: // recoleccion
                 dialogue.WaitForAction();
+                close.SetActive(true);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
             case 15: // dinero
                 dialogue.WaitForAction();
+                break;
+
+            case 16: // Mejoras
+                dialogue.WaitForAction();
+                arrow4.SetActive(true);
+                rectTransform.offsetMin = new Vector2(880f, 490f);
                 break;
         }
     }

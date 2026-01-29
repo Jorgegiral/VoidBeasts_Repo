@@ -74,7 +74,7 @@ public class PlayerFunctions : MonoBehaviour
 
                 seedOpened = true;
                 
-            if (TutorialManager.instance.step == 6)
+            if (TutorialManager.instance != null && TutorialManager.instance.step == 6)
             {
                 if (!parcelaSelection)
                 {
@@ -118,7 +118,7 @@ public class PlayerFunctions : MonoBehaviour
             PlayerStats.instance.blockMovement = false;            
             //Jorge:
 
-            if (TutorialManager.instance.step == 10)
+            if (TutorialManager.instance != null && TutorialManager.instance.step == 10)
             {
                 if (!closeSeed)
                 {
