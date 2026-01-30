@@ -25,15 +25,14 @@ public class EnemyHP : MonoBehaviour
         enemyMaxHealth = Random.Range(minHealth, maxHealth);
         enemyMaxHealth = ScaleEnemyHP();
         EnemyManager.instance.Register(gameObject);
-
+        healthob.SetActive(false);
         enemyCurrentHealth = enemyMaxHealth;
         UpdateHealthBar();
     }
-
     private void LateUpdate()
-    {
-        healthob.transform.rotation = Quaternion.LookRotation(healthob.transform.position - Camera.main.transform.position);
-    }
+       {
+           healthob.transform.rotation = Quaternion.LookRotation(healthob.transform.position - Camera.main.transform.position);
+       }
     float ScaleEnemyHP()
     {
         enemyMaxHealth += DayNightSystem.Instance.nightNumber * 2;
@@ -41,6 +40,7 @@ public class EnemyHP : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        healthob.SetActive(true);
         enemyCurrentHealth -= damage;
         rend.material = damageMaterial;
         StartCoroutine(TakeDamageMaterial());

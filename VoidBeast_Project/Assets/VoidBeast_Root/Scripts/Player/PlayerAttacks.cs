@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.UI.Image;
 
 public class PlayerAttacks : MonoBehaviour
 {
+    [SerializeField] GameObject holderImage;
+    [SerializeField] Image holderFiller;
+
+
     [Header("Shoot config")]
     [SerializeField] Transform shootPoint;
     [SerializeField] GameObject bulletVFX;
@@ -15,7 +20,8 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Ray config")]
     private bool canRay = true;
-
+    [SerializeField] Image RayPanel;
+    [SerializeField] GameObject tornadoVFX;
     [Header("Melee config")]
     private bool canMelee = true;
     private bool canSpin = true;
@@ -23,18 +29,24 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Collider attackCollider; 
     [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
-    [SerializeField]private float holdThreshold = 3f;
+    [SerializeField] private float holdThreshold = 3f;
+    [SerializeField] Image SpinPanel;
+
 
     [Header("Bomb config")]
     [SerializeField] GameObject bombPrefab;
     private bool canBomb = true;
     private float minTime = 0.1f;
     private float maxTime = 1f;
+    [SerializeField] Image BombPanel;
+
 
     [Header("Mine config")]
     private bool canMine = true;
     [SerializeField] GameObject minePrefab;
     [SerializeField] Transform minePoint;
+    [SerializeField] Image MinePanel;
+
 
     [Header("Sounds")]
     [SerializeField] AudioClip shootSound;
@@ -52,10 +64,12 @@ public class PlayerAttacks : MonoBehaviour
         if (isHolding)
         {
             holdTimer += Time.deltaTime;
+            holderFiller.fillAmount += 0.5f * Time.deltaTime;
         }
     }
     void Shoot()
     {
+        if (!UpgradeManager.instance.isGunUnlocked) return;
         if (!canShoot) return;
         rotateToPlayer.RotateOnShoot();
         //gun.SetActive(true); //Jorge
@@ -69,8 +83,10 @@ public class PlayerAttacks : MonoBehaviour
     }
     void RayGun()
     {
+        if (!UpgradeManager.instance.isRayUnlocked) return;
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
+        anim.SetTrigger("Shoot");
         anim.SetTrigger("Attack");
 
         StartCoroutine(RayCooldown());
@@ -79,6 +95,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     void PlantMine()
     {
+        if (!UpgradeManager.instance.isMineUnlocked) return;
         if (!canMine) return;
         anim.SetTrigger("Mine");
         anim.SetTrigger("Attack");
@@ -90,6 +107,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     void ThrowBomb()
     {
+        if (!UpgradeManager.instance.isBombUnlocked) return;
         if (!canBomb) return;
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("ThrowBomb");
@@ -116,8 +134,8 @@ public class PlayerAttacks : MonoBehaviour
     }
     void SpinAttack()
     {
+        if (!UpgradeManager.instance.isSpinUnlocked) return;
         if (!canSpin) return;
-        rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("Spin");
         anim.SetTrigger("Attack");
 
@@ -167,6 +185,7 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator BombCooldown()
     {
         canBomb = false;
+        BombPanel.fillAmount = 0;
         yield return new WaitForSeconds(PlayerStats.instance.bombCooldown);
         canBomb = true;
     }
@@ -208,11 +227,14 @@ public class PlayerAttacks : MonoBehaviour
 
         if (context.started)
         {
+            holderFiller.fillAmount = 0f;
             isHolding = true;
+            holderImage.SetActive(true);
             holdTimer = 0f;
         }
         else if (context.canceled)
         {
+            holderImage.SetActive(false);
             isHolding = false;
 
             if (holdTimer >= holdThreshold)

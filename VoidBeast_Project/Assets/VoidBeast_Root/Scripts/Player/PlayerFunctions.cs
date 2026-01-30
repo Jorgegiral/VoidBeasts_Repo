@@ -54,7 +54,7 @@ public class PlayerFunctions : MonoBehaviour
             {
                 DayNightSystem.Instance.ToNight();
 
-                if (TutorialManager.instance.step == 11)
+                if ( TutorialManager.instance != null && TutorialManager.instance.step == 11)
                 {
                     if (!nightSelect)
                     {
@@ -74,7 +74,7 @@ public class PlayerFunctions : MonoBehaviour
 
                 seedOpened = true;
                 
-            if (TutorialManager.instance.step == 7)
+            if (TutorialManager.instance != null && TutorialManager.instance.step == 7)
             {
                 if (!parcelaSelection)
                 {
@@ -118,7 +118,7 @@ public class PlayerFunctions : MonoBehaviour
             PlayerStats.instance.blockMovement = false;            
             //Jorge:
 
-            if (TutorialManager.instance.step == 10)
+            if (TutorialManager.instance != null && TutorialManager.instance.step == 10)
             {
                 if (!closeSeed)
                 {
