@@ -135,6 +135,8 @@ public void UpgradeWall(int precio)
         {
             MoneySystem.instance.money -= precio;
             isRayUnlocked = true;
+            RayUI.SetActive(true);
+
         }
     }
     public void UnlockMine(int precio)
@@ -143,6 +145,8 @@ public void UpgradeWall(int precio)
         {
             MoneySystem.instance.money -= precio;
             isMineUnlocked = true;
+            MineUI.SetActive(true);
+
         }
     }
     public void UnlockBomb(int precio)
@@ -151,6 +155,7 @@ public void UpgradeWall(int precio)
         {
             MoneySystem.instance.money -= precio;
             isBombUnlocked = true;
+            bombUI.SetActive(true);
         }
     }
     public void UnlockSpin(int precio)
@@ -159,6 +164,8 @@ public void UpgradeWall(int precio)
         {
             MoneySystem.instance.money -= precio;
             isSpinUnlocked = true;
+            SpinUI.SetActive(true);
+
         }
     }
     public void SwapWallModelsOnUpgrade()
