@@ -30,7 +30,7 @@ public class DayNightSystem : MonoBehaviour
     float lightTransitionDuration = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
-
+    private bool collected;
     //provisional
     [SerializeField]public  GameObject selection;
 
@@ -83,6 +83,7 @@ public class DayNightSystem : MonoBehaviour
             foreach (ParcelaOrder p in parcelasOrder)
             {
                 p.PlayRecolect();
+                collected = true;
             }
             foreach (Parcela p in parcelas)
             {
@@ -90,9 +91,14 @@ public class DayNightSystem : MonoBehaviour
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
+            if (!collected)
+            {
+                dailyPowerUPPopUp();
+            }
         }
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
+        collected = false;
     }
     public void ToNight()
     {
