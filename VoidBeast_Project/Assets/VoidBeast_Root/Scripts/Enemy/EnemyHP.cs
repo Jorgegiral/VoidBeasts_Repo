@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHP : MonoBehaviour
 {
     [Header("Enemy Health Options")]
     [SerializeField] float minHealth;
     [SerializeField] float maxHealth;
+    [SerializeField] private Image healthbar;
+    [SerializeField] private GameObject healthob;
     float enemyMaxHealth;
     float enemyCurrentHealth;
 
@@ -24,8 +27,12 @@ public class EnemyHP : MonoBehaviour
         EnemyManager.instance.Register(gameObject);
 
         enemyCurrentHealth = enemyMaxHealth;
+        UpdateHealthBar();
     }
-
+    private void LateUpdate()
+       {
+           healthob.transform.rotation = Quaternion.LookRotation(healthob.transform.position - Camera.main.transform.position);
+       }
     float ScaleEnemyHP()
     {
         enemyMaxHealth += DayNightSystem.Instance.nightNumber * 2;
@@ -62,5 +69,16 @@ public class EnemyHP : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(0.2f);
         rend.material = baseMaterial;
+    }
+
+
+    void UpdateHealthBar()
+    {
+        float health = enemyCurrentHealth / enemyMaxHealth;
+        health = Mathf.Clamp01(health);
+        if (healthbar != null)
+        {
+            healthbar.fillAmount = health;
+        }
     }
 }

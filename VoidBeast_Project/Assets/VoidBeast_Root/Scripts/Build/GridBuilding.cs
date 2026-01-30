@@ -20,8 +20,8 @@ public class GridBuilding : MonoBehaviour
     private Vector3 buildingOffset;
     private Vector3 buildingClickOffset;
     bool isWall;
-    GameObject[] grassObjects;
-    public NavMeshSurface surface;
+    bool parcela = false; //Jorge
+    private TypeBuild currentBuildType;
 
     private void Awake()
     {
@@ -43,7 +43,7 @@ public class GridBuilding : MonoBehaviour
         tileBases.Add(TileType.White, Resources.Load<TileBase>(tilepath + "white"));
         tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilepath + "red"));
         tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilepath + "green"));
-        grassObjects = GameObject.FindGameObjectsWithTag("Grass");
+
 
     }
     private static void SetTilesBlock(BoundsInt area, TileType type, Tilemap tilemap)
@@ -73,10 +73,18 @@ public class GridBuilding : MonoBehaviour
             arr[i] = tileBases[type];
         }
     }
+    public TileBase GetTileColor(TileType type)
+    {
+        TileBase tileBaseColor = tileBases[type];
+        return tileBaseColor;
+    }
     public void InitializeWithBuilding(TypeBuild build)
     {
         if (buildingTemp != null) return;
         if (!CheckIfAvailable(build)) return;
+
+        currentBuildType = build; // Jorge
+
         buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
         buildingOffset = build.placeOffSet;
         buildingClickOffset = build.clickOffSet;
@@ -167,11 +175,22 @@ public class GridBuilding : MonoBehaviour
         }
         SetTilesBlock(area, TileType.Empty,tempTilemap);
         SetTilesBlock(area,TileType.Red,mainTilemap);
-        ReCalculateRoute();
         buildingTemp = null;
         isWall = false;
     }
-    
+    public void UnTakeArea(BoundsInt area)
+    {
+        if (isWall)
+        {
+            WallBehaviour wall = buildingTemp.GetComponent<WallBehaviour>();
+            wall.ThrowRaycast();
+        }
+        SetTilesBlock(area, TileType.Empty, tempTilemap);
+        SetTilesBlock(area, TileType.White, mainTilemap);
+        buildingTemp = null;
+        isWall = false;
+    }
+
     public void MoveBuildAction(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -198,13 +217,7 @@ public class GridBuilding : MonoBehaviour
                 }
         }
     }
-    private void EliminateGrass()
-    {
-    }
-    private void ReCalculateRoute()
-    {
-        
-    }
+
     public void BuildAction(InputAction.CallbackContext context)
     {
         if (!buildingTemp) return;
@@ -212,8 +225,24 @@ public class GridBuilding : MonoBehaviour
         if (buildingTemp.CanBePlaced())
         {
             buildingTemp.Place();
-        }
 
+            //Jorge:
+
+            if (TutorialManager.instance != null)
+            {
+
+                if (!parcela)
+                {
+                    if (TutorialManager.instance.step == 4 &&
+                        currentBuildType.type == TypeBuild.BuildType.Build)
+                    {
+                        TutorialManager.instance.CompleteStep();
+                    }
+                }
+
+                currentBuildType = null;
+            }
+        }
     }
     public void CancelBuildAction(InputAction.CallbackContext context)
     {

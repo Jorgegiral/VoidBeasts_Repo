@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,10 +18,13 @@ public class ToggleConstruction : MonoBehaviour
     [Header("Animation References")]
     private Animator anim;
 
+    //Jorge:
+    bool tutorialTabDone = false;
+    bool tutorialTabClose = false;
     private void Start()
     {
         anim = GetComponent<Animator>();
-        grid.SetActive(false);
+        StartCoroutine(DisableGridDelayed());
     }
     public void TableActived()
     {
@@ -49,7 +53,30 @@ public class ToggleConstruction : MonoBehaviour
     {
         if (!context.performed)
             return;
-        if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
+        if (TutorialManager.instance != null)
+        {
+            if (TutorialManager.instance.step == 2)
+            {
+                if (!tutorialTabDone)
+                {
+                    tutorialTabDone = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
+            if (TutorialManager.instance.step == 6)
+            {
+                if (!tutorialTabClose)
+                {
+                    tutorialTabClose = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
+        }
+
+        if (TutorialManager.instance == null || TutorialManager.instance.step >= 2)
+        {
+            
+            if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
         {
             playerInput.SwitchCurrentActionMap("BuildMode");
             constructionShop.SetActive(true);
@@ -72,7 +99,13 @@ public class ToggleConstruction : MonoBehaviour
             PlayerStats.instance.isActionMode = true;
 
         }
-    }
 
+    }
+    }
+    private IEnumerator DisableGridDelayed()
+    {
+        yield return new WaitForSeconds(0.1f);
+        grid.SetActive(false);
+    }
 }
 

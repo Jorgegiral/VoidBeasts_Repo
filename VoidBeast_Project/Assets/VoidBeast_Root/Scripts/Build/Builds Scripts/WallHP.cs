@@ -20,5 +20,4 @@ public class WallHP : MonoBehaviour
             UpgradeManager.instance.UnRegisterWall(gameObject);
         }
     }
-
 }
