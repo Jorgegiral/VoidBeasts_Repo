@@ -74,8 +74,8 @@ public class DayNightSystem : MonoBehaviour
             isDay = true;
             isNight = false;
             nightNumber++;
-            if (lightCoroutine != null) StopCoroutine(lightCoroutine);
-            lightCoroutine = StartCoroutine(ChangeLightTemperature(5000));
+       /*     if (lightCoroutine != null) StopCoroutine(lightCoroutine);
+            lightCoroutine = StartCoroutine(ChangeLightTemperature(5000));*/
             playerCam.gameObject.SetActive(true);
             nightCam.gameObject.SetActive(false);
             DayNightIcons[0].sprite = DayNightSprites[0];
@@ -110,8 +110,8 @@ public class DayNightSystem : MonoBehaviour
             isDay = false;
             isNight = true;
             dayNumber++;
-            if (lightCoroutine != null) StopCoroutine(lightCoroutine);
-            lightCoroutine = StartCoroutine(ChangeLightTemperature(15000));
+       /*     if (lightCoroutine != null) StopCoroutine(lightCoroutine);
+            lightCoroutine = StartCoroutine(ChangeLightTemperature(15000));*/
             playerCam.gameObject.SetActive(false);
             nightCam.gameObject.SetActive(true);
             DayNightIcons[0].sprite = DayNightSprites[1];
@@ -147,7 +147,7 @@ public class DayNightSystem : MonoBehaviour
         }
     }
 
-    IEnumerator ChangeLightTemperature(float targetTemperature)
+/*    IEnumerator ChangeLightTemperature(float targetTemperature)
     {
         float startTemp = globalLight.colorTemperature;
         float elapsed = 0f;
@@ -161,6 +161,6 @@ public class DayNightSystem : MonoBehaviour
         }
 
         globalLight.colorTemperature = targetTemperature;
-    }
+    }*/
 }
 
