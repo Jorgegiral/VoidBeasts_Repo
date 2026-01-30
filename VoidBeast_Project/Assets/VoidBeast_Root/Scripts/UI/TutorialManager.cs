@@ -23,6 +23,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private RectTransform seedmode;
     [SerializeField] private RectTransform buildmode;
     private RectTransform rectTransform;
+    private RectTransform blackR;
     private void Awake()
     {
         instance = this;
@@ -32,6 +33,7 @@ public class TutorialManager : MonoBehaviour
     {
         StartStep();
         rectTransform = dialoguetext.GetComponent<RectTransform>();
+        blackR = black.GetComponent<RectTransform>();
     }
     void StartStep()
     {
@@ -81,6 +83,7 @@ public class TutorialManager : MonoBehaviour
             case 7: // Notificacion
                 dialogue.WaitForAction();
                 black.SetActive(true);
+                blackR.SetSiblingIndex(5);
                 rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
                 arrow2.SetActive(true);
                 break;
@@ -144,6 +147,11 @@ public class TutorialManager : MonoBehaviour
                 break;
         }
     }
+
+    private void Update()
+    {
+        EscapeTecle();
+    }
     public void CompleteStep()
     {
         step++;
@@ -156,5 +164,13 @@ public class TutorialManager : MonoBehaviour
         if (step != 2) return;
         CompleteStep();
     }
-    
+
+    public void EscapeTecle()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && step != 4)
+        {
+            CompleteStep();
+            return;
+        }
+    }
 }
