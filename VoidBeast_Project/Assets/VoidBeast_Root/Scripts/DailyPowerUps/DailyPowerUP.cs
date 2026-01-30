@@ -24,16 +24,19 @@ public class DailyPowerUP : MonoBehaviour
     [SerializeField] GameObject firstSelectedMenu;
     bool enemies = false;
     bool upgradeselect = false;
+    public bool poopedDay = false;
 
     public void StartPowerUp()
     {
+        if (poopedDay) return;
+        poopedDay=true;
         gameObject.SetActive(true);
         PickPowerUps();
         Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
         EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
         Time.timeScale = 0f;
         //Jorge:
-        if (TutorialManager.instance.step == 12)
+        if (TutorialManager.instance != null && TutorialManager.instance.step == 12)
         {
             if (!enemies)
             {
@@ -81,7 +84,7 @@ public class DailyPowerUP : MonoBehaviour
         Time.timeScale = 1f;
         SendClickPowerUpInfo();
         //Jorge:
-        if (TutorialManager.instance.step == 13)
+        if (TutorialManager.instance != null && TutorialManager.instance.step == 13)
         {
             if (!upgradeselect)
             {

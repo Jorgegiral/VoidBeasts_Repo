@@ -64,6 +64,10 @@ public class PlayerAttacks : MonoBehaviour
         if (isHolding)
         {
             holdTimer += Time.deltaTime;
+            if (holdTimer > 0.2f)
+            {
+                holderImage.SetActive(true);
+            }
             holderFiller.fillAmount += 0.5f * Time.deltaTime;
         }
     }
@@ -227,10 +231,12 @@ public class PlayerAttacks : MonoBehaviour
 
         if (context.started)
         {
-            holderFiller.fillAmount = 0f;
-            isHolding = true;
-            holderImage.SetActive(true);
-            holdTimer = 0f;
+         //   if (UpgradeManager.instance.isSpinUnlocked)
+        ///    {
+                holderFiller.fillAmount = 0f;
+                isHolding = true;
+                holdTimer = 0f;
+           // }
         }
         else if (context.canceled)
         {

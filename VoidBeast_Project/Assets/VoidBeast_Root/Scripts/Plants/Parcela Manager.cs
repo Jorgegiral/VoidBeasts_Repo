@@ -10,7 +10,7 @@ public class ParcelaManager : MonoBehaviour
     public GameObject freeSeedText;
     private bool isParcelaFull;
     public List<GameObject> plant = new List<GameObject>();
-
+    public int moneyToAdd;
     private void Awake()
     {
         if (instance == null) { instance = this; }

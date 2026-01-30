@@ -15,20 +15,16 @@ public class ParcelaOrder : MonoBehaviour
     }
     private void Update()
     {
-
             if (recolectVFX.activeSelf)
             {
                 parcelaCollider.enabled = false;
                 barrierCollider.enabled = true;
-
-        }
-        else
+            }
+             else
             {
                 parcelaCollider.enabled = true;
                 barrierCollider.enabled = false;
-
-        }
-
+            }
     }
     public void PlayRecolect()
     {
@@ -45,13 +41,9 @@ public class ParcelaOrder : MonoBehaviour
         {
             recolectVFX.SetActive(true);
         }
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        if (CompareTag("Grass"))
+        else
         {
-            Destroy(collision.gameObject);
-
+            DayNightSystem.Instance.dailyPowerUPPopUp();
         }
     }
 }
