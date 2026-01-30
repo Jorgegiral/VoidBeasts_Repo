@@ -78,7 +78,6 @@ public class DayNightSystem : MonoBehaviour
             ParcelaManager.instance.freeSeed = true;
             ParcelaManager.instance.freeSeedText.SetActive(true);
             MoneySystem.instance.UpdateMoneyText();
-            dailyPowerUP.StartPowerUp();
             buildHP.NewDayHealth();
             buildHP.imageHP.SetActive(false);
             foreach (ParcelaOrder p in parcelasOrder)
@@ -91,8 +90,6 @@ public class DayNightSystem : MonoBehaviour
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
-
-
         }
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
@@ -109,8 +106,7 @@ public class DayNightSystem : MonoBehaviour
             nightCam.gameObject.SetActive(true);
             buildHP.imageHP.SetActive(true);
             ParcelaManager.instance.freeSeedText.SetActive(false);
-
-
+            ChangePopUPValue();
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
@@ -135,6 +131,14 @@ public class DayNightSystem : MonoBehaviour
         {
             parcelasOrder.Add(newParcela);
         }
+    }
+    public void dailyPowerUPPopUp()
+    {
+        dailyPowerUP.StartPowerUp();
+    }
+    public void ChangePopUPValue()
+    {
+        dailyPowerUP.poopedDay = false;
     }
 
     IEnumerator ChangeLightTemperature(float targetTemperature)

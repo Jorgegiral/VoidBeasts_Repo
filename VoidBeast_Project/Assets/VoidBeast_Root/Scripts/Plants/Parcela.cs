@@ -94,8 +94,7 @@ public class Parcela : MonoBehaviour
                 }
                 StartCoroutine(AnimateDissolve(renderer.materials, 3f));
             }
-
-            MoneySystem.instance.AddMoney(plant.ganancias);
+            ParcelaManager.instance.moneyToAdd += plant.ganancias;
             plant = null;
             dayCount = 0;
             nightCount = 0;
