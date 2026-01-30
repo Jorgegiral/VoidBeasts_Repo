@@ -18,6 +18,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject black;
     [SerializeField] private GameObject black2;
     [SerializeField] private GameObject dialoguetext;
+    [SerializeField] private GameObject buildBlock;
     [SerializeField] private GameObject seedBlock;
     [SerializeField] private RectTransform seedmode;
     [SerializeField] private RectTransform buildmode;
@@ -48,7 +49,7 @@ public class TutorialManager : MonoBehaviour
                 dialogue.WaitForAction();
                 buildmode.SetAsLastSibling();
                 black2.SetActive(true);
-                seedBlock.SetActive(true);
+                buildBlock.SetActive(true);
                 rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
                 bloqueo2.SetActive(true);
                 arrow.SetActive(true);
@@ -62,16 +63,18 @@ public class TutorialManager : MonoBehaviour
 
             case 4: // Cancelar
                 dialogue.WaitForAction();
+                buildmode.SetSiblingIndex(4);
+                black2.SetActive(true);
                 break;
 
             case 5: // Tab otra vez
                 dialogue.WaitForAction();
-                buildmode.SetSiblingIndex(4);
+                black2.SetActive(false);
                 break;
 
             case 6: //  Interactuar
                 dialogue.WaitForAction();
-                seedBlock.SetActive(false);
+                buildBlock.SetActive(false);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
@@ -84,6 +87,8 @@ public class TutorialManager : MonoBehaviour
 
             case 8: //explicación plantar
                 dialogue.WaitForAction();
+                seedmode.SetAsLastSibling();
+                seedBlock.SetActive(true);
                 black.SetActive(false);
                 black2.SetActive(true);
                 arrow2.SetActive(false);
@@ -92,7 +97,7 @@ public class TutorialManager : MonoBehaviour
 
             case 9: // Plantar
                 dialogue.WaitForAction();
-                seedmode.SetAsLastSibling();
+                seedBlock.SetActive(false);
                 arrow1.SetActive(true);
                 bloqueo.SetActive(false);
                 break;
@@ -135,7 +140,7 @@ public class TutorialManager : MonoBehaviour
             case 16: // Mejoras
                 dialogue.WaitForAction();
                 arrow4.SetActive(true);
-                rectTransform.offsetMin = new Vector2(880f, 490f);
+                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
         }
     }
