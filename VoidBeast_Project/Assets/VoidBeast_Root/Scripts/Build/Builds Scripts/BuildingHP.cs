@@ -15,13 +15,27 @@ public class BuildingHP : MonoBehaviour
     private List<bool> attackPointOccupied = new List<bool>();
     [SerializeField] AudioClip deathSound;
 
+    Renderer rend; //jorge
+    MaterialPropertyBlock mpb;
+    Renderer[] renderers;
+
+    [SerializeField] string damagePropertyName = "_DamageAmount";
+    [SerializeField] string intensityPropertyName = "_IntensityStains";
     private void Awake()
-    {
+    {      
+        renderers = GetComponentsInChildren<Renderer>();//Jorge
+        mpb = new MaterialPropertyBlock(); //Jorge
+
         deathCanvas.gameObject.SetActive(false);
         imageHP.SetActive(false);
         GenerateAttackPoints();
         currentBuildHP = buildHP;
 
+    }
+
+    private void Update()
+    {
+        UpdateHP();
     }
     public void NewDayHealth()
     {
@@ -103,6 +117,20 @@ public class BuildingHP : MonoBehaviour
 
         if (fillImage != null)
             fillImage.fillAmount = fill;
+        //codigo Jorge:
+        float damageAmount = (1f - fill) * 2;
+        float IntensityStains = (1f - fill);
+        /*
+        rend.GetPropertyBlock(mpb);
+        mpb.SetFloat(damagePropertyName, damageAmount);
+        rend.SetPropertyBlock(mpb);*/
+        foreach (var r in renderers)
+        {
+            r.GetPropertyBlock(mpb);
+            mpb.SetFloat(damagePropertyName, damageAmount);
+            mpb.SetFloat(intensityPropertyName, IntensityStains);
+            r.SetPropertyBlock(mpb);
+        }
     }
 }
 

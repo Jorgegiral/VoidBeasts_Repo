@@ -15,20 +15,16 @@ public class ParcelaOrder : MonoBehaviour
     }
     private void Update()
     {
-
             if (recolectVFX.activeSelf)
             {
                 parcelaCollider.enabled = false;
                 barrierCollider.enabled = true;
-
-        }
-        else
+            }
+             else
             {
                 parcelaCollider.enabled = true;
                 barrierCollider.enabled = false;
-
-        }
-
+            }
     }
     public void PlayRecolect()
     {
@@ -44,6 +40,10 @@ public class ParcelaOrder : MonoBehaviour
         if (parcelasLlenas)
         {
             recolectVFX.SetActive(true);
+        }
+        else
+        {
+            DayNightSystem.Instance.dailyPowerUPPopUp();
         }
     }
 }

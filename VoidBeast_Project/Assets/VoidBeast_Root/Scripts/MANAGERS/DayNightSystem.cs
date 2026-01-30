@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+
 
 public class DayNightSystem : MonoBehaviour
 {
@@ -16,7 +18,6 @@ public class DayNightSystem : MonoBehaviour
     public bool isNight;
     public bool startNight;
     public bool startDay;
-    public int enemyQuantity;
     [SerializeField] TMP_Text dayNightText;
     [SerializeField] Volume globalVolume;
     [SerializeField] Light globalLight;
@@ -26,6 +27,7 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] LocalizedString dayText;   
     [SerializeField] LocalizedString nightText;
     [SerializeField] Sprite[] DayNightSprites;
+    float lightTransitionDuration = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
 
@@ -48,9 +50,6 @@ public class DayNightSystem : MonoBehaviour
         nightNumber = 1;
         isDay = true;
         isNight = false;
-        DayNightIcons[0].sprite = DayNightSprites[0];
-        DayNightIcons[1].sprite = DayNightSprites[0];
-        DayNightIcons[2].sprite = DayNightSprites[3];
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
     }
@@ -73,16 +72,12 @@ public class DayNightSystem : MonoBehaviour
             isDay = true;
             isNight = false;
             nightNumber++;
-            globalLight.colorTemperature = 5000;
+            StartCoroutine(ChangeLightTemperature(5000));
             playerCam.gameObject.SetActive(true);
             nightCam.gameObject.SetActive(false);
-            DayNightIcons[0].sprite = DayNightSprites[0];
-            DayNightIcons[1].sprite = DayNightSprites[0];
-            DayNightIcons[2].sprite = DayNightSprites[3];
             ParcelaManager.instance.freeSeed = true;
             ParcelaManager.instance.freeSeedText.SetActive(true);
             MoneySystem.instance.UpdateMoneyText();
-            dailyPowerUP.StartPowerUp();
             buildHP.NewDayHealth();
             buildHP.imageHP.SetActive(false);
             foreach (ParcelaOrder p in parcelasOrder)
@@ -95,8 +90,6 @@ public class DayNightSystem : MonoBehaviour
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
-
-
         }
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
@@ -107,18 +100,13 @@ public class DayNightSystem : MonoBehaviour
         {
             isDay = false;
             isNight = true;
-            EnemyQuantityScale();
             dayNumber++;
-            globalLight.colorTemperature = 15000;
+            StartCoroutine(ChangeLightTemperature(15000));
             playerCam.gameObject.SetActive(false);
             nightCam.gameObject.SetActive(true);
-            DayNightIcons[0].sprite = DayNightSprites[1];
-            DayNightIcons[1].sprite = DayNightSprites[1];
-            DayNightIcons[2].sprite = DayNightSprites[2];
             buildHP.imageHP.SetActive(true);
             ParcelaManager.instance.freeSeedText.SetActive(false);
-
-
+            ChangePopUPValue();
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
@@ -129,12 +117,7 @@ public class DayNightSystem : MonoBehaviour
         MusicManager.instance.PlayNightSong();
         UpdateDayNightUI();
     }
-    public int EnemyQuantityScale()
-    {
-        //por ahora asi
-        enemyQuantity = Mathf.RoundToInt(3 + Mathf.Pow(nightNumber, 1.5f));
-        return enemyQuantity;
-    }
+
     public void RegisterParcela(Parcela newParcela)
     {
         if (!parcelas.Contains(newParcela))
@@ -148,6 +131,30 @@ public class DayNightSystem : MonoBehaviour
         {
             parcelasOrder.Add(newParcela);
         }
+    }
+    public void dailyPowerUPPopUp()
+    {
+        dailyPowerUP.StartPowerUp();
+    }
+    public void ChangePopUPValue()
+    {
+        dailyPowerUP.poopedDay = false;
+    }
+
+    IEnumerator ChangeLightTemperature(float targetTemperature)
+    {
+        float startTemp = globalLight.colorTemperature;
+        float elapsed = 0f;
+
+        while (elapsed < lightTransitionDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / lightTransitionDuration;
+            globalLight.colorTemperature = Mathf.Lerp(startTemp, targetTemperature, t);
+            yield return null;
+        }
+
+        globalLight.colorTemperature = targetTemperature;
     }
 }
 

@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class Parcela : MonoBehaviour
     private GameObject tempPlant;
     [SerializeField] AudioClip plantSound;
     [SerializeField] AudioClip starSound;
-
+    bool canPlant = false;
     private void Start()
     {
         render = GetComponent<Renderer>();
@@ -42,6 +43,15 @@ public class Parcela : MonoBehaviour
         Settings.instance.PlaySoundFXClip(plantSound, transform, 1f);
         Settings.instance.PlaySoundFXClip(starSound, transform, 1f);
 
+        //Jorge:
+        if (TutorialManager.instance != null && TutorialManager.instance.step == 9)
+        {
+            if (!canPlant)
+            {
+                canPlant = true;
+                TutorialManager.instance.CompleteStep();
+            }
+        }
 
         Destroy(tempVFX, 1);
        dayCount = plant.numDias;
@@ -50,11 +60,12 @@ public class Parcela : MonoBehaviour
     public void GrowedPlant()
     {
         Vector3 yoffset = new Vector3(0, 0.3f, 0);
-        if (nightCount == 0) {
+        if (nightCount == 0) 
+        {
            Destroy(tempPlant);
            tempPlant = Instantiate(plant.plantGameObject[0], transform.position + yoffset, transform.rotation);
-            
-         }
+        }
+
         if (nightCount == 1)
         {
            Destroy(tempPlant);
@@ -83,8 +94,7 @@ public class Parcela : MonoBehaviour
                 }
                 StartCoroutine(AnimateDissolve(renderer.materials, 3f));
             }
-
-            MoneySystem.instance.AddMoney(plant.ganancias);
+            ParcelaManager.instance.moneyToAdd += plant.ganancias;
             plant = null;
             dayCount = 0;
             nightCount = 0;

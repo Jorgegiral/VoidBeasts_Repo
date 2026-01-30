@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ParcelaManager : MonoBehaviour
@@ -8,6 +9,8 @@ public class ParcelaManager : MonoBehaviour
     public bool freeSeed = true;
     public GameObject freeSeedText;
     private bool isParcelaFull;
+    public List<GameObject> plant = new List<GameObject>();
+    public int moneyToAdd;
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -60,6 +63,14 @@ public class ParcelaManager : MonoBehaviour
             }
             return true;
         }
+    }
+    public void Register(GameObject plants)
+    {
+        plant.Add(plants);
+    }
+    public void UnRegister(GameObject plants)
+    {
+        plant.Remove(plants);
     }
 }
 
