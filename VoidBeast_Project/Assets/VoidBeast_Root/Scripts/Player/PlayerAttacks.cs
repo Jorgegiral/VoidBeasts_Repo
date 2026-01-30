@@ -64,7 +64,7 @@ public class PlayerAttacks : MonoBehaviour
         if (isHolding)
         {
             holdTimer += Time.deltaTime;
-            holderFiller.fillAmount += 0.33f * Time.deltaTime;
+            holderFiller.fillAmount += 0.5f * Time.deltaTime;
         }
     }
     void Shoot()
