@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -10,6 +11,15 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("UI References")]
     public GameObject upgradeShop;
+    public GameObject skillShop;
+    public TMP_Text mainBuildText;
+    public TMP_Text wallText;
+    public TMP_Text towerText;
+
+    public GameObject bombUI;
+    public GameObject RayUI;
+    public GameObject MineUI;
+    public GameObject SpinUI;
 
 
     [Header("Stats References")]
@@ -25,7 +35,7 @@ public class UpgradeManager : MonoBehaviour
     public List<GameObject> towers = new List<GameObject>();
     private int maxTowerLevel = 3;
     private int maxWallLevel = 3;
-    public bool isPistolUnlocked;
+    public bool isGunUnlocked;
     public bool isSpinUnlocked;
     public bool isMineUnlocked;
     public bool isBombUnlocked;
@@ -38,7 +48,11 @@ public class UpgradeManager : MonoBehaviour
         if (instance == null) { instance = this; }
         wallBuild.build = wallBuild.levelModels[wallLevel];
         towerBuild.build = towerBuild.levelModels[towerLevel];
-
+        isGunUnlocked = false;
+        isSpinUnlocked = false;
+        isMineUnlocked = false;
+        isBombUnlocked = false;
+        isRayUnlocked = false;
 }
 
 public void UpgradeWall(int precio)
@@ -106,6 +120,46 @@ public void UpgradeWall(int precio)
             }
         }
        
+    }
+    public void UnlockGun(int precio)
+    {
+        if (precio <= MoneySystem.instance.money)
+        {
+            MoneySystem.instance.money -= precio;
+            isGunUnlocked = true;
+        }
+    }
+    public void UnlockRay(int precio)
+    {
+        if (precio <= MoneySystem.instance.money)
+        {
+            MoneySystem.instance.money -= precio;
+            isRayUnlocked = true;
+        }
+    }
+    public void UnlockMine(int precio)
+    {
+        if (precio <= MoneySystem.instance.money)
+        {
+            MoneySystem.instance.money -= precio;
+            isMineUnlocked = true;
+        }
+    }
+    public void UnlockBomb(int precio)
+    {
+        if (precio <= MoneySystem.instance.money)
+        {
+            MoneySystem.instance.money -= precio;
+            isBombUnlocked = true;
+        }
+    }
+    public void UnlockSpin(int precio)
+    {
+        if (precio <= MoneySystem.instance.money)
+        {
+            MoneySystem.instance.money -= precio;
+            isSpinUnlocked = true;
+        }
     }
     public void SwapWallModelsOnUpgrade()
     {
@@ -176,6 +230,14 @@ public void UpgradeWall(int precio)
     public void CloseUpgradeShop()
     {
         upgradeShop.gameObject.SetActive(false);
+    }
+    public void OpenSkillsShop()
+    {
+        skillShop.gameObject.SetActive(true);
+    }
+    public void CloseSkillsShop()
+    {
+        skillShop.gameObject.SetActive(false);
     }
     public void RegisterWall(GameObject wall)
     {
