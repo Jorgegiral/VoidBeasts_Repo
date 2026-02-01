@@ -30,7 +30,7 @@ public class DayNightSystem : MonoBehaviour
     float lightTransitionDuration = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
-
+    private bool collected;
     //provisional
     [SerializeField]public  GameObject selection;
 
@@ -78,12 +78,12 @@ public class DayNightSystem : MonoBehaviour
             ParcelaManager.instance.freeSeed = true;
             ParcelaManager.instance.freeSeedText.SetActive(true);
             MoneySystem.instance.UpdateMoneyText();
-            dailyPowerUP.StartPowerUp();
             buildHP.NewDayHealth();
             buildHP.imageHP.SetActive(false);
             foreach (ParcelaOrder p in parcelasOrder)
             {
                 p.PlayRecolect();
+                collected = true;
             }
             foreach (Parcela p in parcelas)
             {
@@ -91,11 +91,14 @@ public class DayNightSystem : MonoBehaviour
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
-
-
+            if (!collected)
+            {
+                dailyPowerUPPopUp();
+            }
         }
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
+        collected = false;
     }
     public void ToNight()
     {
@@ -109,8 +112,7 @@ public class DayNightSystem : MonoBehaviour
             nightCam.gameObject.SetActive(true);
             buildHP.imageHP.SetActive(true);
             ParcelaManager.instance.freeSeedText.SetActive(false);
-
-
+            ChangePopUPValue();
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
@@ -135,6 +137,14 @@ public class DayNightSystem : MonoBehaviour
         {
             parcelasOrder.Add(newParcela);
         }
+    }
+    public void dailyPowerUPPopUp()
+    {
+        dailyPowerUP.StartPowerUp();
+    }
+    public void ChangePopUPValue()
+    {
+        dailyPowerUP.poopedDay = false;
     }
 
     IEnumerator ChangeLightTemperature(float targetTemperature)

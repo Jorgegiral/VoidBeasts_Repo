@@ -24,9 +24,12 @@ public class DailyPowerUP : MonoBehaviour
     [SerializeField] GameObject firstSelectedMenu;
     bool enemies = false;
     bool upgradeselect = false;
+    public bool poopedDay = false;
 
     public void StartPowerUp()
     {
+        if (poopedDay) return;
+        poopedDay=true;
         gameObject.SetActive(true);
         PickPowerUps();
         Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
