@@ -233,7 +233,7 @@ public class GridBuilding : MonoBehaviour
 
                 if (!parcela)
                 {
-                    if (TutorialManager.instance.step == 4 &&
+                    if (TutorialManager.instance.step == 3 &&
                         currentBuildType.type == TypeBuild.BuildType.Build)
                     {
                         TutorialManager.instance.CompleteStep();
