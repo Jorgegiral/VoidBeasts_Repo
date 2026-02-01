@@ -51,7 +51,7 @@ public class DailyPowerUP : MonoBehaviour
         Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
         Time.timeScale = 1f;
 
-        if (TutorialManager.instance.step == 13)
+        if (TutorialManager.instance != null && TutorialManager.instance.step == 13)
         {
             if (!upgradeselect)
             {
