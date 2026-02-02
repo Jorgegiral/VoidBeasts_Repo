@@ -20,8 +20,6 @@ public class PlayerFunctions : MonoBehaviour
 
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
-    [SerializeField] GameObject firstSelectedOnPause;
-    [SerializeField] GameObject firstSelectedOnSeed; 
     bool parcelaSelection = false; //Jorge
     bool closeSeed = false;
     bool nightSelect = false;

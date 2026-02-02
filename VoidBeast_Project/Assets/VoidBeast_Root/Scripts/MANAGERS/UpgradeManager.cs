@@ -79,6 +79,7 @@ public void UpgradeWall(int precio)
             wallBuild.Upgrade(wallLevel);
             wallBuildvalue += 500;
             UpdateValuesBuildings();
+        MoneySystem.instance.UpdateMoneyText();
             SwapWallModelsOnUpgrade();
 
     }
@@ -91,7 +92,8 @@ public void UpgradeWall(int precio)
             towerBuild.Upgrade(towerLevel);
             towerBuildvalue += 500;
         UpdateValuesBuildings();
-            if (towers.Count > 0) SwapTowerModelsOnUpgrade();
+        MoneySystem.instance.UpdateMoneyText();
+        if (towers.Count > 0) SwapTowerModelsOnUpgrade();
 
         
     }
@@ -110,6 +112,7 @@ public void UpgradeWall(int precio)
                     cropAvailable += 1;
                     wallBuildvalue += 300;
                     UpdateValuesBuildings();
+                    MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 3:
                     ExpandBuildArea(2, 2);
@@ -117,6 +120,7 @@ public void UpgradeWall(int precio)
                     towerAvailable += 1;
                     wallBuildvalue += 400;
                     UpdateValuesBuildings();
+                    MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 4:
                     ExpandBuildArea(4, 4);
@@ -125,6 +129,7 @@ public void UpgradeWall(int precio)
                     wallAvailable += 5;
                     wallBuildvalue += 500;
                     UpdateValuesBuildings();
+                    MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 5:
                     ExpandBuildArea(2, 2);
@@ -133,16 +138,17 @@ public void UpgradeWall(int precio)
                     wallAvailable += 5;
                     wallBuildvalue += 500;
                     UpdateValuesBuildings();
+                    MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 6:
                     ExpandBuildArea(4, 4);
                     updateModelMainBuild[5].SetActive(true);
                     updateModelMainBuild[4].SetActive(false);
-
                     wallAvailable += 10;
                     towerAvailable += 1;
                     wallBuildvalue += 1000;
                     UpdateValuesBuildings();
+                    MoneySystem.instance.UpdateMoneyText();
                     break;
                 default: break;
             }
@@ -159,7 +165,7 @@ public void UpgradeWall(int precio)
             lockRayTwo.SetActive(false);
             availablePoints--;
             UpdateSkillValues();
-
+            MoneySystem.instance.UpdateMoneyText();
         }
     }
     public void UnlockRay(int precio)
@@ -172,7 +178,7 @@ public void UpgradeWall(int precio)
             lockRay.SetActive(false);
             availablePoints--;
             UpdateSkillValues();
-
+            MoneySystem.instance.UpdateMoneyText();
         }
     }
     public void UnlockMine(int precio)
@@ -186,7 +192,7 @@ public void UpgradeWall(int precio)
             lockBombTwo.SetActive(false);
             availablePoints--;
             UpdateSkillValues();
-
+            MoneySystem.instance.UpdateMoneyText();
         }
     }
     public void UnlockBomb(int precio)
@@ -199,6 +205,7 @@ public void UpgradeWall(int precio)
             lockBomb.SetActive(false);
             availablePoints--;
             UpdateSkillValues();
+            MoneySystem.instance.UpdateMoneyText();
         }
     }
     public void UnlockSpin(int precio)
@@ -211,7 +218,7 @@ public void UpgradeWall(int precio)
             lockSpin.SetActive(false);
             availablePoints--;
             UpdateSkillValues();
-
+            MoneySystem.instance.UpdateMoneyText();
         }
     }
     public void SwapWallModelsOnUpgrade()
@@ -254,8 +261,6 @@ public void UpgradeWall(int precio)
     }
     public void ExpandBuildArea(int extraWidth, int extraHeight)
     {
-        
-
         bounds.xMin -= extraWidth / 2;
         bounds.xMax += extraWidth / 2;
         bounds.yMax += extraHeight /2; 
