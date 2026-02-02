@@ -85,7 +85,8 @@ public class GridBuilding : MonoBehaviour
 
         currentBuildType = build; // Jorge
 
-        buildingTemp = Instantiate(build.build, Vector3.zero, Quaternion.identity).GetComponent<Building>();
+        buildingTemp = Instantiate(build.build, Vector3.zero + new Vector3(0,0,-5), Quaternion.identity).GetComponent<Building>();
+        
         buildingOffset = build.placeOffSet;
         buildingClickOffset = build.clickOffSet;
        // FollowBuilding();

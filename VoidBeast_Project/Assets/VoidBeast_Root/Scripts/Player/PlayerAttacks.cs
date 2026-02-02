@@ -29,7 +29,7 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Collider attackCollider; 
     [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
-    [SerializeField] private float holdThreshold = 3f;
+    [SerializeField] private float holdThreshold = 2f;
     [SerializeField] Image SpinPanel;
 
 
