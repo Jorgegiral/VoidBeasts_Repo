@@ -19,9 +19,13 @@ public class GridBuilding : MonoBehaviour
     [SerializeField] LayerMask layerGround;
     private Vector3 buildingOffset;
     private Vector3 buildingClickOffset;
-    bool isWall;
+    public bool isWall;
+    public bool isBuild;
+    public bool isTower;
+
     bool parcela = false; //Jorge
     private TypeBuild currentBuildType;
+    private bool positionLocked = false;
 
     private void Awake()
     {
@@ -29,10 +33,10 @@ public class GridBuilding : MonoBehaviour
     }
     private void Update()
     {
-        if (buildingTemp != null)
+        if (buildingTemp != null && !buildingTemp.Placed && !positionLocked)
         {
-            FollowBuilding();
-
+            FollowMouse();
+            FollowBuilding(); 
         }
     }
 
@@ -99,6 +103,8 @@ public class GridBuilding : MonoBehaviour
                 {
                     UpgradeManager.instance.wallAvailable--;
                     isWall = true;
+                    isTower = false;
+                    isBuild = false;
                     return true;
                 }
                 return false;
@@ -107,6 +113,9 @@ public class GridBuilding : MonoBehaviour
                 if (UpgradeManager.instance.towerAvailable > 0)
                 {
                     UpgradeManager.instance.towerAvailable--;
+                    isTower = true;
+                    isBuild = false;
+                    isWall = false;
                     return true;
                 }
                 return false;
@@ -115,12 +124,33 @@ public class GridBuilding : MonoBehaviour
                 if (UpgradeManager.instance.cropAvailable > 0)
                 {
                     UpgradeManager.instance.cropAvailable--;
+                    isBuild = true;
+                    isWall = false;
+                    isTower =false;
                     return true;
                 }
                 return false;
         }
 
         return false;
+    }
+    private void CancelOption()
+    {
+        if (isBuild)
+        {
+            UpgradeManager.instance.cropAvailable++;
+            MoneySystem.instance.AddMoney(15);
+        }
+        if (isWall)
+        {
+            UpgradeManager.instance.wallAvailable++;
+            MoneySystem.instance.AddMoney(5);
+        }
+        if (isTower)
+        {
+            UpgradeManager.instance.towerAvailable++;
+            MoneySystem.instance.AddMoney(100);
+        }
     }
     private void FollowBuilding()
     {
@@ -190,41 +220,64 @@ public class GridBuilding : MonoBehaviour
         buildingTemp = null;
         isWall = false;
     }
-
-    public void MoveBuildAction(InputAction.CallbackContext context)
+    private void FollowMouse()
     {
-        if (!context.performed) return;
+        if (EventSystem.current != null &&
+    EventSystem.current.IsPointerOverGameObject())
+            return;
+        Vector3 mousePos = Mouse.current.position.ReadValue();
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
-        if (!buildingTemp) return;
-
-        if (!buildingTemp.Placed)
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerGround))
         {
-                Vector3 mousePos = Input.mousePosition;
-                Ray ray = Camera.main.ScreenPointToRay(mousePos);
-                RaycastHit hit;
+            Vector3Int cellPos = gridLayout.WorldToCell(hit.point);
 
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
-                {
-                    Vector3 worldPoint = hit.point;
+            if (prevPos != (Vector3)cellPos)
+            {
+                buildingTemp.transform.localPosition =
+                    gridLayout.CellToLocalInterpolated(cellPos + buildingClickOffset);
 
-                    Vector3Int cellPos = gridLayout.WorldToCell(worldPoint);
-                    if (prevPos != cellPos)
-                    {
-                        buildingTemp.transform.localPosition = gridLayout.CellToLocalInterpolated(cellPos + buildingClickOffset);
-                        prevPos = cellPos;
-                        FollowBuilding();
-                    }
-                }
+                prevPos = cellPos;
+            }
         }
     }
-
-    public void BuildAction(InputAction.CallbackContext context)
+    public void LockPositionBuildAction(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
         if (!buildingTemp) return;
+        if (buildingTemp.Placed) return;
+
+        if (buildingTemp.CanBePlaced())
+        {
+            positionLocked = true;
+
+        }
+        BuildConfirmUI.instance.Show();
+        FollowBuilding();
+    }
+    public void UnLockPositionBuildAction(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        if (!buildingTemp) return;
+        if (buildingTemp.Placed) return;
+
+        if (positionLocked)
+        {
+            positionLocked = false;
+
+        }
+        BuildConfirmUI.instance.Hide();
+        FollowBuilding();
+    }
+
+    public void BuildAction()
+    {
 
         if (buildingTemp.CanBePlaced())
         {
             buildingTemp.Place();
+            positionLocked = false;
+            BuildConfirmUI.instance.Hide();
 
             //Jorge:
 
@@ -244,14 +297,17 @@ public class GridBuilding : MonoBehaviour
             }
         }
     }
-    public void CancelBuildAction(InputAction.CallbackContext context)
+    public void CancelBuildAction()
     {
-        if (!context.performed) return;
         if (!buildingTemp) return;
-
+        Building temp = buildingTemp;
+        buildingTemp = null;
+        positionLocked = false;
         ClearArea();
-        
-        Destroy(buildingTemp.gameObject);
+        BuildConfirmUI.instance.Hide();
+        CancelOption();
+        Destroy(temp.gameObject);
+
     }
 
 

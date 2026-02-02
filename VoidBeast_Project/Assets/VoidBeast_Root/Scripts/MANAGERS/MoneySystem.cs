@@ -31,12 +31,12 @@ public class MoneySystem : MonoBehaviour
         money += moneyToAdd;
         UpdateMoneyText();
         totalMoneyEarned += moneyToAdd;
-        moneyAnimator.SetTrigger("MoreMoney");
+       // moneyAnimator.SetTrigger("MoreMoney");
     }
     public void BuyMoney(int moneyToBuy)
     {
          money -= moneyToBuy;
          UpdateMoneyText();
-        moneyAnimator.SetTrigger("MoreMoney");
+      //  moneyAnimator.SetTrigger("MoreMoney");
     }
 }
