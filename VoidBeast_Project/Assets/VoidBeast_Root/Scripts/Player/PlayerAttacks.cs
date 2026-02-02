@@ -53,11 +53,14 @@ public class PlayerAttacks : MonoBehaviour
 
 
     private Animator anim;
+    private RectTransform holderRect;
 
     void Start()
     {
         anim = GetComponent<Animator>(); 
-        gun.SetActive(false); 
+        gun.SetActive(false);
+        holderRect = holderImage.GetComponent<RectTransform>();
+
     }
     private void Update()
     {
@@ -69,6 +72,8 @@ public class PlayerAttacks : MonoBehaviour
                 holderImage.SetActive(true);
             }
             holderFiller.fillAmount += 0.5f * Time.deltaTime;
+            holderRect.position = Mouse.current.position.ReadValue();
+
         }
     }
     void Shoot()
