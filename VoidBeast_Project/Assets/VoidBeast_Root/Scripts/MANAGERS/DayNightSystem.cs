@@ -81,10 +81,9 @@ public class DayNightSystem : MonoBehaviour
             MoneySystem.instance.UpdateMoneyText();
             buildHP.NewDayHealth();
             buildHP.imageHP.SetActive(false);
-            for (int i = 0;i == dayButton.Length;i++)
-            {
-                dayButton[i].gameObject.SetActive(true);
-            }
+            dayButton[0].gameObject.SetActive(true);
+            dayButton[1].gameObject.SetActive(true);
+            dayButton[2].gameObject.SetActive(true);
             DayNightIcons[0].sprite = dayNightSprites[3];
             DayNightIcons[1].sprite = dayNightSprites[2];
 
@@ -121,10 +120,9 @@ public class DayNightSystem : MonoBehaviour
             buildHP.imageHP.SetActive(true);
             ParcelaManager.instance.freeSeedText.SetActive(false);
             ChangePopUPValue();
-            for (int i = 0; i == dayButton.Length; i++)
-            {
-                dayButton[i].gameObject.SetActive(false);
-            }
+            dayButton[0].gameObject.SetActive(false);
+            dayButton[1].gameObject.SetActive(false);
+            dayButton[2].gameObject.SetActive(false);
             DayNightIcons[0].sprite = dayNightSprites[1];
             DayNightIcons[1].sprite = dayNightSprites[0];
             foreach (Parcela p in parcelas)
