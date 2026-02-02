@@ -287,21 +287,28 @@ public void UpgradeWall(int precio)
 
     public void OpenUpgradeShop()
     {
+        if (PlayerStats.instance.menuOpened) return;
         upgradeShop.gameObject.SetActive(true);
         UpdateValuesBuildings();
+        PlayerStats.instance.menuOpened = true;
     }
     public void CloseUpgradeShop()
     {
         upgradeShop.gameObject.SetActive(false);
+        PlayerStats.instance.menuOpened = false;
+
     }
     public void OpenSkillsShop()
     {
+        if (PlayerStats.instance.menuOpened) return;
         skillShop.gameObject.SetActive(true);
         UpdateSkillValues();
+        PlayerStats.instance.menuOpened = true;
     }
     public void CloseSkillsShop()
     {
         skillShop.gameObject.SetActive(false);
+        PlayerStats.instance.menuOpened = false;
     }
     public void RegisterWall(GameObject wall)
     {

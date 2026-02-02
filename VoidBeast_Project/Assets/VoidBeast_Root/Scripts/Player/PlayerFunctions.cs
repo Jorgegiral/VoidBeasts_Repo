@@ -67,14 +67,22 @@ public class PlayerFunctions : MonoBehaviour
 
         if (DayNightSystem.Instance.isDay)
         {
+            if (PlayerStats.instance.menuOpened) return;
+     /*       if (PlayerStats.instance.playerisInside)
+            {
+                if (PlayerStats.instance.layerPlants)
+                {
+
+                }
+            }*/
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerPlant))
             {
                 ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
                 seedMenu.SetActive(true);
 
                 seedOpened = true;
-                
-            if (TutorialManager.instance != null && TutorialManager.instance.step == 6)
+                PlayerStats.instance.menuOpened = true;
+                if (TutorialManager.instance != null && TutorialManager.instance.step == 6)
             {
                 if (!parcelaSelection)
                 {
@@ -115,9 +123,9 @@ public class PlayerFunctions : MonoBehaviour
         {
             seedMenu.SetActive(false);
             seedOpened = false;
-            PlayerStats.instance.blockMovement = false;            
+            PlayerStats.instance.blockMovement = false;
+            PlayerStats.instance.menuOpened = false;
             //Jorge:
-
             if (TutorialManager.instance != null && TutorialManager.instance.step == 10)
             {
                 if (!closeSeed)
@@ -127,17 +135,16 @@ public class PlayerFunctions : MonoBehaviour
                 }
             }
         }
-        else if(!PlayerStats.instance.menuOpened)
+        else if(!PlayerStats.instance.escapeMenuOpened)
         {
             escapeMenu.SetActive(true);
-            PlayerStats.instance.menuOpened = true;
+            PlayerStats.instance.escapeMenuOpened = true;
             Time.timeScale = 0f;
-            EventSystem.current.SetSelectedGameObject(firstSelectedOnPause);
         }
         else
         {
             escapeMenu.SetActive(false);
-            PlayerStats.instance.menuOpened = false;
+            PlayerStats.instance.escapeMenuOpened = false;
             Time.timeScale = 1f;
         }
     }

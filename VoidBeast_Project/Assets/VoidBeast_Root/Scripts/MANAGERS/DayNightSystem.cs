@@ -26,7 +26,8 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] Image[] DayNightIcons;
     [SerializeField] LocalizedString dayText;   
     [SerializeField] LocalizedString nightText;
-    [SerializeField] Sprite[] DayNightSprites;
+    [SerializeField] Sprite[] dayNightSprites;
+    [SerializeField] GameObject[] dayButton;
     float lightTransitionDuration = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
@@ -80,6 +81,13 @@ public class DayNightSystem : MonoBehaviour
             MoneySystem.instance.UpdateMoneyText();
             buildHP.NewDayHealth();
             buildHP.imageHP.SetActive(false);
+            for (int i = 0;i == dayButton.Length;i++)
+            {
+                dayButton[i].gameObject.SetActive(true);
+            }
+            DayNightIcons[0].sprite = dayNightSprites[3];
+            DayNightIcons[1].sprite = dayNightSprites[2];
+
             foreach (ParcelaOrder p in parcelasOrder)
             {
                 p.PlayRecolect();
@@ -113,6 +121,12 @@ public class DayNightSystem : MonoBehaviour
             buildHP.imageHP.SetActive(true);
             ParcelaManager.instance.freeSeedText.SetActive(false);
             ChangePopUPValue();
+            for (int i = 0; i == dayButton.Length; i++)
+            {
+                dayButton[i].gameObject.SetActive(false);
+            }
+            DayNightIcons[0].sprite = dayNightSprites[1];
+            DayNightIcons[1].sprite = dayNightSprites[0];
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;

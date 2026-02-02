@@ -53,6 +53,7 @@ public class ToggleConstruction : MonoBehaviour
     {
         if (!context.performed)
             return;
+        if (PlayerStats.instance.menuOpened) return;
         if (TutorialManager.instance != null)
         {
             if (TutorialManager.instance != null && TutorialManager.instance.step == 1)

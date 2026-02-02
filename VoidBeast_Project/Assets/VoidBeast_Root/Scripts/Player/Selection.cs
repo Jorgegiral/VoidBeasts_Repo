@@ -2,41 +2,35 @@ using UnityEngine;
 
 public class Selection : MonoBehaviour
 {
-    [SerializeField] LayerMask layerInteractable;
-    [SerializeField] LayerMask layerPlant;
-    [SerializeField] private float rayDistance = 6f;
-    private GameObject lastSelected;
+    [SerializeField] GameObject selection;
+    [SerializeField] bool layerPlants;
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (DayNightSystem.Instance.isDay && PlayerStats.instance.isActionMode)
+        if (other.CompareTag("Player"))
         {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, layerPlant | layerInteractable))
+            selection.SetActive(true);
+            PlayerStats.instance.playerisInside = true;
+            if (layerPlants)
             {
-                Transform selectionChild = hit.collider.transform.Find("Selection");
-
-                if (selectionChild != null)
-                {
-                    if (lastSelected != null && lastSelected != selectionChild.gameObject)
-                        lastSelected.SetActive(false);
-
-                    selectionChild.gameObject.SetActive(true);
-                    lastSelected = selectionChild.gameObject;
-                }
+                PlayerStats.instance.layerPlants = true;
             }
             else
             {
-                if (lastSelected != null)
-                {
-                    lastSelected.SetActive(false);
-                    lastSelected = null;
-                }
-
+                PlayerStats.instance.layerPlants = false;
             }
-
         }
-        if (DayNightSystem.Instance.isNight) DayNightSystem.Instance.selection.SetActive(false);
-
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            selection.SetActive(false);
+            PlayerStats.instance.playerisInside = false;
+        }
+        if (layerPlants)
+        {
+            PlayerStats.instance.layerPlants = false;
+        }
     }
 }
