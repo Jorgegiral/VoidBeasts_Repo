@@ -22,9 +22,10 @@ public class DailyPowerUP : MonoBehaviour
     string upgradeName;
     private int selectedIndex = -1;
     [SerializeField] GameObject firstSelectedMenu;
-    bool enemies = false;
     bool upgradeselect = false;
+    bool recollection = false;
     public bool poopedDay = false;
+
 
     public void StartPowerUp()
     {
@@ -35,12 +36,11 @@ public class DailyPowerUP : MonoBehaviour
         Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
         EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
         Time.timeScale = 0f;
-        //Jorge:
-        if (TutorialManager.instance != null && TutorialManager.instance.step == 12)
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Collection)
         {
-            if (!enemies)
+            if (!recollection)
             {
-                enemies = true;
+                recollection = true;
                 TutorialManager.instance.CompleteStep();
             }
         }
@@ -51,7 +51,7 @@ public class DailyPowerUP : MonoBehaviour
         Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
         Time.timeScale = 1f;
 
-        if (TutorialManager.instance != null && TutorialManager.instance.step == 13)
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Upgrade)
         {
             if (!upgradeselect)
             {
@@ -84,7 +84,7 @@ public class DailyPowerUP : MonoBehaviour
         Time.timeScale = 1f;
         SendClickPowerUpInfo();
         //Jorge:
-        if (TutorialManager.instance != null && TutorialManager.instance.step == 13)
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Upgrade)
         {
             if (!upgradeselect)
             {

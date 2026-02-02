@@ -24,7 +24,6 @@ public class PlayerFunctions : MonoBehaviour
     [SerializeField] GameObject firstSelectedOnSeed; 
     bool parcelaSelection = false; //Jorge
     bool closeSeed = false;
-    bool nightSelect = false;
 
     private void Awake()
     {
@@ -53,15 +52,6 @@ public class PlayerFunctions : MonoBehaviour
             if (DayNightSystem.Instance != null && DayNightSystem.Instance.isDay)
             {
                 DayNightSystem.Instance.ToNight();
-
-                if ( TutorialManager.instance != null && TutorialManager.instance.step == 11)
-                {
-                    if (!nightSelect)
-                    {
-                        nightSelect = true;
-                        TutorialManager.instance.CompleteStep();
-                    }
-                }
             }
         }
 
@@ -74,15 +64,12 @@ public class PlayerFunctions : MonoBehaviour
 
                 seedOpened = true;
                 
-            if (TutorialManager.instance != null && TutorialManager.instance.step == 6)
+            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Interact)
             {
                 if (!parcelaSelection)
                 {
-                    if (!parcelaSelection)
-                    {
                         parcelaSelection = true;
                         TutorialManager.instance.CompleteStep();
-                    }
                 }
             }
             if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), transform.TransformDirection(Vector3.forward), out hit, 3, layerDestroyable))
@@ -118,7 +105,7 @@ public class PlayerFunctions : MonoBehaviour
             PlayerStats.instance.blockMovement = false;            
             //Jorge:
 
-            if (TutorialManager.instance != null && TutorialManager.instance.step == 10)
+            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.ExitPlanting)
             {
                 if (!closeSeed)
                 {

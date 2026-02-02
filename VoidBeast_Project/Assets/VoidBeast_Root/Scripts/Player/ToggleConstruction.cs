@@ -55,7 +55,7 @@ public class ToggleConstruction : MonoBehaviour
             return;
         if (TutorialManager.instance != null)
         {
-            if (TutorialManager.instance != null && TutorialManager.instance.step == 1)
+            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.OpenBuildMenu)
             {
                 if (!tutorialTabDone)
                 {
@@ -63,7 +63,7 @@ public class ToggleConstruction : MonoBehaviour
                     TutorialManager.instance.CompleteStep();
                 }
             }
-            if (TutorialManager.instance != null && TutorialManager.instance.step == 5)
+            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.CloseBuild)
             {
                 if (!tutorialTabClose)
                 {
@@ -73,7 +73,7 @@ public class ToggleConstruction : MonoBehaviour
             }
         }
 
-        if (TutorialManager.instance == null || TutorialManager.instance.step >= 2)
+        if (TutorialManager.instance == null || TutorialManager.instance.currentStep >= TutorialManager.Step.BuyPlot)
         {
             
             if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)

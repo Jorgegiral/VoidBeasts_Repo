@@ -31,6 +31,8 @@ public class DayNightSystem : MonoBehaviour
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
     private bool collected;
+    //Jorge:
+    bool enemies = false;
     //provisional
     [SerializeField]public  GameObject selection;
 
@@ -69,6 +71,14 @@ public class DayNightSystem : MonoBehaviour
     {
         if (isNight)
         {
+            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.KillEnemies)
+            {
+                if (!enemies)
+                {
+                    enemies = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
             isDay = true;
             isNight = false;
             nightNumber++;
