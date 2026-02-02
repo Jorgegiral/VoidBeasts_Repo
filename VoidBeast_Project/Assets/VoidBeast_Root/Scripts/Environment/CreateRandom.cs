@@ -1,9 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using UnityEngine;
 public class CreateRandom : MonoBehaviour
 {
@@ -21,8 +18,6 @@ public class CreateRandom : MonoBehaviour
     {
         Generate();
     }
-#if UNITY_EDITOR
-    [ContextMenu("Generate")]
 
     public void Generate()
     {
@@ -38,7 +33,7 @@ public class CreateRandom : MonoBehaviour
                 continue;
             if (Vector3.Distance(hit.point, centerPoint) < forbiddenRadius)
                 continue;
-            GameObject instantiatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(this.enviroElements[Random.Range(0,enviroElements.Length)], transform);
+            GameObject instantiatedPrefab = Instantiate(this.enviroElements[Random.Range(0,enviroElements.Length)], transform);
             instantiatedPrefab.transform.position = hit.point;
             instantiatedPrefab.transform.Rotate(Vector3.up, Random.Range(rotationRange.x,rotationRange.y),Space.Self);
             instantiatedPrefab.transform.rotation = Quaternion.Lerp(transform.rotation, transform.rotation * Quaternion.FromToRotation(instantiatedPrefab.transform.up, hit.normal), rotateTowardsNormal);
@@ -49,7 +44,6 @@ public class CreateRandom : MonoBehaviour
                 );
         };
     }
-    [ContextMenu("Clear")]
 
     public void Clear()
     {
@@ -58,6 +52,5 @@ public class CreateRandom : MonoBehaviour
             DestroyImmediate(transform.GetChild(0).gameObject);
         }
     }
-#endif
 
 }
