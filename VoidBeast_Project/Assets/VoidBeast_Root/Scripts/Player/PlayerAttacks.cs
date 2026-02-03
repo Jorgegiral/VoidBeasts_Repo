@@ -29,7 +29,7 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Collider attackCollider; 
     [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
-    [SerializeField] private float holdThreshold = 3f;
+    [SerializeField] private float holdThreshold = 2f;
     [SerializeField] Image SpinPanel;
 
 
@@ -53,11 +53,14 @@ public class PlayerAttacks : MonoBehaviour
 
 
     private Animator anim;
+    private RectTransform holderRect;
 
     void Start()
     {
         anim = GetComponent<Animator>(); 
-        gun.SetActive(false); 
+        gun.SetActive(false);
+        holderRect = holderImage.GetComponent<RectTransform>();
+
     }
     private void Update()
     {
@@ -69,6 +72,7 @@ public class PlayerAttacks : MonoBehaviour
                 holderImage.SetActive(true);
             }
             holderFiller.fillAmount += 0.5f * Time.deltaTime;
+            holderRect.position = Mouse.current.position.ReadValue();
         }
     }
     void Shoot()
@@ -183,15 +187,20 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator MineCooldown()
     {
         canMine = false;
-        yield return new WaitForSeconds(PlayerStats.instance.mineCooldown);
-        canMine = true;
+        yield return StartCoroutine(Cooldown(MinePanel, PlayerStats.instance.mineCooldown, () =>
+        {
+            canMine = true;
+        })
+        );
     }
     IEnumerator BombCooldown()
     {
         canBomb = false;
-        BombPanel.fillAmount = 0;
-        yield return new WaitForSeconds(PlayerStats.instance.bombCooldown);
-        canBomb = true;
+        yield return StartCoroutine(Cooldown(BombPanel, PlayerStats.instance.bombCooldown, () =>
+            {
+                canBomb = true;
+            })
+        );
     }
     IEnumerator MeleeCooldown()
     {
@@ -202,14 +211,35 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator SpinCooldown()
     {
         canSpin = false;
-        yield return new WaitForSeconds(PlayerStats.instance.spinCooldown);
-        canSpin = true;
+        yield return StartCoroutine(Cooldown(SpinPanel, PlayerStats.instance.spinCooldown, () =>
+        {
+            canSpin = true;
+        })
+        );
     }
     IEnumerator RayCooldown()
     {
         canRay = false;
-        yield return new WaitForSeconds(PlayerStats.instance.rayGunCooldown);
-        canRay = true;
+        yield return StartCoroutine(Cooldown(RayPanel, PlayerStats.instance.rayGunCooldown, () =>
+        {
+            canRay = true;
+        })
+        );
+    }
+    IEnumerator Cooldown(Image panel, float cooldownTime, System.Action onFinish)
+    {
+        panel.fillAmount = 0f;
+        float timer = 0f;
+
+        while (timer < cooldownTime)
+        {
+            timer += Time.deltaTime;
+            panel.fillAmount = timer / cooldownTime;
+            yield return null;
+        }
+
+        panel.fillAmount = 1f;
+        onFinish?.Invoke();
     }
     public void OnShoot(InputAction.CallbackContext context)
     {

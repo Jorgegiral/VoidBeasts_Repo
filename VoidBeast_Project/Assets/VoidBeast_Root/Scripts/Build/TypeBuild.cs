@@ -10,6 +10,9 @@ public class TypeBuild : ScriptableObject
     public Vector3 clickOffSet;
     public Vector3 placeOffSet;
     public BuildType type;
+    public string nameBuild;
+    public int precio;
+    public string info;
     public event Action OnBuildChanged;
 
     public void Upgrade(int level)
