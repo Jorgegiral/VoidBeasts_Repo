@@ -110,7 +110,7 @@ public void UpgradeWall(int precio)
                     updateModelMainBuild[1].SetActive(true);
                     wallAvailable += 5;
                     cropAvailable += 1;
-                    wallBuildvalue += 300;
+                    mainBuildvalue += 300;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
@@ -118,7 +118,7 @@ public void UpgradeWall(int precio)
                     ExpandBuildArea(2, 2);
                     updateModelMainBuild[2].SetActive(true);
                     towerAvailable += 1;
-                    wallBuildvalue += 400;
+                    mainBuildvalue += 400;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
@@ -127,7 +127,7 @@ public void UpgradeWall(int precio)
                     updateModelMainBuild[3].SetActive(true);
                     updateModelMainBuild[1].SetActive(false);
                     wallAvailable += 5;
-                    wallBuildvalue += 500;
+                    mainBuildvalue += 500;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
@@ -136,7 +136,7 @@ public void UpgradeWall(int precio)
                     updateModelMainBuild[4].SetActive(true);
                     cropAvailable += 1;
                     wallAvailable += 5;
-                    wallBuildvalue += 500;
+                    mainBuildvalue += 500;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
@@ -146,7 +146,7 @@ public void UpgradeWall(int precio)
                     updateModelMainBuild[4].SetActive(false);
                     wallAvailable += 10;
                     towerAvailable += 1;
-                    wallBuildvalue += 1000;
+                    mainBuildvalue += 1000;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
