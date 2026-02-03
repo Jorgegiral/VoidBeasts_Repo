@@ -243,10 +243,9 @@ public class GridBuilding : MonoBehaviour
     }
     public void LockPositionBuildAction(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
         if (!buildingTemp) return;
         if (buildingTemp.Placed) return;
-
+        Debug.Log("asda");
         if (buildingTemp.CanBePlaced())
         {
             positionLocked = true;
