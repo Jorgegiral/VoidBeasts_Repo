@@ -25,7 +25,6 @@ public class EnemyHP : MonoBehaviour
         enemyMaxHealth = Random.Range(minHealth, maxHealth);
         enemyMaxHealth = ScaleEnemyHP();
         EnemyManager.instance.Register(gameObject);
-
         enemyCurrentHealth = enemyMaxHealth;
         UpdateHealthBar();
     }
@@ -40,6 +39,7 @@ public class EnemyHP : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        healthob.SetActive(true);
         enemyCurrentHealth -= damage;
         rend.material = damageMaterial;
         StartCoroutine(TakeDamageMaterial());

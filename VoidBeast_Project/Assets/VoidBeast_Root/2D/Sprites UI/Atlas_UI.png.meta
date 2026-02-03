@@ -592,9 +592,9 @@ TextureImporter:
       name: Atlas_UI_26
       rect:
         serializedVersion: 2
-        x: 21
+        x: 99
         y: 93
-        width: 224
+        width: 67
         height: 43
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -680,7 +680,7 @@ TextureImporter:
       name: Atlas_UI_32
       rect:
         serializedVersion: 2
-        x: 1374
+        x: 1359
         y: 37
         width: 29
         height: 77
@@ -782,6 +782,72 @@ TextureImporter:
       bones: []
       spriteID: 9186b99f653516c48a4734043385648a
       internalID: -1920359584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_3
+      rect:
+        serializedVersion: 2
+        x: 1584
+        y: 41
+        width: 47
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b940b69896cde534c84916d042fb9b4f
+      internalID: 93507106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_4
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 93
+        width: 78
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e71658a8c8d8dfc459e20f8561623d11
+      internalID: -767267222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_13
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 93
+        width: 79
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16058575e4887334a9f8511d5f665c64
+      internalID: -387615275
       vertices: []
       indices: 
       edges: []

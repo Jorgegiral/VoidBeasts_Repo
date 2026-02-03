@@ -44,7 +44,7 @@ public class Parcela : MonoBehaviour
         Settings.instance.PlaySoundFXClip(starSound, transform, 1f);
 
         //Jorge:
-        if (TutorialManager.instance.step == 9)
+        if (TutorialManager.instance != null && TutorialManager.instance.step == 9)
         {
             if (!canPlant)
             {
@@ -94,8 +94,7 @@ public class Parcela : MonoBehaviour
                 }
                 StartCoroutine(AnimateDissolve(renderer.materials, 3f));
             }
-
-            MoneySystem.instance.AddMoney(plant.ganancias);
+            ParcelaManager.instance.moneyToAdd += plant.ganancias;
             plant = null;
             dayCount = 0;
             nightCount = 0;

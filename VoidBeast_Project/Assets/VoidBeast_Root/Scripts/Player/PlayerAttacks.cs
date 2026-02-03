@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.UI.Image;
 
 public class PlayerAttacks : MonoBehaviour
 {
+    [SerializeField] GameObject holderImage;
+    [SerializeField] Image holderFiller;
+
+
     [Header("Shoot config")]
     [SerializeField] Transform shootPoint;
     [SerializeField] GameObject bulletVFX;
@@ -15,8 +20,8 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Ray config")]
     private bool canRay = true;
-    [SerializeField] GameObject RayPanel;
-
+    [SerializeField] Image RayPanel;
+    [SerializeField] GameObject tornadoVFX;
     [Header("Melee config")]
     private bool canMelee = true;
     private bool canSpin = true;
@@ -24,8 +29,8 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Collider attackCollider; 
     [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
-    [SerializeField]private float holdThreshold = 3f;
-    [SerializeField] GameObject SpinPanel;
+    [SerializeField] private float holdThreshold = 2f;
+    [SerializeField] Image SpinPanel;
 
 
     [Header("Bomb config")]
@@ -33,14 +38,14 @@ public class PlayerAttacks : MonoBehaviour
     private bool canBomb = true;
     private float minTime = 0.1f;
     private float maxTime = 1f;
-    [SerializeField] GameObject BombPanel;
+    [SerializeField] Image BombPanel;
 
 
     [Header("Mine config")]
     private bool canMine = true;
     [SerializeField] GameObject minePrefab;
     [SerializeField] Transform minePoint;
-    [SerializeField] GameObject MinePanel;
+    [SerializeField] Image MinePanel;
 
 
     [Header("Sounds")]
@@ -48,21 +53,31 @@ public class PlayerAttacks : MonoBehaviour
 
 
     private Animator anim;
+    private RectTransform holderRect;
 
     void Start()
     {
         anim = GetComponent<Animator>(); 
-        gun.SetActive(false); 
+        gun.SetActive(false);
+        holderRect = holderImage.GetComponent<RectTransform>();
+
     }
     private void Update()
     {
         if (isHolding)
         {
             holdTimer += Time.deltaTime;
+            if (holdTimer > 0.2f)
+            {
+                holderImage.SetActive(true);
+            }
+            holderFiller.fillAmount += 0.5f * Time.deltaTime;
+            holderRect.position = Mouse.current.position.ReadValue();
         }
     }
     void Shoot()
     {
+        if (!UpgradeManager.instance.isGunUnlocked) return;
         if (!canShoot) return;
         rotateToPlayer.RotateOnShoot();
         //gun.SetActive(true); //Jorge
@@ -76,8 +91,10 @@ public class PlayerAttacks : MonoBehaviour
     }
     void RayGun()
     {
+        if (!UpgradeManager.instance.isRayUnlocked) return;
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
+        anim.SetTrigger("Shoot");
         anim.SetTrigger("Attack");
 
         StartCoroutine(RayCooldown());
@@ -86,6 +103,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     void PlantMine()
     {
+        if (!UpgradeManager.instance.isMineUnlocked) return;
         if (!canMine) return;
         anim.SetTrigger("Mine");
         anim.SetTrigger("Attack");
@@ -97,6 +115,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     void ThrowBomb()
     {
+        if (!UpgradeManager.instance.isBombUnlocked) return;
         if (!canBomb) return;
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("ThrowBomb");
@@ -123,8 +142,8 @@ public class PlayerAttacks : MonoBehaviour
     }
     void SpinAttack()
     {
+        if (!UpgradeManager.instance.isSpinUnlocked) return;
         if (!canSpin) return;
-        rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("Spin");
         anim.SetTrigger("Attack");
 
@@ -168,14 +187,20 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator MineCooldown()
     {
         canMine = false;
-        yield return new WaitForSeconds(PlayerStats.instance.mineCooldown);
-        canMine = true;
+        yield return StartCoroutine(Cooldown(MinePanel, PlayerStats.instance.mineCooldown, () =>
+        {
+            canMine = true;
+        })
+        );
     }
     IEnumerator BombCooldown()
     {
         canBomb = false;
-        yield return new WaitForSeconds(PlayerStats.instance.bombCooldown);
-        canBomb = true;
+        yield return StartCoroutine(Cooldown(BombPanel, PlayerStats.instance.bombCooldown, () =>
+            {
+                canBomb = true;
+            })
+        );
     }
     IEnumerator MeleeCooldown()
     {
@@ -186,14 +211,35 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator SpinCooldown()
     {
         canSpin = false;
-        yield return new WaitForSeconds(PlayerStats.instance.spinCooldown);
-        canSpin = true;
+        yield return StartCoroutine(Cooldown(SpinPanel, PlayerStats.instance.spinCooldown, () =>
+        {
+            canSpin = true;
+        })
+        );
     }
     IEnumerator RayCooldown()
     {
         canRay = false;
-        yield return new WaitForSeconds(PlayerStats.instance.rayGunCooldown);
-        canRay = true;
+        yield return StartCoroutine(Cooldown(RayPanel, PlayerStats.instance.rayGunCooldown, () =>
+        {
+            canRay = true;
+        })
+        );
+    }
+    IEnumerator Cooldown(Image panel, float cooldownTime, System.Action onFinish)
+    {
+        panel.fillAmount = 0f;
+        float timer = 0f;
+
+        while (timer < cooldownTime)
+        {
+            timer += Time.deltaTime;
+            panel.fillAmount = timer / cooldownTime;
+            yield return null;
+        }
+
+        panel.fillAmount = 1f;
+        onFinish?.Invoke();
     }
     public void OnShoot(InputAction.CallbackContext context)
     {
@@ -212,14 +258,19 @@ public class PlayerAttacks : MonoBehaviour
     public void OnMelee(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
-
+        if (DayNightSystem.Instance.isDay) return;
         if (context.started)
         {
-            isHolding = true;
-            holdTimer = 0f;
+         //   if (UpgradeManager.instance.isSpinUnlocked)
+        ///    {
+                holderFiller.fillAmount = 0f;
+                isHolding = true;
+                holdTimer = 0f;
+           // }
         }
         else if (context.canceled)
         {
+            holderImage.SetActive(false);
             isHolding = false;
 
             if (holdTimer >= holdThreshold)
