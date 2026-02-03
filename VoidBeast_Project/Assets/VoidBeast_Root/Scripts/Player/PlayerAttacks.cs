@@ -20,6 +20,7 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Ray config")]
     private bool canRay = true;
+    [SerializeField] GameObject rayVFX;
     [SerializeField] Image RayPanel;
     [SerializeField] GameObject tornadoVFX;
     [Header("Melee config")]
@@ -107,8 +108,9 @@ public class PlayerAttacks : MonoBehaviour
         if (!UpgradeManager.instance.isRayUnlocked) return;
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
-        anim.SetTrigger("Shoot");
+        anim.SetTrigger("Ray");
         anim.SetTrigger("Attack");
+        Instantiate(rayVFX, shootPoint.transform.position, transform.rotation);
 
         StartCoroutine(RayCooldown());
 
@@ -265,8 +267,30 @@ public class PlayerAttacks : MonoBehaviour
     {
 
         if (PlayerStats.instance.isDeath) return;
+        if (context.started)
+        {
+            if (UpgradeManager.instance.isRayUnlocked)
+            {
+                holderFiller.fillAmount = 0f;
+                isHolding = true;
+                holdTimer = 0f;
+            }
+        }
+        else if (context.canceled)
+        {
+            holderImage.SetActive(false);
+            isHolding = false;
 
-        Shoot();
+            if (holdTimer >= holdThreshold)
+            {
+                RayGun();
+            }
+            else
+            {
+                Shoot();
+
+            }
+        }
     }
     public void OnMelee(InputAction.CallbackContext context)
     {
@@ -275,12 +299,12 @@ public class PlayerAttacks : MonoBehaviour
 
         if (context.started)
         {
-         //   if (UpgradeManager.instance.isSpinUnlocked)
-        ///    {
+            if (UpgradeManager.instance.isSpinUnlocked)
+            {
                 holderFiller.fillAmount = 0f;
                 isHolding = true;
                 holdTimer = 0f;
-           // }
+           }
         }
         else if (context.canceled)
         {
