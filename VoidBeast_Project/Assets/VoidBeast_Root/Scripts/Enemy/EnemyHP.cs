@@ -25,7 +25,6 @@ public class EnemyHP : MonoBehaviour
         enemyMaxHealth = Random.Range(minHealth, maxHealth);
         enemyMaxHealth = ScaleEnemyHP();
         EnemyManager.instance.Register(gameObject);
-        healthob.SetActive(false);
         enemyCurrentHealth = enemyMaxHealth;
         UpdateHealthBar();
     }

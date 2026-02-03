@@ -15,6 +15,8 @@ public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] Plants plantToWatch;
     [Header("Build Refs")]
     [SerializeField] TMP_Text infoText;
+    [SerializeField] TypeBuild buildingToWatch;
+
 
 
 
@@ -29,6 +31,10 @@ public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         else
         {
+            nameText.text = buildingToWatch.nameBuild;
+            costText.text = buildingToWatch.precio.ToString();
+            infoText.text = buildingToWatch.info;
+
             //build
         }
 

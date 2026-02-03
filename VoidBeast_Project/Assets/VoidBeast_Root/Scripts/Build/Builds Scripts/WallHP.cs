@@ -1,12 +1,11 @@
 using UnityEngine;
-using Unity.UI;
 
 public class WallHP : MonoBehaviour
 {
     [Header("HP Options")]
     [SerializeField] float maxHealth;
     [SerializeField] float currentHealth;
-
+    [SerializeField] GameObject VFXUpgrade;
     Renderer rend; //jorge
     MaterialPropertyBlock mpb;
     Renderer[] renderers;
@@ -26,6 +25,20 @@ public class WallHP : MonoBehaviour
         UpdateHPWalls();
         if (currentHealth < 0)
         {
+
+            Destroy(gameObject);
+            UpgradeManager.instance.UnRegisterWall(gameObject);
+        }
+
+    }
+    public void UpgradeDamage(float upgradeDamage)
+    {
+        currentHealth -= upgradeDamage;
+        UpdateHPWalls();
+        if (currentHealth < 0)
+        {
+            GameObject upgradevfx = Instantiate(VFXUpgrade, transform.position, transform.rotation);
+            Destroy(upgradevfx, 1f);
             Destroy(gameObject);
             UpgradeManager.instance.UnRegisterWall(gameObject);
         }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MoneySystem : MonoBehaviour
 {
-    public int money;
+    public int money = 15;
     [SerializeField] TMP_Text moneyText;
     public static MoneySystem instance;
     public int totalMoneyEarned;
@@ -31,12 +31,12 @@ public class MoneySystem : MonoBehaviour
         money += moneyToAdd;
         UpdateMoneyText();
         totalMoneyEarned += moneyToAdd;
-        moneyAnimator.SetTrigger("MoreMoney");
+       // moneyAnimator.SetTrigger("MoreMoney");
     }
     public void BuyMoney(int moneyToBuy)
     {
          money -= moneyToBuy;
          UpdateMoneyText();
-        moneyAnimator.SetTrigger("MoreMoney");
+      //  moneyAnimator.SetTrigger("MoreMoney");
     }
 }

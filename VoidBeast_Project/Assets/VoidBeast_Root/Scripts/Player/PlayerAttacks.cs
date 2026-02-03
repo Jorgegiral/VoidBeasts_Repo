@@ -20,6 +20,7 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Ray config")]
     private bool canRay = true;
+    [SerializeField] GameObject rayVFX;
     [SerializeField] Image RayPanel;
     [SerializeField] GameObject tornadoVFX;
     [Header("Melee config")]
@@ -29,8 +30,11 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Collider attackCollider; 
     [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
-    [SerializeField] private float holdThreshold = 3f;
+    [SerializeField] private float holdThreshold = 2f;
     [SerializeField] Image SpinPanel;
+    float attackComboTimer = 0f;
+    float comboResetTimer = 2f;
+
 
 
     [Header("Bomb config")]
@@ -53,11 +57,14 @@ public class PlayerAttacks : MonoBehaviour
 
 
     private Animator anim;
+    private RectTransform holderRect;
 
     void Start()
     {
         anim = GetComponent<Animator>(); 
-        gun.SetActive(false); 
+        gun.SetActive(false);
+        holderRect = holderImage.GetComponent<RectTransform>();
+
     }
     private void Update()
     {
@@ -69,6 +76,17 @@ public class PlayerAttacks : MonoBehaviour
                 holderImage.SetActive(true);
             }
             holderFiller.fillAmount += 0.5f * Time.deltaTime;
+            holderRect.position = Mouse.current.position.ReadValue();
+        }
+        if (comboIndex > 1)
+        {
+            attackComboTimer += Time.deltaTime;
+
+            if (attackComboTimer >= comboResetTimer)
+            {
+                comboIndex = 1;
+                attackComboTimer = 0f;
+            }
         }
     }
     void Shoot()
@@ -90,8 +108,9 @@ public class PlayerAttacks : MonoBehaviour
         if (!UpgradeManager.instance.isRayUnlocked) return;
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
-        anim.SetTrigger("Shoot");
+        anim.SetTrigger("Ray");
         anim.SetTrigger("Attack");
+        Instantiate(rayVFX, shootPoint.transform.position, transform.rotation);
 
         StartCoroutine(RayCooldown());
 
@@ -183,15 +202,20 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator MineCooldown()
     {
         canMine = false;
-        yield return new WaitForSeconds(PlayerStats.instance.mineCooldown);
-        canMine = true;
+        yield return StartCoroutine(Cooldown(MinePanel, PlayerStats.instance.mineCooldown, () =>
+        {
+            canMine = true;
+        })
+        );
     }
     IEnumerator BombCooldown()
     {
         canBomb = false;
-        BombPanel.fillAmount = 0;
-        yield return new WaitForSeconds(PlayerStats.instance.bombCooldown);
-        canBomb = true;
+        yield return StartCoroutine(Cooldown(BombPanel, PlayerStats.instance.bombCooldown, () =>
+            {
+                canBomb = true;
+            })
+        );
     }
     IEnumerator MeleeCooldown()
     {
@@ -202,14 +226,35 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator SpinCooldown()
     {
         canSpin = false;
-        yield return new WaitForSeconds(PlayerStats.instance.spinCooldown);
-        canSpin = true;
+        yield return StartCoroutine(Cooldown(SpinPanel, PlayerStats.instance.spinCooldown, () =>
+        {
+            canSpin = true;
+        })
+        );
     }
     IEnumerator RayCooldown()
     {
         canRay = false;
-        yield return new WaitForSeconds(PlayerStats.instance.rayGunCooldown);
-        canRay = true;
+        yield return StartCoroutine(Cooldown(RayPanel, PlayerStats.instance.rayGunCooldown, () =>
+        {
+            canRay = true;
+        })
+        );
+    }
+    IEnumerator Cooldown(Image panel, float cooldownTime, System.Action onFinish)
+    {
+        panel.fillAmount = 0f;
+        float timer = 0f;
+
+        while (timer < cooldownTime)
+        {
+            timer += Time.deltaTime;
+            panel.fillAmount = timer / cooldownTime;
+            yield return null;
+        }
+
+        panel.fillAmount = 1f;
+        onFinish?.Invoke();
     }
     public void OnShoot(InputAction.CallbackContext context)
     {
@@ -222,21 +267,44 @@ public class PlayerAttacks : MonoBehaviour
     {
 
         if (PlayerStats.instance.isDeath) return;
+        if (context.started)
+        {
+            if (UpgradeManager.instance.isRayUnlocked)
+            {
+                holderFiller.fillAmount = 0f;
+                isHolding = true;
+                holdTimer = 0f;
+            }
+        }
+        else if (context.canceled)
+        {
+            holderImage.SetActive(false);
+            isHolding = false;
 
-        Shoot();
+            if (holdTimer >= holdThreshold)
+            {
+                RayGun();
+            }
+            else
+            {
+                Shoot();
+
+            }
+        }
     }
     public void OnMelee(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
+        if (DayNightSystem.Instance.isDay) return;
 
         if (context.started)
         {
-         //   if (UpgradeManager.instance.isSpinUnlocked)
-        ///    {
+            if (UpgradeManager.instance.isSpinUnlocked)
+            {
                 holderFiller.fillAmount = 0f;
                 isHolding = true;
                 holdTimer = 0f;
-           // }
+           }
         }
         else if (context.canceled)
         {
