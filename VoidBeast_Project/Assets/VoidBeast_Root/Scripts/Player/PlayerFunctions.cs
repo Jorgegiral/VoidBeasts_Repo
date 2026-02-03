@@ -95,7 +95,10 @@ public class PlayerFunctions : MonoBehaviour
             {
                 TakeAreaEnviro areaEnviro = hit.collider.GetComponentInParent<TakeAreaEnviro>();
                 areaEnviro.Destroyed();
-
+                if(areaEnviro != null)
+                    {
+                        anim.SetTrigger("Collect");
+                    }
                 hit.collider.gameObject.SetActive(false);
             }
             if (Physics.Raycast(transform.position + new Vector3(0, 0.3f, 0), transform.TransformDirection(Vector3.forward), out hit, 3, layerWall))
