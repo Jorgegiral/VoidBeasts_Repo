@@ -233,7 +233,7 @@ public void UpgradeWall(int precio)
             GameObject newWall = Instantiate(wallBuild.build, position, rotation);
             newWalls.Add(newWall);
             WallHP wallHP = wall.GetComponent<WallHP>();
-            wallHP.TakeDamage(100000);
+            wallHP.UpgradeDamage(100000);
         }
         walls = newWalls;
         AdaptModels();
@@ -255,7 +255,7 @@ public void UpgradeWall(int precio)
             Quaternion rotation = towers[i].transform.rotation;
             Instantiate(towerBuild.build, position, rotation);
             TowerHP towerHP = towers[i].GetComponent<TowerHP>();
-            towerHP.TakeDamage(100000);
+            towerHP.UpgradeDamage(100000);
             
         }
     }

@@ -6,6 +6,7 @@ public class TowerHP : MonoBehaviour
     [Header("HP Options")]
     [SerializeField] float maxHealth;
     [SerializeField] float currentHealth;
+    [SerializeField] GameObject VFXUpgrade;
 
     Renderer rend; //jorge
     MaterialPropertyBlock mpb;
@@ -31,7 +32,18 @@ public class TowerHP : MonoBehaviour
         }
         UpdateHPTurrets();
     }
+    public void UpgradeDamage(float upgradeDamage)
+    {
+        currentHealth -= upgradeDamage;
+        if (currentHealth < 0)
+        {
+            GameObject upgradevfx = Instantiate(VFXUpgrade, transform.position, transform.rotation);
+            Destroy(upgradevfx, 1f);
+            Destroy(gameObject);
+            UpgradeManager.instance.UnRegisterTower(gameObject);
+        }
 
+    }
     IEnumerator RegisterCooldown()
     {
         yield return new WaitForSeconds(1f);
