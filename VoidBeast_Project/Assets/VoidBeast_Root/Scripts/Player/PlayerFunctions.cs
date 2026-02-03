@@ -67,7 +67,7 @@ public class PlayerFunctions : MonoBehaviour
             {
                 ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
                 seedMenu.SetActive(true);
-
+                PlayerStats.instance.menuOpened = true;
                 seedOpened = true;
                 
             if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Interact)
@@ -114,7 +114,7 @@ public class PlayerFunctions : MonoBehaviour
             PlayerStats.instance.blockMovement = false;
             PlayerStats.instance.menuOpened = false;
             //Jorge:
-
+            
             if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.ExitPlanting)
             {
                 if (!closeSeed)
@@ -127,12 +127,15 @@ public class PlayerFunctions : MonoBehaviour
         else if(!PlayerStats.instance.escapeMenuOpened)
         {
             escapeMenu.SetActive(true);
+            PlayerStats.instance.menuOpened = true;
+
             PlayerStats.instance.escapeMenuOpened = true;
             Time.timeScale = 0f;
         }
         else
         {
             escapeMenu.SetActive(false);
+            PlayerStats.instance.menuOpened = false;
             PlayerStats.instance.escapeMenuOpened = false;
             Time.timeScale = 1f;
         }

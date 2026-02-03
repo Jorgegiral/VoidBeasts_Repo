@@ -50,7 +50,7 @@ public class PuñeteroFlyEnemy : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, target.position);
 
-        if (distance > 1.5f)
+        if (distance > 1.0f)
         {
             Settings.instance.PlayUniqueSoundSFXClip(moveEnemySound, transform, 1f);
 
