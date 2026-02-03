@@ -258,7 +258,7 @@ public class PlayerAttacks : MonoBehaviour
     public void OnMelee(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
-
+        if (DayNightSystem.Instance.isDay) return;
         if (context.started)
         {
          //   if (UpgradeManager.instance.isSpinUnlocked)
