@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DebrisDestroyer : MonoBehaviour
@@ -6,7 +7,13 @@ public class DebrisDestroyer : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Debris"))
         {
+            if(other.gameObject.GetComponentInParent<TakeAreaEnviro>() != null)
+            {
+                TakeAreaEnviro unplace = other.gameObject.GetComponentInParent<TakeAreaEnviro>();
+                unplace.Destroyed();
+            }
             other.gameObject.SetActive(false);
+
         }
 
     }
@@ -14,7 +21,13 @@ public class DebrisDestroyer : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Debris"))
         {
+            if (other.gameObject.GetComponentInParent<TakeAreaEnviro>() != null)
+            {
+                TakeAreaEnviro unplace = other.gameObject.GetComponentInParent<TakeAreaEnviro>();
+                unplace.Destroyed();
+            }
             other.gameObject.SetActive(false);
+
         }
 
     }

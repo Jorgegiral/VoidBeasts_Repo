@@ -26,11 +26,12 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] Image[] DayNightIcons;
     [SerializeField] LocalizedString dayText;   
     [SerializeField] LocalizedString nightText;
-    [SerializeField] Sprite[] DayNightSprites;
+    [SerializeField] Sprite[] dayNightSprites;
+    [SerializeField] GameObject[] dayButton;
     float lightTransitionDuration = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
-
+    private bool collected;
     //provisional
     [SerializeField]public  GameObject selection;
 
@@ -78,12 +79,18 @@ public class DayNightSystem : MonoBehaviour
             ParcelaManager.instance.freeSeed = true;
             ParcelaManager.instance.freeSeedText.SetActive(true);
             MoneySystem.instance.UpdateMoneyText();
-            dailyPowerUP.StartPowerUp();
             buildHP.NewDayHealth();
             buildHP.imageHP.SetActive(false);
+            dayButton[0].gameObject.SetActive(true);
+            dayButton[1].gameObject.SetActive(true);
+            dayButton[2].gameObject.SetActive(true);
+            DayNightIcons[0].sprite = dayNightSprites[3];
+            DayNightIcons[1].sprite = dayNightSprites[2];
+
             foreach (ParcelaOrder p in parcelasOrder)
             {
                 p.PlayRecolect();
+                collected = true;
             }
             foreach (Parcela p in parcelas)
             {
@@ -91,11 +98,14 @@ public class DayNightSystem : MonoBehaviour
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
-
-
+            if (!collected)
+            {
+                dailyPowerUPPopUp();
+            }
         }
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
+        collected = false;
     }
     public void ToNight()
     {
@@ -109,8 +119,12 @@ public class DayNightSystem : MonoBehaviour
             nightCam.gameObject.SetActive(true);
             buildHP.imageHP.SetActive(true);
             ParcelaManager.instance.freeSeedText.SetActive(false);
-
-
+            ChangePopUPValue();
+            dayButton[0].gameObject.SetActive(false);
+            dayButton[1].gameObject.SetActive(false);
+            dayButton[2].gameObject.SetActive(false);
+            DayNightIcons[0].sprite = dayNightSprites[1];
+            DayNightIcons[1].sprite = dayNightSprites[0];
             foreach (Parcela p in parcelas)
             {
                 if (p == null || p.plant == null) continue;
@@ -135,6 +149,14 @@ public class DayNightSystem : MonoBehaviour
         {
             parcelasOrder.Add(newParcela);
         }
+    }
+    public void dailyPowerUPPopUp()
+    {
+        dailyPowerUP.StartPowerUp();
+    }
+    public void ChangePopUPValue()
+    {
+        dailyPowerUP.poopedDay = false;
     }
 
     IEnumerator ChangeLightTemperature(float targetTemperature)

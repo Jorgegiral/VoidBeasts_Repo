@@ -34,8 +34,13 @@ public class PlayerStats : MonoBehaviour
     [Header("Stats Functions")]
     public int enemykilledCount;
     public bool menuOpened;
+    public bool escapeMenuOpened;
+
     public DailyPowerUpsSO powerUpChosen;
     public bool isActionMode = true;
+    public bool playerisInside;
+    public bool layerPlants;
+
 
     void Awake()
     {
