@@ -51,10 +51,7 @@
         }
         public void SwitchMode(InputAction.CallbackContext context)
         {
-            if (!context.performed)
-                return;
-            if (PlayerStats.instance.menuOpened) return;
-            if (TutorialManager.instance != null)
+            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.OpenBuildMenu)
             {
                 if (TutorialManager.instance != null && TutorialManager.instance.step == 1)
                 {
@@ -64,7 +61,10 @@
                         TutorialManager.instance.CompleteStep();
                     }
                 }
-                if (TutorialManager.instance != null && TutorialManager.instance.step == 5)
+            }
+            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.CloseBuild)
+            {
+                if (!tutorialTabClose)
                 {
                     if (!tutorialTabClose)
                     {
@@ -74,8 +74,8 @@
                 }
             }
 
-            if (TutorialManager.instance == null || TutorialManager.instance.step >= 2)
-            {
+        if (TutorialManager.instance == null || TutorialManager.instance.currentStep >= TutorialManager.Step.BuyPlot)
+        {
             
                 if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
             {
