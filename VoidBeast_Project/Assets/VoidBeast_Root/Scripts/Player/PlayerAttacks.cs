@@ -31,6 +31,9 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] private bool isHolding;
     [SerializeField] private float holdThreshold = 2f;
     [SerializeField] Image SpinPanel;
+    float attackComboTimer = 0f;
+    float comboResetTimer = 2f;
+
 
 
     [Header("Bomb config")]
@@ -73,6 +76,16 @@ public class PlayerAttacks : MonoBehaviour
             }
             holderFiller.fillAmount += 0.5f * Time.deltaTime;
             holderRect.position = Mouse.current.position.ReadValue();
+        }
+        if (comboIndex > 1)
+        {
+            attackComboTimer += Time.deltaTime;
+
+            if (attackComboTimer >= comboResetTimer)
+            {
+                comboIndex = 1;
+                attackComboTimer = 0f;
+            }
         }
     }
     void Shoot()
@@ -259,6 +272,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (PlayerStats.instance.isDeath) return;
         if (DayNightSystem.Instance.isDay) return;
+
         if (context.started)
         {
          //   if (UpgradeManager.instance.isSpinUnlocked)
