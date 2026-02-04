@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Dialogue : MonoBehaviour
 {
@@ -31,8 +32,8 @@ public class Dialogue : MonoBehaviour
                 dialogueText.text = text[index];
                 return;
             }
-            if (TutorialManager.instance.IsAnyStep(TutorialManager.Step.Cancel, TutorialManager.Step.Notification,
-                TutorialManager.Step.PlantingExplanation, TutorialManager.Step.Collection, TutorialManager.Step.Money, TutorialManager.Step.Upgrades,
+            if (TutorialManager.instance.IsAnyStep(TutorialManager.Step.Notification,
+                TutorialManager.Step.PlantingExplanation, TutorialManager.Step.Money, TutorialManager.Step.Upgrades,
                 TutorialManager.Step.Final))
             {
                 TutorialManager.instance.CompleteStep();
@@ -104,7 +105,7 @@ public class Dialogue : MonoBehaviour
 
         else
         {
-            gameObject.SetActive(false);
+            SceneManager.LoadScene(0);
         }
     }
     public void ForceNextText()
