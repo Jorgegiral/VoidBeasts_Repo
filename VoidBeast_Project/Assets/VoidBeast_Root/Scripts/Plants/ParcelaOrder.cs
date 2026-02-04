@@ -57,6 +57,10 @@ public class ParcelaOrder : MonoBehaviour
         openButton.SetActive(false);
         PlayerStats.instance.blockMovement = true;
         ParcelaManager.instance.OpenSeedShop();
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Interact)
+        {
+                TutorialManager.instance.CompleteStep();
+        }
     }
     public void CloseSeedMenu()
     {
@@ -65,5 +69,11 @@ public class ParcelaOrder : MonoBehaviour
         openButton.SetActive(true);
         PlayerStats.instance.blockMovement = false;
         ParcelaManager.instance.selectedParcela = null;
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.ExitPlanting)
+        {
+
+                TutorialManager.instance.CompleteStep();
+            
+        }
     }
 }
