@@ -14,8 +14,6 @@ public class Granada : MonoBehaviour
             GameObject tempExplosion = Instantiate(VFXexplosion, transform.position, transform.rotation);
 
             Explosion explosionMine = tempExplosion.GetComponent<Explosion>();
-            if (explosionMine != null)
-                explosionMine.isMine = false;
 
             Destroy(tempExplosion, 3f);
             Destroy(gameObject);
