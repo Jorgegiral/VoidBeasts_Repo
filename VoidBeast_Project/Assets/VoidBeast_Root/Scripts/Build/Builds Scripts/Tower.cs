@@ -15,11 +15,12 @@ public class Tower : MonoBehaviour
     [SerializeField] GameObject target;
     [SerializeField] float shootCD = 2f;
     [SerializeField] bool enemyIsInSight;
+    private Animator anim;
     private bool canShoot = true;
     private void Start()
     {
         StartCoroutine(TargetScanner());
-
+        anim = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -36,10 +37,10 @@ public class Tower : MonoBehaviour
         if (enemyIsInSight)
         {
             RotateToTarget();
-            ShootTarget();
+            ShootTarget(); 
         }
-
     }
+
     private void GetTarget()
     {
         target = null;
@@ -61,7 +62,9 @@ public class Tower : MonoBehaviour
         if (!canShoot) return;
         if (target != null)
         {
+            anim.SetTrigger("Shoot");
             Instantiate(bulletVFX, cannonPoint.transform.position, transform.rotation);
+
             StartCoroutine(ShootCooldown());
         }
 
