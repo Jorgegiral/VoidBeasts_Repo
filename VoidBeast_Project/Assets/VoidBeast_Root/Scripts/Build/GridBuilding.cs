@@ -245,7 +245,6 @@ public class GridBuilding : MonoBehaviour
     {
         if (!buildingTemp) return;
         if (buildingTemp.Placed) return;
-        Debug.Log("asda");
         if (buildingTemp.CanBePlaced())
         {
             positionLocked = true;

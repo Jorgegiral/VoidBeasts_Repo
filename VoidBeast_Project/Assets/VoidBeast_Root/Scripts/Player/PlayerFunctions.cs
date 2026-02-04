@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class PlayerFunctions : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] GameObject seedMenu;
     [SerializeField] GameObject escapeMenu;
     bool seedOpened = false;
     LayerMask layerInteractable;
@@ -20,8 +19,7 @@ public class PlayerFunctions : MonoBehaviour
 
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
-    bool parcelaSelection = false; //Jorge
-    bool closeSeed = false;
+    
 
     private void Awake()
     {
@@ -30,7 +28,6 @@ public class PlayerFunctions : MonoBehaviour
         layerDestroyable = LayerMask.GetMask("Destroyable");
         layerWall = LayerMask.GetMask("Wall");
         anim = GetComponent<Animator>(); //Jorge
-        seedMenu.SetActive(false);
     }
     private void Update()
     {

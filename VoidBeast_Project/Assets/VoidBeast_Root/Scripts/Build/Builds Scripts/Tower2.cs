@@ -16,10 +16,11 @@ public class Tower2 : MonoBehaviour
     [SerializeField] float shootCD = 2f;
     [SerializeField] bool enemyIsInSight;
     private bool canShoot = true;
+    private Animator anim;
     private void Start()
     {
         StartCoroutine(TargetScanner());
-
+        anim = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -42,8 +43,21 @@ public class Tower2 : MonoBehaviour
     }
     private void GetTarget()
     {
-        target = null;
+        if (target != null)
+        {
+            float dist = Vector3.Distance(transform.position, target.transform.position);
 
+            if (dist <= range)
+            {
+                enemyIsInSight = true;
+                return;
+            }
+            else
+            {
+                target = null;
+                enemyIsInSight = false;
+            }
+        }
         foreach (var enemy in EnemyManager.instance.enemies)
         {
             float dist = Vector3.Distance(transform.position, enemy.transform.position);
@@ -51,16 +65,18 @@ public class Tower2 : MonoBehaviour
             {
                 target = enemy;
                 enemyIsInSight = true;
-                break;
+                return;
             }
         }
-        enemyIsInSight = target != null;
+
+        enemyIsInSight = false;
     }
     private void ShootTarget()
     {
         if (!canShoot) return;
         if (target != null)
         {
+            anim.SetTrigger("Shoot");
             Instantiate(bulletVFX, cannonPoint.transform.position, transform.rotation);
             StartCoroutine(MachineGun());
             Instantiate(bulletVFX, cannonPoint.transform.position, transform.rotation);
@@ -96,7 +112,7 @@ void OnDrawGizmosSelected()
         while (true)
         {
             GetTarget();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

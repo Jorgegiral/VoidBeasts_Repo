@@ -19,9 +19,6 @@ public class Mine : MonoBehaviour
         GameObject tempExplosion = Instantiate(VFXexplosion, explosionTransform.position, explosionTransform.rotation);
 
         Explosion explosionMine = tempExplosion.GetComponent<Explosion>();
-        if (explosionMine != null)
-            explosionMine.isMine = true;
-
         Destroy(tempExplosion, 3f);
         Destroy(gameObject);
 

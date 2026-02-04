@@ -58,6 +58,8 @@ public class PuñeteroFlyEnemy : MonoBehaviour
 
             agent.SetDestination(target.position);
             anim.SetBool("isAttacking", false);
+            anim.SetBool("isRunning", true);
+
 
         }
         else
