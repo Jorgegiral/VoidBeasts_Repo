@@ -273,9 +273,13 @@ public class GridBuilding : MonoBehaviour
 
         if (buildingTemp.CanBePlaced())
         {
+            if (isBuild) UpgradeManager.instance.cropsBought++;
+            if (isTower) UpgradeManager.instance.towerBought++;
+            if (isWall) UpgradeManager.instance.wallBought++;
             buildingTemp.Place();
             positionLocked = false;
             BuildConfirmUI.instance.Hide();
+
 
             //Jorge:
 

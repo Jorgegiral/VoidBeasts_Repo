@@ -52,13 +52,13 @@ public class PlayerStats : MonoBehaviour
         {
             gunDamage += powerUpChosen.value;
         }
-        if (powerUpChosen.type.ToString() == "DeathTimer")
+        if (powerUpChosen.type.ToString() == "ExplosionDamage")
         {
-            deathTimer += powerUpChosen.value;
-            if(deathTimer <= 0)
-            {
-                deathTimer = 0;
-            }       
+            explosionDamage += powerUpChosen.value;
+        }
+        if (powerUpChosen.type.ToString() == "MeleeDamage")
+        {
+            meleeDamage += powerUpChosen.value;
         }
         if (powerUpChosen.type.ToString() == "Resurrection")
         {
