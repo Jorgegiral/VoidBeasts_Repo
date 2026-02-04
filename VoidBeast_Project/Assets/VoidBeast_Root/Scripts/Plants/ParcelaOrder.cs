@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ParcelaOrder : MonoBehaviour
@@ -6,11 +7,14 @@ public class ParcelaOrder : MonoBehaviour
     [SerializeField] GameObject recolectVFX;
     private Collider parcelaCollider;
     public Collider barrierCollider;
+    [SerializeField] GameObject openButton;
+    [SerializeField] GameObject closeButton;
 
     private void Start()
     {
         DayNightSystem.Instance.RegisterParcelaOrder(this);
         parcelaCollider = GetComponent<Collider>();
+        
 
     }
     private void Update()
@@ -45,5 +49,21 @@ public class ParcelaOrder : MonoBehaviour
         {
             DayNightSystem.Instance.dailyPowerUPPopUp();
         }
+    }
+    public void OpenSeedMenu()
+    {
+        ParcelaManager.instance.selectedParcela = gameObject.GetComponent<ParcelaOrder>();
+        closeButton.SetActive(true);
+        openButton.SetActive(false);
+        PlayerStats.instance.blockMovement = true;
+        ParcelaManager.instance.OpenSeedShop();
+    }
+    public void CloseSeedMenu()
+    {
+        ParcelaManager.instance.CloseSeedShop();
+        closeButton.SetActive(false);
+        openButton.SetActive(true);
+        PlayerStats.instance.blockMovement = false;
+        ParcelaManager.instance.selectedParcela = null;
     }
 }
