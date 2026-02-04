@@ -53,14 +53,14 @@
         {
             if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.OpenBuildMenu)
             {
-                if (TutorialManager.instance != null && TutorialManager.instance.step == 1)
-                {
+                
+                
                     if (!tutorialTabDone)
                     {
                         tutorialTabDone = true;
                         TutorialManager.instance.CompleteStep();
                     }
-                }
+                
             }
             if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.CloseBuild)
             {
