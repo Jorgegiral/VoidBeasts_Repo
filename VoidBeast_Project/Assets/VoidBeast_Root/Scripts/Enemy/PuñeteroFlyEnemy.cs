@@ -22,7 +22,7 @@ public class PuñeteroFlyEnemy : MonoBehaviour
 
     [SerializeField] AudioClip attackEnemySound;
     [SerializeField] AudioClip moveEnemySound;
-
+    private int comboIndex;
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -50,7 +50,7 @@ public class PuñeteroFlyEnemy : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, target.position);
 
-        if (distance > 1.0f)
+        if (distance > 2.0f)
         {
             Settings.instance.PlayUniqueSoundSFXClip(moveEnemySound, transform, 1f);
 
@@ -83,6 +83,13 @@ public class PuñeteroFlyEnemy : MonoBehaviour
             if (health != null)
             {
                 health.TakeDamage(enemyDamage);
+                anim.SetInteger("ComboIndex", 1);
+                comboIndex++;
+                if (comboIndex == 3)
+                {
+                    comboIndex = 0;
+                    anim.SetInteger("ComboIndex", -3);
+                }
             }
         }
         canAttack = false;

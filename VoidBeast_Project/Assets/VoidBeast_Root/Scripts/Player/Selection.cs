@@ -7,6 +7,8 @@ public class Selection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(GridBuilding.instance.buildingTemp == null) 
+        { 
         if (other.CompareTag("Player"))
         {
             selection.SetActive(true);
@@ -21,7 +23,9 @@ public class Selection : MonoBehaviour
             }
         }
     }
-    private void OnTriggerExit(Collider other)
+
+}
+private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
