@@ -44,8 +44,8 @@ public class UpgradeManager : MonoBehaviour
     public TypeBuild towerBuild;
     public List<GameObject> walls = new List<GameObject>();
     public List<GameObject> towers = new List<GameObject>();
-    private int maxTowerLevel = 3;
-    private int maxWallLevel = 3;
+    private int maxTowerLevel = 2;
+    private int maxWallLevel = 2;
     public bool isGunUnlocked;
     public bool isSpinUnlocked;
     public bool isMineUnlocked;
@@ -69,12 +69,12 @@ public class UpgradeManager : MonoBehaviour
         isRayUnlocked = false;
 }
 
-public void UpgradeWall(int precio)
+public void UpgradeWall()
     {
         if (wallLevel >= maxWallLevel) return;
-        if (precio > MoneySystem.instance.money) return;
+        if (wallBuildvalue > MoneySystem.instance.money) return;
         if (walls.Count <= 0) return;
-            MoneySystem.instance.money -= precio;
+            MoneySystem.instance.BuyMoney(wallBuildvalue);
             wallLevel++;
             wallBuild.Upgrade(wallLevel);
             wallBuildvalue += 500;
@@ -87,7 +87,7 @@ public void UpgradeWall(int precio)
     {
         if (towerLevel >= maxTowerLevel) return;
         if (towerBuildvalue > MoneySystem.instance.money) return;
-            MoneySystem.instance.money -= towerBuildvalue;
+            MoneySystem.instance.BuyMoney(towerBuildvalue);
             towerLevel++;
             towerBuild.Upgrade(towerLevel);
             towerBuildvalue += 500;
@@ -97,11 +97,12 @@ public void UpgradeWall(int precio)
 
         
     }
-    public void UpgradeMainBuild(int precio)
+    public void UpgradeMainBuild()
     {
-        if (precio <= MoneySystem.instance.money )
-        {
-            MoneySystem.instance.money -= precio;
+        if (mainBuildvalue > MoneySystem.instance.money ) return;
+        else { 
+        
+            MoneySystem.instance.BuyMoney(mainBuildvalue);
             mainBuildingLevel++;
             switch (mainBuildingLevel)
             {
@@ -110,14 +111,14 @@ public void UpgradeWall(int precio)
                     updateModelMainBuild[1].SetActive(true);
                     wallAvailable += 5;
                     cropAvailable += 1;
-                    mainBuildvalue += 300;
+                    towerAvailable += 1;
+                    mainBuildvalue += 250;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 3:
                     ExpandBuildArea(2, 2);
                     updateModelMainBuild[2].SetActive(true);
-                    towerAvailable += 1;
                     mainBuildvalue += 400;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
@@ -127,6 +128,7 @@ public void UpgradeWall(int precio)
                     updateModelMainBuild[3].SetActive(true);
                     updateModelMainBuild[1].SetActive(false);
                     wallAvailable += 5;
+                    towerAvailable += 1;
                     mainBuildvalue += 500;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();

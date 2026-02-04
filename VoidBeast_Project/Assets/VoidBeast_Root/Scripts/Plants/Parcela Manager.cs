@@ -11,6 +11,7 @@ public class ParcelaManager : MonoBehaviour
     private bool isParcelaFull;
     public List<GameObject> plant = new List<GameObject>();
     public int moneyToAdd;
+    public GameObject seedShop;
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -71,6 +72,17 @@ public class ParcelaManager : MonoBehaviour
     public void UnRegister(GameObject plants)
     {
         plant.Remove(plants);
+    }
+    public void OpenSeedShop()
+    {
+        seedShop.SetActive(true);
+        PlayerStats.instance.menuOpened = true;
+    }
+    public void CloseSeedShop()
+    {
+        seedShop.SetActive(false);
+        PlayerStats.instance.menuOpened = false;
+
     }
 }
 

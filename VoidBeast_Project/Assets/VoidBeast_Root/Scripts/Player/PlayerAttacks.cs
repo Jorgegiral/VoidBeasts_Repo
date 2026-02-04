@@ -246,17 +246,17 @@ public class PlayerAttacks : MonoBehaviour
     }
     IEnumerator Cooldown(Image panel, float cooldownTime, System.Action onFinish)
     {
-        panel.fillAmount = 0f;
+        panel.fillAmount = 1f;
         float timer = 0f;
 
         while (timer < cooldownTime)
         {
             timer += Time.deltaTime;
-            panel.fillAmount = timer / cooldownTime;
+            panel.fillAmount = 1f - (timer / cooldownTime);
             yield return null;
         }
 
-        panel.fillAmount = 1f;
+        panel.fillAmount = 0f;
         onFinish?.Invoke();
     }
     public void OnShoot(InputAction.CallbackContext context)

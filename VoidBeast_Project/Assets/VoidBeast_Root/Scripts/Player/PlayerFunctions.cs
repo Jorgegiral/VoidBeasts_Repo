@@ -45,34 +45,9 @@ public class PlayerFunctions : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerInteractable))
-        {
-            if (DayNightSystem.Instance != null && DayNightSystem.Instance.isDay)
-            {
-                DayNightSystem.Instance.ToNight();
-            }
-        }
 
         if (DayNightSystem.Instance.isDay)
         {
-            if (PlayerStats.instance.menuOpened) return;
-
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerPlant))
-            {
-                ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
-                seedMenu.SetActive(true);
-                PlayerStats.instance.menuOpened = true;
-                seedOpened = true;
-                
-            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Interact)
-            {
-                if (!parcelaSelection)
-                {
-                        parcelaSelection = true;
-                        TutorialManager.instance.CompleteStep();
-                }
-            }
-
             if (Physics.Raycast(transform.position + new Vector3(0, 0.3f, 0), transform.TransformDirection(Vector3.forward), out hit, 3, layerWall))
             {
                 WallBehaviour adaptWall = hit.collider.GetComponentInParent<WallBehaviour>();
@@ -83,7 +58,6 @@ public class PlayerFunctions : MonoBehaviour
                 UpgradeManager.instance.wallAvailable++;
             }
         }
-    }
 }
 
 
@@ -92,24 +66,7 @@ public class PlayerFunctions : MonoBehaviour
         if (!context.performed)
             return;
 
-        if (seedOpened)
-        {
-            seedMenu.SetActive(false);
-            seedOpened = false;
-            PlayerStats.instance.blockMovement = false;
-            PlayerStats.instance.menuOpened = false;
-            //Jorge:
-            
-            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.ExitPlanting)
-            {
-                if (!closeSeed)
-                {
-                    closeSeed = true;
-                    TutorialManager.instance.CompleteStep();
-                }
-            }
-        }
-        else if(!PlayerStats.instance.escapeMenuOpened)
+        if(!PlayerStats.instance.escapeMenuOpened)
         {
             escapeMenu.SetActive(true);
             PlayerStats.instance.menuOpened = true;
