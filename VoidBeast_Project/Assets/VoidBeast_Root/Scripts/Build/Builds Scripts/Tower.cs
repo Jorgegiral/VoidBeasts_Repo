@@ -43,8 +43,21 @@ public class Tower : MonoBehaviour
 
     private void GetTarget()
     {
-        target = null;
+        if (target != null)
+        {
+            float dist = Vector3.Distance(transform.position, target.transform.position);
 
+            if (dist <= range)
+            {
+                enemyIsInSight = true;
+                return; 
+            }
+            else
+            {
+                target = null;
+                enemyIsInSight = false;
+            }
+        }
         foreach (var enemy in EnemyManager.instance.enemies)
         {
             float dist = Vector3.Distance(transform.position, enemy.transform.position);
@@ -52,10 +65,11 @@ public class Tower : MonoBehaviour
             {
                 target = enemy;
                 enemyIsInSight = true;
-                break;
+                return;
             }
         }
-        enemyIsInSight = target != null;
+
+        enemyIsInSight = false;
     }
     private void ShootTarget()
     {
@@ -71,7 +85,6 @@ public class Tower : MonoBehaviour
     }
     private void RotateToTarget()
     {
-        if (target == null) return;
 
         transform.LookAt(target.transform);
     }
@@ -91,7 +104,7 @@ void OnDrawGizmosSelected()
         while (true)
         {
             GetTarget();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
