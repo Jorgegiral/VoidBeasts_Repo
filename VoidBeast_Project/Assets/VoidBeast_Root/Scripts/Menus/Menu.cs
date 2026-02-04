@@ -77,6 +77,13 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene(1);
 
     }
+    public void TutorialButton()
+    {
+        Time.timeScale = 1f;
+        Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
+        SceneManager.LoadScene(2);
+
+    }
     public void OptionsButton()
     {
         Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);

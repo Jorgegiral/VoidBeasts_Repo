@@ -56,13 +56,7 @@ public class PlayerFunctions : MonoBehaviour
         if (DayNightSystem.Instance.isDay)
         {
             if (PlayerStats.instance.menuOpened) return;
-     /*       if (PlayerStats.instance.playerisInside)
-            {
-                if (PlayerStats.instance.layerPlants)
-                {
 
-                }
-            }*/
             if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 3, layerPlant))
             {
                 ParcelaManager.instance.selectedParcela = hit.collider.GetComponent<ParcelaOrder>();
@@ -78,16 +72,7 @@ public class PlayerFunctions : MonoBehaviour
                         TutorialManager.instance.CompleteStep();
                 }
             }
-            if (Physics.Raycast(transform.position + new Vector3(0, 0.5f, 0), transform.TransformDirection(Vector3.forward), out hit, 3, layerDestroyable))
-            {
-                TakeAreaEnviro areaEnviro = hit.collider.GetComponentInParent<TakeAreaEnviro>();
-                areaEnviro.Destroyed();
-                if(areaEnviro != null)
-                    {
-                        anim.SetTrigger("Collect");
-                    }
-                hit.collider.gameObject.SetActive(false);
-            }
+
             if (Physics.Raycast(transform.position + new Vector3(0, 0.3f, 0), transform.TransformDirection(Vector3.forward), out hit, 3, layerWall))
             {
                 WallBehaviour adaptWall = hit.collider.GetComponentInParent<WallBehaviour>();
