@@ -79,6 +79,8 @@ public class FlyBasicEnemy : MonoBehaviour
             if (target == null || target != mainBuilding.transform)
             {
                 hasAttackPoint = false;
+                targetBuilding = null;
+
             }
             target = mainBuilding.transform;
             targetBuilding = mainBuilding.GetComponent<BuildingHP>();
@@ -93,21 +95,18 @@ public class FlyBasicEnemy : MonoBehaviour
         if (target.name == "MainBuild")
         {
             BuildingHP building = target.GetComponent<BuildingHP>();
+
             if (!hasAttackPoint && building)
             {
-                if (building.GetFreeAttackPoint(transform.position, out Vector3 newPoint))
-                {
-                    if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                        assignedAttackPoint = hit.position;
-                    else
-                        assignedAttackPoint = newPoint;
-                    targetBuilding = building;
-                    hasAttackPoint = true;
-                }
+                Vector3 newPoint = building.GetAttackPointInfinite(transform.position);
+
+                if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+                    assignedAttackPoint = hit.position;
                 else
-                {
-                    assignedAttackPoint = target.position;
-                }
+                    assignedAttackPoint = newPoint;
+
+                targetBuilding = building;
+                hasAttackPoint = true;
             }
         }
         else
@@ -187,10 +186,7 @@ public class FlyBasicEnemy : MonoBehaviour
     }
     public void OnDeath()
     {
-        if (targetBuilding && hasAttackPoint)
-        {
-            targetBuilding.ReleaseAttackPoint(assignedAttackPoint);
-        }
+
         Destroy(gameObject); 
     }
 

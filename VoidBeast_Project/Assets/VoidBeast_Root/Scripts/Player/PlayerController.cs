@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -25,12 +26,10 @@ public class PlayerController : MonoBehaviour
     {
         if(TutorialManager.instance != null)
         {
-            if(TutorialManager.instance.step == 0) { 
+            if(TutorialManager.instance.currentStep == TutorialManager.Step.Movement) { 
             if (!hasMovedTutorial && moveInput != Vector2.zero)
             {
-
-                hasMovedTutorial = true;
-                TutorialManager.instance.CompleteStep();
+                StartCoroutine(CompleteMovement());
             }
         }
         }
@@ -74,5 +73,16 @@ public class PlayerController : MonoBehaviour
         return;
         moveInput = context.ReadValue<Vector2>();
         
+    }
+    IEnumerator CompleteMovement()
+    {
+        yield return new WaitForSeconds(1f);
+        if (TutorialManager.instance != null &&
+            TutorialManager.instance.currentStep == TutorialManager.Step.Movement &&
+            moveInput != Vector2.zero)
+        {
+            hasMovedTutorial = true;
+            TutorialManager.instance.CompleteStep();
+        }
     }
 }

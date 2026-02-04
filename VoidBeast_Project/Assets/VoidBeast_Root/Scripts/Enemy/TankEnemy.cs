@@ -9,7 +9,9 @@ public class TankEnemy : MonoBehaviour
     [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
 
-
+    [Header("Tank Logic")]
+    [SerializeField] LayerMask wallLayer;
+    [SerializeField] float wallCheckDistance = 3f;
 
     [Header("Enemy Parameters")]
     [SerializeField] float enemyDamage;
@@ -31,7 +33,8 @@ public class TankEnemy : MonoBehaviour
     private bool hasAttackPoint = false;
     private Animator anim; //Jorge
     private BuildingHP targetBuilding;
-
+    private Transform currentTarget;
+    private bool attackingWall = false;
 
     private void Awake()
     {
@@ -44,34 +47,34 @@ public class TankEnemy : MonoBehaviour
     void Update()
     {
 
-        UpdateEnemyTarget(); 
+        UpdateEnemyTarget();
         MoveEnemyBuild();
         UpdateAttackCooldown();
 
     }
     void UpdateEnemyTarget()
     {
-        GameObject[] plants = GameObject.FindGameObjectsWithTag("Plant");
-        GameObject nearestPlant = null;
+        GameObject[] towers = GameObject.FindGameObjectsWithTag("Tower");
+        GameObject nearestTower = null;
         float nearestDistance = Mathf.Infinity;
 
-        foreach (GameObject plant in plants)
+        foreach (GameObject tower in towers)
         {
-            float distance = Vector3.Distance(transform.position, plant.transform.position);
+            float distance = Vector3.Distance(transform.position, tower.transform.position);
             if (distance < nearestDistance)
             {
                 nearestDistance = distance;
-                nearestPlant = plant;
+                nearestTower = tower;
             }
         }
-        if (nearestPlant != null)
+        if (nearestTower != null)
         {
-            if (target == null || target != nearestPlant.transform)
+            if (target == null || target != nearestTower.transform)
             {
-                hasAttackPoint = false; 
+                hasAttackPoint = false;
                 targetBuilding = null;
             }
-            target = nearestPlant.transform;
+            target = nearestTower.transform;
         }
         else
         {
@@ -79,6 +82,8 @@ public class TankEnemy : MonoBehaviour
             if (target == null || target != mainBuilding.transform)
             {
                 hasAttackPoint = false;
+                targetBuilding = null;
+
             }
             target = mainBuilding.transform;
             targetBuilding = mainBuilding.GetComponent<BuildingHP>();
@@ -93,26 +98,23 @@ public class TankEnemy : MonoBehaviour
         if (target.name == "MainBuild")
         {
             BuildingHP building = target.GetComponent<BuildingHP>();
+
             if (!hasAttackPoint && building)
             {
-                if (building.GetFreeAttackPoint(transform.position, out Vector3 newPoint))
-                {
-                    if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                        assignedAttackPoint = hit.position;
-                    else
-                        assignedAttackPoint = newPoint;
-                    targetBuilding = building;
-                    hasAttackPoint = true;
-                }
+                Vector3 newPoint = building.GetAttackPointInfinite(transform.position);
+
+                if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+                    assignedAttackPoint = hit.position;
                 else
-                {
-                    assignedAttackPoint = target.position;
-                }
+                    assignedAttackPoint = newPoint;
+
+                targetBuilding = building;
+                hasAttackPoint = true;
             }
         }
         else
         {
-            assignedAttackPoint = target.position; // Planta
+            assignedAttackPoint = target.position; // Tower
         }
 
         // Movimiento
@@ -145,15 +147,15 @@ public class TankEnemy : MonoBehaviour
         {
 
             var health = hit.collider.GetComponent<BuildingHP>();
-            var planthealth = hit.collider.GetComponent<PlantHP>();
+            var towerhealth = hit.collider.GetComponent<TowerHP>();
 
             if (health != null)
             {
                 health.TakeDamage(enemyDamage);
             }
-            if (planthealth != null)
+            if (towerhealth != null)
             {
-                planthealth.TakeDamage(enemyDamage);
+                towerhealth.TakeDamage(enemyDamage);
             }
         }
 
@@ -168,7 +170,6 @@ public class TankEnemy : MonoBehaviour
             if (attackCD <= 0f)
             {
                 canAttack = true;
-
             }
         }
     }
@@ -177,7 +178,7 @@ public class TankEnemy : MonoBehaviour
         if (!target) return;
 
         Vector3 direction = (target.position - transform.position).normalized;
-        direction.y = 0f; 
+        direction.y = 0f;
 
         if (direction.sqrMagnitude > 0.01f)
         {
@@ -187,11 +188,7 @@ public class TankEnemy : MonoBehaviour
     }
     public void OnDeath()
     {
-        if (targetBuilding && hasAttackPoint)
-        {
-            targetBuilding.ReleaseAttackPoint(assignedAttackPoint);
-        }
-        Destroy(gameObject); 
-    }
 
+        Destroy(gameObject);
+    }
 }
