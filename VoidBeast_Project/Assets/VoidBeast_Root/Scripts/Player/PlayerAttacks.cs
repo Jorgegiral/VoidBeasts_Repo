@@ -21,8 +21,10 @@ public class PlayerAttacks : MonoBehaviour
     [Header("Ray config")]
     private bool canRay = true;
     [SerializeField] GameObject rayVFX;
+    [SerializeField] Transform rayPoint;
     [SerializeField] Image RayPanel;
     [SerializeField] GameObject tornadoVFX;
+    [SerializeField] Transform nadoPoint;
     [Header("Melee config")]
     private bool canMelee = true;
     private bool canSpin = true;
@@ -110,8 +112,8 @@ public class PlayerAttacks : MonoBehaviour
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("Ray");
         anim.SetTrigger("Attack");
-        Instantiate(rayVFX, shootPoint.transform.position, transform.rotation);
-
+        GameObject tempRay = Instantiate(rayVFX, rayPoint.transform.position, rayPoint.rotation,transform);
+        Destroy(tempRay, 6f);
         StartCoroutine(RayCooldown());
 
 
@@ -161,7 +163,8 @@ public class PlayerAttacks : MonoBehaviour
         if (!canSpin) return;
         anim.SetTrigger("Spin");
         anim.SetTrigger("Attack");
-
+        GameObject tempNado = Instantiate(tornadoVFX, nadoPoint.transform.position, nadoPoint.rotation, transform);
+        Destroy(tempNado, 6f);
         StartCoroutine(SpinCooldown());
 
 
@@ -243,27 +246,20 @@ public class PlayerAttacks : MonoBehaviour
     }
     IEnumerator Cooldown(Image panel, float cooldownTime, System.Action onFinish)
     {
-        panel.fillAmount = 0f;
+        panel.fillAmount = 1f;
         float timer = 0f;
 
         while (timer < cooldownTime)
         {
             timer += Time.deltaTime;
-            panel.fillAmount = timer / cooldownTime;
+            panel.fillAmount = 1f - (timer / cooldownTime);
             yield return null;
         }
 
-        panel.fillAmount = 1f;
+        panel.fillAmount = 0f;
         onFinish?.Invoke();
     }
     public void OnShoot(InputAction.CallbackContext context)
-    {
-
-        if (PlayerStats.instance.isDeath) return;
-
-        Shoot();
-    }
-    public void OnRay(InputAction.CallbackContext context)
     {
 
         if (PlayerStats.instance.isDeath) return;
@@ -292,6 +288,7 @@ public class PlayerAttacks : MonoBehaviour
             }
         }
     }
+
     public void OnMelee(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;

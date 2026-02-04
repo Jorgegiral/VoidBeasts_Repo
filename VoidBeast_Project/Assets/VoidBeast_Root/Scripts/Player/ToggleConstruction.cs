@@ -51,6 +51,8 @@
         }
         public void SwitchMode(InputAction.CallbackContext context)
         {
+            if(!context.performed) return;
+            if(PlayerStats.instance.menuOpened) return;
             if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.OpenBuildMenu)
             {
                 

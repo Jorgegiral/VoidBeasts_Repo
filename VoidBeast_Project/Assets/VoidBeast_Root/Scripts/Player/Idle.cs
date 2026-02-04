@@ -2,39 +2,47 @@ using UnityEngine;
 
 public class Idle : StateMachineBehaviour
 {
-    [SerializeField]private float timetillIdle;
-    [SerializeField] private int numberOfIdle;
-    private bool nextIdle;
-    private float idleTime;
-    private int idleAnimation;
+    [SerializeField] private float timeToSecondIdle = 8f;
+
+    private float timer;
+    private bool playingSecondIdle;
+    private bool secondIdleStarted;
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        ResetIdle();
+        timer = 0f;
+        playingSecondIdle = false;
+        secondIdleStarted = false;
+
+        animator.SetFloat("IdleAnim", 0);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (nextIdle == false)
+        if (!playingSecondIdle)
         {
-            idleTime += Time.deltaTime;
+            timer += Time.deltaTime;
 
-            if (idleTime > timetillIdle && stateInfo.normalizedTime % 1 < 0.1f)
+            if (timer >= timeToSecondIdle)
             {
-                nextIdle = true;
-                idleAnimation = Random.Range(1, numberOfIdle + 1);
-
+                playingSecondIdle = true;
+                secondIdleStarted = false;
+                animator.SetFloat("IdleAnim", 1);
             }
         }
-        else if(stateInfo.normalizedTime % 1 > 0.85)
+        else
         {
-            ResetIdle();
+            if (!secondIdleStarted && stateInfo.normalizedTime < 0.1f)
+            {
+                secondIdleStarted = true;
+            }
+
+            if (secondIdleStarted && stateInfo.normalizedTime >= 1f)
+            {
+                playingSecondIdle = false;
+                timer = 0f;
+                animator.SetFloat("IdleAnim", 0);
+            }
         }
-        animator.SetFloat("IdleAnim", idleAnimation, 0.2f, Time.deltaTime);
-    }
-    private void ResetIdle()
-    {
-        nextIdle = false;
-        idleTime = 0;
-        idleAnimation = 0;
     }
 }

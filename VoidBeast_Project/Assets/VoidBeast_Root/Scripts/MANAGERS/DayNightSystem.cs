@@ -108,10 +108,6 @@ public class DayNightSystem : MonoBehaviour
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
-            if (!collected)
-            {
-                dailyPowerUPPopUp();
-            }
         }
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
