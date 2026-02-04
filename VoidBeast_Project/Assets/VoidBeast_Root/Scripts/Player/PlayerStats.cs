@@ -16,10 +16,8 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Player Damage Stats")]
     public float gunDamage;
-    public float mineDamage;
-    public float bombDamage;
+    public float explosionDamage;
     public float meleeDamage;
-    public float SpinDamage;
 
 
     [Header("Player Cooldown Stats")]
@@ -86,9 +84,9 @@ public class PlayerStats : MonoBehaviour
         if (powerUpChosen.type.ToString() == "FireRate")
         {
             gunAttackSpeed += powerUpChosen.value;
-            if (gunAttackSpeed <= 0)
+            if (gunAttackSpeed <= 0.6f)
             {
-                gunAttackSpeed = 0;
+                gunAttackSpeed = 0.6f;
             }
         }
         powerUpChosen = null;

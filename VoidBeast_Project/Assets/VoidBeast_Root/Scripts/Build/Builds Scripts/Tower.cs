@@ -15,11 +15,12 @@ public class Tower : MonoBehaviour
     [SerializeField] GameObject target;
     [SerializeField] float shootCD = 2f;
     [SerializeField] bool enemyIsInSight;
+    private Animator anim;
     private bool canShoot = true;
     private void Start()
     {
         StartCoroutine(TargetScanner());
-
+        anim = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -36,14 +37,27 @@ public class Tower : MonoBehaviour
         if (enemyIsInSight)
         {
             RotateToTarget();
-            ShootTarget();
+            ShootTarget(); 
         }
-
     }
+
     private void GetTarget()
     {
-        target = null;
+        if (target != null)
+        {
+            float dist = Vector3.Distance(transform.position, target.transform.position);
 
+            if (dist <= range)
+            {
+                enemyIsInSight = true;
+                return; 
+            }
+            else
+            {
+                target = null;
+                enemyIsInSight = false;
+            }
+        }
         foreach (var enemy in EnemyManager.instance.enemies)
         {
             float dist = Vector3.Distance(transform.position, enemy.transform.position);
@@ -51,24 +65,26 @@ public class Tower : MonoBehaviour
             {
                 target = enemy;
                 enemyIsInSight = true;
-                break;
+                return;
             }
         }
-        enemyIsInSight = target != null;
+
+        enemyIsInSight = false;
     }
     private void ShootTarget()
     {
         if (!canShoot) return;
         if (target != null)
         {
+            anim.SetTrigger("Shoot");
             Instantiate(bulletVFX, cannonPoint.transform.position, transform.rotation);
+
             StartCoroutine(ShootCooldown());
         }
 
     }
     private void RotateToTarget()
     {
-        if (target == null) return;
 
         transform.LookAt(target.transform);
     }
@@ -88,7 +104,7 @@ void OnDrawGizmosSelected()
         while (true)
         {
             GetTarget();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
