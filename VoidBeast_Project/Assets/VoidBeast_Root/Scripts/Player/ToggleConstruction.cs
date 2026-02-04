@@ -55,7 +55,8 @@
             if(PlayerStats.instance.menuOpened) return;
             if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.OpenBuildMenu)
             {
-
+                
+                
                     if (!tutorialTabDone)
                     {
                         tutorialTabDone = true;
