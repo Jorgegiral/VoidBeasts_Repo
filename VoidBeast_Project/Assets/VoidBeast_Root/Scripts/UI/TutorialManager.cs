@@ -44,6 +44,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject arrow3;
     [SerializeField] private GameObject arrow4;
     [SerializeField] private GameObject arrow5;
+    [SerializeField] private GameObject arrow6;
     [SerializeField] private GameObject bloqueo;
     [SerializeField] private GameObject bloqueo2;
     [SerializeField] private GameObject bloqueoN;
@@ -82,6 +83,7 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case Step.OpenBuildMenu: // TAB construcción
+                arrow6.SetActive(true);
                 dialogue.WaitForAction();
                 break;
 
@@ -92,6 +94,7 @@ public class TutorialManager : MonoBehaviour
                 buildBlock.SetActive(true);
                 bloqueo2.SetActive(true);
                 arrow.SetActive(true);
+                arrow6.SetActive(false);
                 break;
 
             case Step.PlacePlot: // Poner parcela
