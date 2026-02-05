@@ -20,6 +20,9 @@ public class UpgradeManager : MonoBehaviour
     public GameObject RayUI;
     public GameObject MineUI;
     public GameObject SpinUI;
+    public GameObject buildBlock;
+    public GameObject towerBlock;
+    public GameObject wallBlock;
 
     [Header("Skill References")]
     public GameObject lockMine;
@@ -62,7 +65,7 @@ public class UpgradeManager : MonoBehaviour
     private int mainBuildvalue = 250;
     private int wallBuildvalue = 500;
     private int towerBuildvalue = 500;
-
+    private int upgradeValue = 100;
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -79,14 +82,14 @@ public void UpgradeWall()
     {
         if (wallLevel >= maxWallLevel) return;
         if (wallBuildvalue > MoneySystem.instance.money) return;
-        if (walls.Count <= 0) return;
             MoneySystem.instance.BuyMoney(wallBuildvalue);
             wallLevel++;
             wallBuild.Upgrade(wallLevel);
             wallBuildvalue += 500;
             UpdateValuesBuildings();
-        MoneySystem.instance.UpdateMoneyText();
-            SwapWallModelsOnUpgrade();
+            MoneySystem.instance.UpdateMoneyText();
+         if(walls.Count>0)   SwapWallModelsOnUpgrade();
+        if (wallLevel == maxWallLevel) wallBlock.SetActive(true);
 
     }
     public void UpgradeTower()
@@ -100,11 +103,13 @@ public void UpgradeWall()
         UpdateValuesBuildings();
         MoneySystem.instance.UpdateMoneyText();
         if (towers.Count > 0) SwapTowerModelsOnUpgrade();
+        if(towerLevel == maxTowerLevel) towerBlock.SetActive(true);
 
         
     }
     public void UpgradeMainBuild()
     {
+        if (mainBuildingLevel == 6) return;
         if (mainBuildvalue > MoneySystem.instance.money ) return;
         else { 
         
@@ -167,6 +172,7 @@ public void UpgradeWall()
                     maxTower += 1;
                     cropAvailable += 1;
                     maxCrop += 1;
+                    buildBlock.SetActive(true);
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;

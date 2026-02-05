@@ -23,7 +23,7 @@ public class HoverUpgrade : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     private void Update()
     {
-        etiquetaRect.position = Mouse.current.position.ReadValue();
+        etiquetaRect.position = Mouse.current.position.ReadValue() + new Vector2(270, 130);
     }
     private void UpdateText()
     {
