@@ -113,7 +113,7 @@ public void UpgradeWall()
             switch (mainBuildingLevel)
             {
                 case 2:
-                    ExpandBuildArea(2, 2);
+                    ExpandBuildArea(1, 1);
                     updateModelMainBuild[1].SetActive(true);
                     wallAvailable += 5;
                     maxWall += 5;
@@ -135,7 +135,7 @@ public void UpgradeWall()
                     MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 4:
-                    ExpandBuildArea(4, 4);
+                    ExpandBuildArea(1, 1);
                     updateModelMainBuild[3].SetActive(true);
                     updateModelMainBuild[1].SetActive(false);
                     wallAvailable += 5;
@@ -158,14 +158,15 @@ public void UpgradeWall()
                     MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 6:
-                    ExpandBuildArea(4, 4);
+                    ExpandBuildArea(2, 2);
                     updateModelMainBuild[5].SetActive(true);
                     updateModelMainBuild[4].SetActive(false);
                     wallAvailable += 10;
                     maxWall += 10;
                     towerAvailable += 1;
                     maxTower += 1;
-                    mainBuildvalue += 1000;
+                    cropAvailable += 1;
+                    maxCrop += 1;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
