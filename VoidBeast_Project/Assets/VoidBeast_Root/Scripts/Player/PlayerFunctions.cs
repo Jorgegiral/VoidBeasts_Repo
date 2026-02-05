@@ -11,7 +11,6 @@ public class PlayerFunctions : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject escapeMenu;
-    bool seedOpened = false;
     LayerMask layerInteractable;
     LayerMask layerPlant;
     LayerMask layerDestroyable;
@@ -28,11 +27,6 @@ public class PlayerFunctions : MonoBehaviour
         layerDestroyable = LayerMask.GetMask("Destroyable");
         layerWall = LayerMask.GetMask("Wall");
         anim = GetComponent<Animator>(); //Jorge
-    }
-    private void Update()
-    {
-        Debug.DrawRay(transform.position + new Vector3(0, 1, 0), transform.forward * 3, Color.red);
-
     }
 
     public void OnInteract(InputAction.CallbackContext context)
@@ -51,10 +45,11 @@ public class PlayerFunctions : MonoBehaviour
                 Building area = hit.collider.GetComponentInParent<Building>();
                 area.Destroyed();
                 adaptWall.ThrowRaycastNeighbours();
-                adaptWall.gameObject.SetActive(false);
                 UpgradeManager.instance.wallAvailable++;
                 UpgradeManager.instance.wallBought--;
-}
+                adaptWall.gameObject.SetActive(false);
+
+            }
         }
 }
 

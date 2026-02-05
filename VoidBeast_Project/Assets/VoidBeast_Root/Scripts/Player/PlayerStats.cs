@@ -89,6 +89,11 @@ public class PlayerStats : MonoBehaviour
                 gunAttackSpeed = 0.6f;
             }
         }
+        if (powerUpChosen.type.ToString() == "availablePoints")
+        {
+            UpgradeManager.instance.freeUpgrade = true;
+            UpgradeManager.instance.TakeUpgrade();
+        }
         powerUpChosen = null;
     }
 
