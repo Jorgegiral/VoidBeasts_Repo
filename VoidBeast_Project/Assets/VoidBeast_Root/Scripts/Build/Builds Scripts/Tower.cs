@@ -17,6 +17,8 @@ public class Tower : MonoBehaviour
     [SerializeField] bool enemyIsInSight;
     private Animator anim;
     private bool canShoot = true;
+    [SerializeField] AudioClip towerShoot;
+
     private void Start()
     {
         StartCoroutine(TargetScanner());
@@ -76,6 +78,7 @@ public class Tower : MonoBehaviour
         if (!canShoot) return;
         if (target != null)
         {
+            Settings.instance.PlayUniqueSoundSFXClip(towerShoot, transform, 3f);
             anim.SetTrigger("Shoot");
             Instantiate(bulletVFX, cannonPoint.transform.position, transform.rotation);
 

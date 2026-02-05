@@ -56,6 +56,9 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] AudioClip shootSound;
+    [SerializeField] AudioClip beamSound;
+    [SerializeField] AudioClip spinSound;
+    [SerializeField] AudioClip meleeSound;
 
 
     private Animator anim;
@@ -112,6 +115,7 @@ public class PlayerAttacks : MonoBehaviour
         anim.SetTrigger("Ray");
         anim.SetTrigger("Attack");
         GameObject tempRay = Instantiate(rayVFX, rayPoint.transform.position, rayPoint.rotation,transform);
+        Settings.instance.PlaySoundFXClip(beamSound, transform, 6f);
         Destroy(tempRay, 6f);
         StartCoroutine(RayCooldown());
 
@@ -153,7 +157,7 @@ public class PlayerAttacks : MonoBehaviour
         if (comboIndex == 3) comboIndex = 0;
         anim.SetTrigger("Attack");
         StartCoroutine(MeleeCooldown());
-
+        Settings.instance.PlaySoundFXClip(meleeSound, transform, 1f);
 
     }
     void SpinAttack()
@@ -164,6 +168,7 @@ public class PlayerAttacks : MonoBehaviour
         anim.SetTrigger("Attack");
         GameObject tempNado = Instantiate(tornadoVFX, nadoPoint.transform.position, nadoPoint.rotation, transform);
         Destroy(tempNado, 6f);
+        Settings.instance.PlaySoundFXClip(spinSound, transform, 6f);
         StartCoroutine(SpinCooldown());
 
 
