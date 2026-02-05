@@ -194,10 +194,11 @@ public class TankEnemy : MonoBehaviour
         {
             isAttackingWall = false;
             agent.isStopped = false;
+            anim.SetBool("isAttackingWall", false);
             return;
         }
         agent.isStopped = true;
-        anim.SetBool("isAttacking", true);
+        anim.SetBool("isAttackingWall", true);
 
         if (!canAttack) return;
 

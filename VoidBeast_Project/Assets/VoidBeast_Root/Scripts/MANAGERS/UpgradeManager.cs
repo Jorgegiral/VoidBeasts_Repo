@@ -34,7 +34,7 @@ public class UpgradeManager : MonoBehaviour
     public GameObject lockRay;
     private int availablePoints = 3;
     public TMP_Text availablePointsText;
-
+    [SerializeField] GameObject upgradeVFX;
 
     [Header("Stats References")]
     public int mainBuildingLevel = 1;
@@ -122,6 +122,7 @@ public void UpgradeWall()
                 case 2:
                     ExpandBuildArea(1, 1);
                     updateModelMainBuild[1].SetActive(true);
+                   
                     wallAvailable += 5;
                     maxWall += 5;
                     cropAvailable += 1;
