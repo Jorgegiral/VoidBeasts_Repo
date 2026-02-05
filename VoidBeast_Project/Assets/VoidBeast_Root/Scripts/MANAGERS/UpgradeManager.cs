@@ -65,7 +65,7 @@ public class UpgradeManager : MonoBehaviour
     private int mainBuildvalue = 250;
     private int wallBuildvalue = 500;
     private int towerBuildvalue = 500;
-    private int upgradeValue = 100;
+    public int upgradeValue = 100;
     public bool freeUpgrade;
    
     private void Awake()
@@ -303,11 +303,14 @@ public void UpgradeWall()
 
         foreach (var wall in walls.ToList())
         {
+            if (wall == null) continue;
+            UnRegisterWall(wall);
             Vector3 position = wall.transform.position;
             Quaternion rotation = wall.transform.rotation;
             GameObject newWall = Instantiate(wallBuild.build, position, rotation);
             newWalls.Add(newWall);
             WallHP wallHP = wall.GetComponent<WallHP>();
+            if (wallHP == null) continue;
             wallHP.UpgradeDamage(100000);
         }
         walls = newWalls;

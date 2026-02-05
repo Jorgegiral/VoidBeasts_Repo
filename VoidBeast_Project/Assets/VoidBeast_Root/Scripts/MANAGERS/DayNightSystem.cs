@@ -60,7 +60,7 @@ public class DayNightSystem : MonoBehaviour
 
     private void UpdateDayNightUI()
     {
-        string key = isDay ? "A008" : "A009";
+        string key = isDay ? "Day" : "Night";
         var localizedString = LocalizationSettings.StringDatabase.GetLocalizedString("Tabla1", key);
 
         int number = isDay ? dayNumber : nightNumber;

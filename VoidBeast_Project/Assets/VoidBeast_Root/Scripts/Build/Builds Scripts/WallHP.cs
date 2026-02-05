@@ -25,9 +25,7 @@ public class WallHP : MonoBehaviour
         UpdateHPWalls();
         if (currentHealth < 0)
         {
-
             Destroy(gameObject);
-            UpgradeManager.instance.UnRegisterWall(gameObject);
         }
 
     }
@@ -37,10 +35,10 @@ public class WallHP : MonoBehaviour
         UpdateHPWalls();
         if (currentHealth < 0)
         {
+            UpgradeManager.instance.UnRegisterWall(gameObject);
             GameObject upgradevfx = Instantiate(VFXUpgrade, transform.position, transform.rotation);
             Destroy(upgradevfx, 1f);
             Destroy(gameObject);
-            UpgradeManager.instance.UnRegisterWall(gameObject);
         }
     }
     public void UpdateHPWalls()

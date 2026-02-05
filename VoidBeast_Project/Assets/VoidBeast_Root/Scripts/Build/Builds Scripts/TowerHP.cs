@@ -7,12 +7,15 @@ public class TowerHP : MonoBehaviour
     [SerializeField] float maxHealth;
     [SerializeField] float currentHealth;
     [SerializeField] GameObject VFXUpgrade;
+    [SerializeField] GameObject VFXDestroy;
+
 
     Renderer rend; //jorge
     MaterialPropertyBlock mpb;
     Renderer[] renderers;
     [SerializeField] string damagePropertyName = "_DamageAmount";
     [SerializeField] string intensityPropertyName = "_IntensityStains";
+    [SerializeField] AudioClip deathSound;
 
     void Start()
     {
@@ -27,6 +30,9 @@ public class TowerHP : MonoBehaviour
         currentHealth -= enemyDamage;
         if (currentHealth < 0)
         {
+            GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
+            Settings.instance.PlayUniqueSoundSFXClip(deathSound, transform, 3f);
+            Destroy(destroyvfx, 5f);
             Destroy(gameObject);
             UpgradeManager.instance.UnRegisterTower(gameObject);
         }
@@ -37,10 +43,10 @@ public class TowerHP : MonoBehaviour
         currentHealth -= upgradeDamage;
         if (currentHealth < 0)
         {
+            UpgradeManager.instance.UnRegisterTower(gameObject);
             GameObject upgradevfx = Instantiate(VFXUpgrade, transform.position, transform.rotation);
             Destroy(upgradevfx, 1f);
             Destroy(gameObject);
-            UpgradeManager.instance.UnRegisterTower(gameObject);
         }
 
     }

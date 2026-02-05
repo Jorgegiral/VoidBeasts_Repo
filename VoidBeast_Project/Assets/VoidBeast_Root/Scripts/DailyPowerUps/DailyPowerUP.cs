@@ -157,6 +157,17 @@ public class DailyPowerUP : MonoBehaviour
 
         return true;
     }
+    public void BuyPowerUp()
+    {
+        if(UpgradeManager.instance.upgradeValue <= MoneySystem.instance.money)
+        {    
+        MoneySystem.instance.money -= UpgradeManager.instance.upgradeValue;
+        PickPowerUps();
+        Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
+        Time.timeScale = 0f;
+        UpgradeManager.instance.upgradeValue *= 2;
+        }
+    }
 }
 
 
