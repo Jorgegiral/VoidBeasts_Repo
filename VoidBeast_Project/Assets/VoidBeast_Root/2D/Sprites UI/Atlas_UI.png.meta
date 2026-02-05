@@ -927,7 +927,7 @@ TextureImporter:
         width: 44
         height: 61
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -936,6 +936,28 @@ TextureImporter:
       bones: []
       spriteID: 68376f92c7dd18f459400bfb4b4c9884
       internalID: -104519133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_UI_28
+      rect:
+        serializedVersion: 2
+        x: 1631
+        y: 292
+        width: 91
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1c083dc647fc604e8250d1589e375bf
+      internalID: -2112861432
       vertices: []
       indices: 
       edges: []
