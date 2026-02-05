@@ -25,7 +25,10 @@ public class WallHP : MonoBehaviour
         UpdateHPWalls();
         if (currentHealth < 0)
         {
-            Destroy(gameObject);
+            UpgradeManager.instance.wallAvailable++;
+            UpgradeManager.instance.wallBought++;
+            UpgradeManager.instance.UnRegisterWall(gameObject);
+            gameObject.SetActive(false);
         }
 
     }

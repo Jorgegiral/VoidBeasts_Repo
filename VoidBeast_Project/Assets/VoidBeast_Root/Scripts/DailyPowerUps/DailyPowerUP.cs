@@ -163,7 +163,7 @@ public class DailyPowerUP : MonoBehaviour
             MoneySystem.instance.BuyMoney(UpgradeManager.instance.upgradeValue);
          gameObject.SetActive(true);
         PickPowerUps();
-        Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
+        Settings.instance.PlayUniqueSoundSFXClip(startPickSound, transform, 1f);
         Time.timeScale = 0f;
         UpgradeManager.instance.upgradeValue *= 2;
         UpgradeManager.instance.UpdateValuePowerUp();

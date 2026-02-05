@@ -170,10 +170,10 @@ public void UpgradeWall()
                     ExpandBuildArea(2, 2);
                     updateModelMainBuild[5].SetActive(true);
                     updateModelMainBuild[4].SetActive(false);
-                    wallAvailable += 10;
-                    maxWall += 10;
-                    towerAvailable += 1;
-                    maxTower += 1;
+                    wallAvailable += 18;
+                    maxWall += 18;
+                    towerAvailable += 2;
+                    maxTower += 2;
                     cropAvailable += 1;
                     maxCrop += 1;
                     buildBlock.SetActive(true);

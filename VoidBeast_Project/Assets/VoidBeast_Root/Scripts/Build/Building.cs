@@ -42,9 +42,7 @@ public class Building : MonoBehaviour
         GridBuilding.instance.UnTakeArea(occupiedArea);
         UpgradeManager.instance.wallAvailable++;
         UpgradeManager.instance.wallBought--;
-        WallHP hp = GetComponent<WallHP>();
-        hp.TakeDamage(100);
-
+        gameObject.SetActive(false);
     }
     IEnumerator debrisCD()
     {
