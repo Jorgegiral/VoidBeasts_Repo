@@ -11,7 +11,6 @@ public class PlayerFunctions : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject escapeMenu;
-    bool seedOpened = false;
     LayerMask layerInteractable;
     LayerMask layerPlant;
     LayerMask layerDestroyable;
