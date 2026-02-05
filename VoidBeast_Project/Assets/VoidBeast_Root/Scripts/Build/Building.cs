@@ -40,6 +40,10 @@ public class Building : MonoBehaviour
     public void Destroyed()
     {
         GridBuilding.instance.UnTakeArea(occupiedArea);
+        UpgradeManager.instance.wallAvailable++;
+        UpgradeManager.instance.wallBought--;
+        WallHP hp = GetComponent<WallHP>();
+        hp.TakeDamage(100);
 
     }
     IEnumerator debrisCD()
