@@ -37,10 +37,10 @@ public class TowerHP : MonoBehaviour
         currentHealth -= upgradeDamage;
         if (currentHealth < 0)
         {
+            UpgradeManager.instance.UnRegisterTower(gameObject);
             GameObject upgradevfx = Instantiate(VFXUpgrade, transform.position, transform.rotation);
             Destroy(upgradevfx, 1f);
             Destroy(gameObject);
-            UpgradeManager.instance.UnRegisterTower(gameObject);
         }
 
     }
