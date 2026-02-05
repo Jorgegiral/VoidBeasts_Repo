@@ -37,9 +37,15 @@ public class UpgradeManager : MonoBehaviour
     public int mainBuildingLevel = 1;
     public int wallLevel = 0;
     public int towerLevel = 0;
-    public int wallAvailable = 10;
+    public int wallAvailable = 8;
     public int towerAvailable = 0;
     public int cropAvailable = 1;
+    public int cropsBought = 0;
+    public int towerBought = 0;
+    public int wallBought = 0;
+    public int maxTower = 0;
+    public int maxWall = 8;
+    public int maxCrop = 1;
     public TypeBuild wallBuild;
     public TypeBuild towerBuild;
     public List<GameObject> walls = new List<GameObject>();
@@ -107,11 +113,14 @@ public void UpgradeWall()
             switch (mainBuildingLevel)
             {
                 case 2:
-                    ExpandBuildArea(2, 2);
+                    ExpandBuildArea(1, 1);
                     updateModelMainBuild[1].SetActive(true);
                     wallAvailable += 5;
+                    maxWall += 5;
                     cropAvailable += 1;
+                    maxCrop += 1;
                     towerAvailable += 1;
+                    maxTower += 1;
                     mainBuildvalue += 250;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
@@ -120,15 +129,19 @@ public void UpgradeWall()
                     ExpandBuildArea(2, 2);
                     updateModelMainBuild[2].SetActive(true);
                     mainBuildvalue += 400;
+                    wallAvailable += 2;
+                    maxWall += 2;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 4:
-                    ExpandBuildArea(4, 4);
+                    ExpandBuildArea(1, 1);
                     updateModelMainBuild[3].SetActive(true);
                     updateModelMainBuild[1].SetActive(false);
                     wallAvailable += 5;
+                    maxWall += 5;
                     towerAvailable += 1;
+                    maxTower += 1;
                     mainBuildvalue += 500;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
@@ -137,18 +150,23 @@ public void UpgradeWall()
                     ExpandBuildArea(2, 2);
                     updateModelMainBuild[4].SetActive(true);
                     cropAvailable += 1;
+                    maxCrop += 1;
                     wallAvailable += 5;
+                    maxWall += 5;
                     mainBuildvalue += 500;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 6:
-                    ExpandBuildArea(4, 4);
+                    ExpandBuildArea(2, 2);
                     updateModelMainBuild[5].SetActive(true);
                     updateModelMainBuild[4].SetActive(false);
                     wallAvailable += 10;
+                    maxWall += 10;
                     towerAvailable += 1;
-                    mainBuildvalue += 1000;
+                    maxTower += 1;
+                    cropAvailable += 1;
+                    maxCrop += 1;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;

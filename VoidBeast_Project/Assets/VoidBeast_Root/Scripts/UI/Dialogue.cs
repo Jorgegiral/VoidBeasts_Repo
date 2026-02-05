@@ -9,7 +9,11 @@ using UnityEngine.SceneManagement;
 public class Dialogue : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
-    public string[] text;
+    private string[] text;
+    public string[] textSpanish;
+    public string[] textEnglish;
+    public string[] textCatalan;
+    private int currentLanguageId = 0;
     public float textSpeed = 0.2f;
     public int index;
     public bool waitForAction = false;
@@ -18,10 +22,76 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private ContentSizeFitter sizeFitter;
     void Start()
     {
+        GetCurrentLanguageId();
+        SelectLanguageArray(); 
         dialogueText.text = string.Empty;
         StartDialogue();
     }
+    private void GetCurrentLanguageId()
+    {
+        if (PlayerPrefs.HasKey("LocaleKey"))
+        {
+            currentLanguageId = PlayerPrefs.GetInt("LocaleKey");
+        }
+        else
+        {
+            currentLanguageId = 0;
+        }
 
+        Debug.Log($"Idioma ID: {currentLanguageId}");
+    }
+    private void SelectLanguageArray()
+    {
+        switch (currentLanguageId)
+        {
+            case 0: // Español
+                text = textSpanish;
+                Debug.Log("Idioma: Español");
+                break;
+
+            case 1: // Inglés
+                text = textEnglish;
+                Debug.Log("Idioma: Inglés");
+                break;
+
+            case 2: // Catalán
+                text = textCatalan;
+                Debug.Log("Idioma: Catalán");
+                break;
+
+            default: // Por defecto español
+                text = textSpanish;
+                Debug.Log("Idioma por defecto: Español");
+                break;
+        }
+
+        // Verificar que el array seleccionado tenga contenido
+        if (text == null || text.Length == 0)
+        {
+            Debug.LogWarning("Array de textos vacío. Usando español por defecto.");
+            text = textSpanish;
+        }
+    }
+
+    private string DetectSystemLanguage()
+    {
+        SystemLanguage sysLang = Application.systemLanguage;
+
+        switch (sysLang)
+        {
+            case SystemLanguage.Spanish:
+                return "es";
+
+            case SystemLanguage.Catalan:
+                return "ca";
+
+            case SystemLanguage.English:
+                return "en";
+
+            default:
+                return "es";
+        }
+    }
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -53,21 +123,6 @@ public class Dialogue : MonoBehaviour
 
     IEnumerator Dialogues()
     {
-
-        /*dialogueText.text = text[index];
-        dialogueText.ForceMeshUpdate();
-        dialogueText.maxVisibleCharacters = 0;
-
-        int totalCharacters = dialogueText.textInfo.characterCount;
-
-        for (int visibleCount = 0; visibleCount <= totalCharacters; visibleCount++)
-        {
-            dialogueText.maxVisibleCharacters = visibleCount;
-            yield return new WaitForSecondsRealtime(textSpeed);
-        }
-
-        typingCoroutine = null;*/
-
         string richText = text[index];
         string plainText = RemoveRichTextTags(richText);
 
@@ -84,7 +139,6 @@ public class Dialogue : MonoBehaviour
     {
         string result = input;
 
-        // Eliminar tags específicos
         result = System.Text.RegularExpressions.Regex.Replace(result, "<b>|</b>", "");
         result = System.Text.RegularExpressions.Regex.Replace(result, "<i>|</i>", "");
         result = System.Text.RegularExpressions.Regex.Replace(result, "<color=.*?>|</color>", "");

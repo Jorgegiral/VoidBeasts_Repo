@@ -49,7 +49,64 @@
             tableIdle.SetActive(false);
 
         }
-        public void SwitchMode(InputAction.CallbackContext context)
+    public void SwitchMode()
+    {
+        if (PlayerStats.instance.menuOpened) return;
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.OpenBuildMenu)
+        {
+
+
+            if (!tutorialTabDone)
+            {
+                tutorialTabDone = true;
+                TutorialManager.instance.CompleteStep();
+            }
+
+        }
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.CloseBuild)
+        {
+            if (!tutorialTabClose)
+            {
+                if (!tutorialTabClose)
+                {
+                    tutorialTabClose = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
+        }
+
+        if (TutorialManager.instance == null || TutorialManager.instance.currentStep >= TutorialManager.Step.BuyPlot)
+        {
+
+            if (PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay)
+            {
+                MoneySystem.instance.UpdateMoneyText();
+                playerInput.SwitchCurrentActionMap("BuildMode");
+                constructionShop.SetActive(true);
+                playerCam.SetActive(false);
+                buildCam.SetActive(true);
+                grid.SetActive(true);
+                anim.SetBool("isBuilding", true);
+
+                PlayerStats.instance.isActionMode = false;
+            }
+            else if (!PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay && GridBuilding.instance.buildingTemp == null)
+            {
+                MoneySystem.instance.UpdateMoneyText();
+
+                playerInput.SwitchCurrentActionMap("ActionMode");
+                constructionShop.SetActive(false);
+                playerCam.SetActive(true);
+                buildCam.SetActive(false);
+                grid.SetActive(false);
+                anim.SetBool("isBuilding", false);
+                PlayerStats.instance.isActionMode = true;
+
+            }
+
+        }
+    }
+    public void SwitchMode(InputAction.CallbackContext context)
         {
             if(!context.performed) return;
             if(PlayerStats.instance.menuOpened) return;

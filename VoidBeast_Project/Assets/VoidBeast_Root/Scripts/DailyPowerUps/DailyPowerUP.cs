@@ -96,10 +96,12 @@ public class DailyPowerUP : MonoBehaviour
     private void PickPowerUps()
     {
         selectedPowerUps = new DailyPowerUpsSO[3];
-        List<DailyPowerUpsSO> powerUpList = new List<DailyPowerUpsSO>(allPowerUps);
+        List<DailyPowerUpsSO> powerUpList = allPowerUps
+            .Where(p => IsPowerUpAvailable(p))
+            .ToList();
 
 
-        for(int i= 0; i< 3; i++)
+        for (int i= 0; i< 3; i++)
         {
             DailyPowerUpsSO picked = GetRandomPowerUps(powerUpList);
             selectedPowerUps[i] = picked;
@@ -137,6 +139,20 @@ public class DailyPowerUP : MonoBehaviour
     {
         var list = pool.Where(p => p.rarityName == rarity).ToList();
         return list[Random.Range(0, list.Count)];
+    }
+    private bool IsPowerUpAvailable(DailyPowerUpsSO powerUp)
+    {
+        if (powerUp.type == PowerUpType.FireRate)
+        {
+            return PlayerStats.instance.gunAttackSpeed > 0.6f;
+        }
+
+        if (powerUp.type == PowerUpType.Resurrection)
+        {
+            return PlayerStats.instance.deathTimer > 1f;
+        }
+
+        return true;
     }
 }
 

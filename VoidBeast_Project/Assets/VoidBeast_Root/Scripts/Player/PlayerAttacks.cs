@@ -344,4 +344,11 @@ public class PlayerAttacks : MonoBehaviour
             other.GetComponent<EnemyHP>().TakeDamage(PlayerStats.instance.meleeDamage);
         }
     }
+    IEnumerator SpeedBoost()
+    {
+        PlayerStats.instance.playerSpeed += 0.7f;
+        yield return new WaitForSeconds(5f);
+        PlayerStats.instance.playerSpeed -= 0.7f;
+    }
+
 }
