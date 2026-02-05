@@ -21,6 +21,7 @@ public class Pausa : MonoBehaviour
     [SerializeField] GameObject firstSelectedOnMenu;
     [SerializeField] GameObject firstSelectedOnControls;
 
+    [SerializeField] private Dialogue dialogueScript;
 
     float sfxVolume;
     float musicVolume;
@@ -130,6 +131,10 @@ public class Pausa : MonoBehaviour
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[localId];
         PlayerPrefs.SetInt("LocaleKey", localId);
         PlayerPrefs.Save();
+        if (dialogueScript != null)
+        {
+            dialogueScript.UpdateLanguage(localId);
+        }
         idiomaActivado = false;
     }
    
