@@ -130,8 +130,10 @@ public class DailyPowerUP : MonoBehaviour
 
         if (roll < rareWeight)
             return RandomFrom(availablePowerUps, PowerUpRarity.Rare);
+        roll -= rareWeight;
         if (roll < legendaryWeight)
             return RandomFrom(availablePowerUps, PowerUpRarity.Legendary);
+        roll -= legendaryWeight;
 
         return RandomFrom(availablePowerUps, PowerUpRarity.Void);
     }
