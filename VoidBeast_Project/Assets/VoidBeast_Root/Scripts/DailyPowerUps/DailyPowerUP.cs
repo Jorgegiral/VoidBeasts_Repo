@@ -157,6 +157,20 @@ public class DailyPowerUP : MonoBehaviour
 
         return true;
     }
+    public void BuyPowerUp()
+    {
+        PickPowerUps();
+        Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
+        Time.timeScale = 0f;
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Collection)
+        {
+            if (!recollection)
+            {
+                recollection = true;
+                TutorialManager.instance.CompleteStep();
+            }
+        }
+    }
 }
 
 

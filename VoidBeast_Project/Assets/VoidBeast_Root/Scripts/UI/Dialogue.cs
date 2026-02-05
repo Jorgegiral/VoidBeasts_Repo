@@ -10,8 +10,8 @@ public class Dialogue : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
     private string[] text;
-    public string[] textSpanish;
     public string[] textEnglish;
+    public string[] textSpanish;
     public string[] textCatalan;
     private int currentLanguageId = 0;
     public float textSpeed = 0.2f;
@@ -44,52 +44,44 @@ public class Dialogue : MonoBehaviour
     {
         switch (currentLanguageId)
         {
-            case 0: // Español
+            case 0: // Inglés
+                text = textEnglish;
+                Debug.Log("Idioma: Inglés");
+                break;
+
+            case 1: // Español
                 text = textSpanish;
                 Debug.Log("Idioma: Español");
                 break;
 
-            case 1: // Inglés
-                text = textEnglish;
-                Debug.Log("Idioma: Inglés");
-                break;
 
             case 2: // Catalán
                 text = textCatalan;
                 Debug.Log("Idioma: Catalán");
                 break;
 
-            default: // Por defecto español
-                text = textSpanish;
+            default: 
+                text = textEnglish;
                 Debug.Log("Idioma por defecto: Español");
                 break;
         }
 
-        // Verificar que el array seleccionado tenga contenido
         if (text == null || text.Length == 0)
         {
-            Debug.LogWarning("Array de textos vacío. Usando español por defecto.");
             text = textSpanish;
         }
     }
 
-    private string DetectSystemLanguage()
+    public void UpdateLanguage(int newLanguageId)
     {
-        SystemLanguage sysLang = Application.systemLanguage;
+        currentLanguageId = newLanguageId;
+        SelectLanguageArray();
 
-        switch (sysLang)
+        // Si hay un diálogo mostrándose, actualizarlo
+        if (dialogueText != null && index < text.Length)
         {
-            case SystemLanguage.Spanish:
-                return "es";
-
-            case SystemLanguage.Catalan:
-                return "ca";
-
-            case SystemLanguage.English:
-                return "en";
-
-            default:
-                return "es";
+            StopAllCoroutines();
+            dialogueText.text = text[index];
         }
     }
     void Update()
