@@ -6,6 +6,7 @@ public class WallHP : MonoBehaviour
     [SerializeField] float maxHealth;
     [SerializeField] float currentHealth;
     [SerializeField] GameObject VFXUpgrade;
+    [SerializeField] GameObject VFXDestroy;
     Renderer rend; //jorge
     MaterialPropertyBlock mpb;
     Renderer[] renderers;
@@ -25,10 +26,17 @@ public class WallHP : MonoBehaviour
         UpdateHPWalls();
         if (currentHealth < 0)
         {
-            UpgradeManager.instance.wallAvailable++;
-            UpgradeManager.instance.wallBought++;
-            UpgradeManager.instance.UnRegisterWall(gameObject);
-            gameObject.SetActive(false);
+            Building area = GetComponent<Building>();
+            if (area != null)
+            {
+                area.Destroyed();
+                UpgradeManager.instance.wallAvailable++;
+                UpgradeManager.instance.wallBought++;
+                GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
+                Destroy(destroyvfx, 3f);
+                UpgradeManager.instance.UnRegisterWall(gameObject);
+                gameObject.SetActive(false);
+            }
         }
 
     }

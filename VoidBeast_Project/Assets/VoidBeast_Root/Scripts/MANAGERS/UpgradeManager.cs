@@ -313,6 +313,9 @@ public void UpgradeWall()
             Vector3 position = wall.transform.position;
             Quaternion rotation = wall.transform.rotation;
             GameObject newWall = Instantiate(wallBuild.build, position, rotation);
+            Building oldWallBuild = wall.GetComponent<Building>();
+            Building newWallBuild = newWall.GetComponent<Building>();
+            newWallBuild.area.position = oldWallBuild.area.position;
             newWalls.Add(newWall);
             WallHP wallHP = wall.GetComponent<WallHP>();
             if (wallHP == null) continue;
