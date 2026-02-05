@@ -116,7 +116,7 @@ public class DayNightSystem : MonoBehaviour
     }
     public void ToNight()
     {
-        if (isDay)
+        if (isDay && PlayerStats.instance.isActionMode)
         {
             isDay = false;
             isNight = true;
