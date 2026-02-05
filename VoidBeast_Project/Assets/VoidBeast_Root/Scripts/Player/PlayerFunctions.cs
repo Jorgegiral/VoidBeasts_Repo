@@ -53,7 +53,8 @@ public class PlayerFunctions : MonoBehaviour
                 adaptWall.ThrowRaycastNeighbours();
                 adaptWall.gameObject.SetActive(false);
                 UpgradeManager.instance.wallAvailable++;
-            }
+                UpgradeManager.instance.wallBought--;
+}
         }
 }
 

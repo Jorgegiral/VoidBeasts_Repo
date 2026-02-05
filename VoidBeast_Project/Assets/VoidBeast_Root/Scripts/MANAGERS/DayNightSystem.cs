@@ -94,6 +94,7 @@ public class DayNightSystem : MonoBehaviour
             dayButton[0].gameObject.SetActive(true);
             dayButton[1].gameObject.SetActive(true);
             dayButton[2].gameObject.SetActive(true);
+            dayButton[3].gameObject.SetActive(true);
             DayNightIcons[0].sprite = dayNightSprites[3];
             DayNightIcons[1].sprite = dayNightSprites[2];
 
@@ -115,7 +116,7 @@ public class DayNightSystem : MonoBehaviour
     }
     public void ToNight()
     {
-        if (isDay)
+        if (isDay && PlayerStats.instance.isActionMode)
         {
             isDay = false;
             isNight = true;
@@ -129,6 +130,7 @@ public class DayNightSystem : MonoBehaviour
             dayButton[0].gameObject.SetActive(false);
             dayButton[1].gameObject.SetActive(false);
             dayButton[2].gameObject.SetActive(false);
+            dayButton[3].gameObject.SetActive(false);
             DayNightIcons[0].sprite = dayNightSprites[1];
             DayNightIcons[1].sprite = dayNightSprites[0];
             foreach (Parcela p in parcelas)

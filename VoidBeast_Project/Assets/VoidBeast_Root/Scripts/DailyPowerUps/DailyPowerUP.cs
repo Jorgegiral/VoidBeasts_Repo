@@ -21,7 +21,6 @@ public class DailyPowerUP : MonoBehaviour
     public DailyPowerUpsSO[] selectedPowerUps;
     string upgradeName;
     private int selectedIndex = -1;
-    [SerializeField] GameObject firstSelectedMenu;
     bool upgradeselect = false;
     bool recollection = false;
     public bool poopedDay = false;
@@ -34,7 +33,6 @@ public class DailyPowerUP : MonoBehaviour
         gameObject.SetActive(true);
         PickPowerUps();
         Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
-        EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
         Time.timeScale = 0f;
         if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Collection)
         {
@@ -96,10 +94,12 @@ public class DailyPowerUP : MonoBehaviour
     private void PickPowerUps()
     {
         selectedPowerUps = new DailyPowerUpsSO[3];
-        List<DailyPowerUpsSO> powerUpList = new List<DailyPowerUpsSO>(allPowerUps);
+        List<DailyPowerUpsSO> powerUpList = allPowerUps
+            .Where(p => IsPowerUpAvailable(p))
+            .ToList();
 
 
-        for(int i= 0; i< 3; i++)
+        for (int i= 0; i< 3; i++)
         {
             DailyPowerUpsSO picked = GetRandomPowerUps(powerUpList);
             selectedPowerUps[i] = picked;
@@ -137,6 +137,20 @@ public class DailyPowerUP : MonoBehaviour
     {
         var list = pool.Where(p => p.rarityName == rarity).ToList();
         return list[Random.Range(0, list.Count)];
+    }
+    private bool IsPowerUpAvailable(DailyPowerUpsSO powerUp)
+    {
+        if (powerUp.type == PowerUpType.FireRate)
+        {
+            return PlayerStats.instance.gunAttackSpeed > 0.6f;
+        }
+
+        if (powerUp.type == PowerUpType.Resurrection)
+        {
+            return PlayerStats.instance.deathTimer > 1f;
+        }
+
+        return true;
     }
 }
 

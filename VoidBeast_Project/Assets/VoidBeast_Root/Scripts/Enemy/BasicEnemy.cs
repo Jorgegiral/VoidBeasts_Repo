@@ -31,7 +31,8 @@ public class BasicEnemy : MonoBehaviour
     private bool hasAttackPoint = false;
     private Animator anim; //Jorge
     private BuildingHP targetBuilding;
-
+    private bool isAttackingWall = false;
+    private WallHP currentWall;
 
     private void Awake()
     {
@@ -44,10 +45,17 @@ public class BasicEnemy : MonoBehaviour
     void Update()
     {
 
-        UpdateEnemyTarget(); 
-        MoveEnemyBuild();
+        UpdateEnemyTarget();
+        CheckWallInFront();
+        if (isAttackingWall)
+        {
+            StartAttackingWall();
+        }
+        else
+        {
+            MoveEnemyBuild();
+        }
         UpdateAttackCooldown();
-
     }
     void UpdateEnemyTarget()
     {
@@ -107,10 +115,28 @@ public class BasicEnemy : MonoBehaviour
                 targetBuilding = building;
                 hasAttackPoint = true;
             }
+            if (PathIsBlocked())
+            {
+                if (!isAttackingWall)
+                {
+                    MoveForwardBlindly();
+                }
+                return;
+            }
+
         }
         else
         {
             assignedAttackPoint = target.position; // Planta
+            if (PathIsBlocked())
+            {
+                if (!isAttackingWall)
+                {
+                    MoveForwardBlindly();
+                }
+                return;
+            }
+
         }
 
         // Movimiento
@@ -130,7 +156,64 @@ public class BasicEnemy : MonoBehaviour
         }
     }
 
+    void MoveForwardBlindly()
+    {
+        agent.isStopped = true; 
 
+        Vector3 dir = (assignedAttackPoint - transform.position).normalized;
+        dir.y = 0f;
+
+        transform.position += dir * agent.speed * Time.deltaTime;
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(dir),
+            Time.deltaTime * 5f
+        );
+
+    }
+    void CheckWallInFront()
+    {
+        if (isAttackingWall) return;
+
+        Vector3 origin = attackPoint.position;
+        RaycastHit hit;
+
+        if (Physics.Raycast(origin, transform.forward, out hit, attackRange, attackLayer))
+        {
+            WallHP wall = hit.collider.GetComponentInParent<WallHP>();
+            if (wall != null)
+            {
+                currentWall = wall;
+                isAttackingWall = true;
+                agent.isStopped = true;
+            }
+        }
+    }
+
+    void StartAttackingWall()
+    {
+        if (!isAttackingWall) return;
+        if (currentWall == null)
+        {
+            isAttackingWall = false;
+            agent.isStopped = false;
+            return;
+        }
+        agent.isStopped = true;
+        anim.SetBool("isAttacking", true);
+
+        if (!canAttack) return;
+
+        Settings.instance.PlaySoundFXClip(attackEnemySound, transform, 1f);
+
+        if (currentWall != null)
+        {
+            currentWall.TakeDamage(enemyDamage);
+        }
+
+        canAttack = false;
+        attackCD = timeBetweenAttacks;
+    }
 
     void AttackTarget()
     {
@@ -186,6 +269,11 @@ public class BasicEnemy : MonoBehaviour
     public void OnDeath()
     {
         Destroy(gameObject); 
+    }
+    bool PathIsBlocked()
+    {
+        return agent.pathStatus == NavMeshPathStatus.PathInvalid ||
+               agent.pathStatus == NavMeshPathStatus.PathPartial;
     }
 
 }
