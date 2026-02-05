@@ -10,10 +10,11 @@ public class Tower2 : MonoBehaviour
     [SerializeField] GameObject cannonPoint;
     [SerializeField] GameObject bulletVFX;
     [SerializeField] LayerMask enemyLayer;
+    [SerializeField] AudioClip towerShoot;
 
     [Header("testers")]
     [SerializeField] GameObject target;
-    [SerializeField] float shootCD = 2f;
+    [SerializeField] float shootCD = 0.8f;
     [SerializeField] bool enemyIsInSight;
     private bool canShoot = true;
     private Animator anim;
@@ -76,11 +77,8 @@ public class Tower2 : MonoBehaviour
         if (!canShoot) return;
         if (target != null)
         {
+            Settings.instance.PlayUniqueSoundSFXClip(towerShoot, transform, 3f);
             anim.SetTrigger("Shoot");
-            Instantiate(bulletVFX, cannonPoint.transform.position, transform.rotation);
-            StartCoroutine(MachineGun());
-            Instantiate(bulletVFX, cannonPoint.transform.position, transform.rotation);
-            StartCoroutine(MachineGun());
             Instantiate(bulletVFX, cannonPoint.transform.position, transform.rotation);
             StartCoroutine(ShootCooldown());
         }

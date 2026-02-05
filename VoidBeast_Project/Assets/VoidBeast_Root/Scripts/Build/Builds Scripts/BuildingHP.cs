@@ -13,7 +13,7 @@ public class BuildingHP : MonoBehaviour
     [SerializeField] public GameObject imageHP;
     [SerializeField] AudioClip deathSound;
     private int enemyCounter = 0;
-
+    [SerializeField] GameObject vfxRepair;
     Renderer rend; //jorge
     MaterialPropertyBlock mpb;
     Renderer[] renderers;
@@ -37,6 +37,8 @@ public class BuildingHP : MonoBehaviour
     }
     public void NewDayHealth()
     {
+        GameObject vfxRepairobj = Instantiate(vfxRepair, transform.position, transform.rotation);
+        Destroy(vfxRepairobj,5f);
         currentBuildHP = buildHP;
         UpdateHP();
     }
