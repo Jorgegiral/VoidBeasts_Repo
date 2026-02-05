@@ -20,7 +20,7 @@ public class Tower2 : MonoBehaviour
     private void Start()
     {
         StartCoroutine(TargetScanner());
-        anim = GetComponent<Animator>();
+        anim = GetComponentInParent<Animator>();
     }
     private void Update()
     {
