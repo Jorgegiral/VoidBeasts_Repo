@@ -21,7 +21,6 @@ public class DailyPowerUP : MonoBehaviour
     public DailyPowerUpsSO[] selectedPowerUps;
     string upgradeName;
     private int selectedIndex = -1;
-    [SerializeField] GameObject firstSelectedMenu;
     bool upgradeselect = false;
     bool recollection = false;
     public bool poopedDay = false;
@@ -34,7 +33,6 @@ public class DailyPowerUP : MonoBehaviour
         gameObject.SetActive(true);
         PickPowerUps();
         Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
-        EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
         Time.timeScale = 0f;
         if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Collection)
         {

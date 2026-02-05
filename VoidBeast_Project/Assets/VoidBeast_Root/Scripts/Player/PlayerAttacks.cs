@@ -66,7 +66,6 @@ public class PlayerAttacks : MonoBehaviour
         anim = GetComponent<Animator>(); 
         gun.SetActive(false);
         holderRect = holderImage.GetComponent<RectTransform>();
-
     }
     private void Update()
     {

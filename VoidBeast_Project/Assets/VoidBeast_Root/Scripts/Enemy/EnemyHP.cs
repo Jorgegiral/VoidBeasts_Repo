@@ -43,6 +43,7 @@ public class EnemyHP : MonoBehaviour
         enemyCurrentHealth -= damage;
         rend.material = damageMaterial;
         StartCoroutine(TakeDamageMaterial());
+        UpdateHealthBar();
         if (enemyCurrentHealth < 0) 
         {
             BasicEnemy enemy = GetComponent<BasicEnemy>();
