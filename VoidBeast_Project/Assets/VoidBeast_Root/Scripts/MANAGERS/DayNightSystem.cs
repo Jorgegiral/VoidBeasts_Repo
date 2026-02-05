@@ -31,7 +31,6 @@ public class DayNightSystem : MonoBehaviour
     float lightTransitionDuration = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
-    private bool collected;
     //Jorge:
     bool enemies = false;
     //provisional
@@ -101,7 +100,6 @@ public class DayNightSystem : MonoBehaviour
             foreach (ParcelaOrder p in parcelasOrder)
             {
                 p.PlayRecolect();
-                collected = true;
             }
             foreach (Parcela p in parcelas)
             {
@@ -112,7 +110,6 @@ public class DayNightSystem : MonoBehaviour
         }
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
-        collected = false;
     }
     public void ToNight()
     {

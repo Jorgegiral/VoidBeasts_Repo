@@ -19,10 +19,12 @@ public class DailyPowerUpsSO : ScriptableObject
     FireRate,
     ExplosionDamage,
     MeleeDamage,
+    availablePoints
     }
 public enum PowerUpRarity
 {
     Common,
     Rare,
-    Legendary
+    Legendary,
+    Void
 }

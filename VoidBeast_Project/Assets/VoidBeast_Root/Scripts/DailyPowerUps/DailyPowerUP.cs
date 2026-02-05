@@ -115,11 +115,12 @@ public class DailyPowerUP : MonoBehaviour
     }
     private DailyPowerUpsSO GetRandomPowerUps(List<DailyPowerUpsSO> availablePowerUps)
     {
-        float commonWeight = 80f;
-        float rareWeight = 18f;
+        float commonWeight = 75f;
+        float rareWeight = 22.9f;
         float legendaryWeight = 2f;
+        float voidWeight = 0.1f;
 
-        float total = commonWeight + rareWeight + legendaryWeight;
+        float total = commonWeight + rareWeight + legendaryWeight + voidWeight;
         float roll = Random.Range(0f, total);
 
         if (roll < commonWeight)
@@ -129,8 +130,10 @@ public class DailyPowerUP : MonoBehaviour
 
         if (roll < rareWeight)
             return RandomFrom(availablePowerUps, PowerUpRarity.Rare);
+        if (roll < legendaryWeight)
+            return RandomFrom(availablePowerUps, PowerUpRarity.Legendary);
 
-        return RandomFrom(availablePowerUps, PowerUpRarity.Legendary);
+        return RandomFrom(availablePowerUps, PowerUpRarity.Void);
     }
 
     private DailyPowerUpsSO RandomFrom(List<DailyPowerUpsSO> pool, PowerUpRarity rarity)
