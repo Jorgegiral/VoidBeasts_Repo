@@ -23,7 +23,7 @@ public class ScoreManager : MonoBehaviour
     public void BackToMenu()
     {
         Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
-
+        Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }
     public void NextButton()
