@@ -13,7 +13,7 @@ public class DailyPowerUP : MonoBehaviour
     [Header("References")]
     [SerializeField] Image[] ImagePowerUp;
     [SerializeField] TMP_Text[] rarityText;
-    [SerializeField] TMP_Text[] upgradeText;
+    [SerializeField] Image[] upgradeSprite;
     [SerializeField] TMP_Text[] infoText;
     [SerializeField] AudioClip startPickSound;
     [SerializeField] AudioClip clickSound;
@@ -73,7 +73,6 @@ public class DailyPowerUP : MonoBehaviour
             PlayerStats.instance.ApplyStats();
             Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
             gameObject.SetActive(false);
-
             return chosen;
     }
     public void SelectPowerUp(int index)
@@ -109,16 +108,16 @@ public class DailyPowerUP : MonoBehaviour
         {
             ImagePowerUp[i].sprite= selectedPowerUps[i].raritySprite;
             rarityText[i].text = selectedPowerUps[i].rarityName.ToString();
-            upgradeText[i].text = selectedPowerUps[i].type.ToString();
+            upgradeSprite[i].sprite = selectedPowerUps[i].iconSprite;
             infoText[i].text = selectedPowerUps[i].description;
         }
     }
     private DailyPowerUpsSO GetRandomPowerUps(List<DailyPowerUpsSO> availablePowerUps)
     {
         float commonWeight = 75f;
-        float rareWeight = 22.9f;
-        float legendaryWeight = 2f;
-        float voidWeight = 0.1f;
+        float rareWeight = 22.75f;
+        float legendaryWeight = 2.1f;
+        float voidWeight = 0.15f;
 
         float total = commonWeight + rareWeight + legendaryWeight + voidWeight;
         float roll = Random.Range(0f, total);
@@ -160,12 +159,14 @@ public class DailyPowerUP : MonoBehaviour
     public void BuyPowerUp()
     {
         if(UpgradeManager.instance.upgradeValue <= MoneySystem.instance.money)
-        {    
-        MoneySystem.instance.money -= UpgradeManager.instance.upgradeValue;
+        {
+            MoneySystem.instance.BuyMoney(UpgradeManager.instance.upgradeValue);
+         gameObject.SetActive(true);
         PickPowerUps();
-        Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
+        Settings.instance.PlayUniqueSoundSFXClip(startPickSound, transform, 1f);
         Time.timeScale = 0f;
         UpgradeManager.instance.upgradeValue *= 2;
+        UpgradeManager.instance.UpdateValuePowerUp();
         }
     }
 }

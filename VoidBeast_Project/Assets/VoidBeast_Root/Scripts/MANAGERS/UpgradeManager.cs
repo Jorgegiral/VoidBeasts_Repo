@@ -15,6 +15,7 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text mainBuildText;
     public TMP_Text wallText;
     public TMP_Text towerText;
+    public TMP_Text upgradesText;
 
     public GameObject bombUI;
     public GameObject RayUI;
@@ -169,10 +170,10 @@ public void UpgradeWall()
                     ExpandBuildArea(2, 2);
                     updateModelMainBuild[5].SetActive(true);
                     updateModelMainBuild[4].SetActive(false);
-                    wallAvailable += 10;
-                    maxWall += 10;
-                    towerAvailable += 1;
-                    maxTower += 1;
+                    wallAvailable += 18;
+                    maxWall += 18;
+                    towerAvailable += 2;
+                    maxTower += 2;
                     cropAvailable += 1;
                     maxCrop += 1;
                     buildBlock.SetActive(true);
@@ -187,6 +188,16 @@ public void UpgradeWall()
     }
     public void UnlockGun(int precio)
     {
+        if (freeUpgrade)
+        {
+            isBombUnlocked = true;
+            bombUI.SetActive(true);
+            lockBomb.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        }
+        else
         if (precio <= MoneySystem.instance.money && availablePoints > 0)
         {
             MoneySystem.instance.money -= precio;
@@ -197,18 +208,19 @@ public void UpgradeWall()
             UpdateSkillValues();
             MoneySystem.instance.UpdateMoneyText();
         }
-        else if (freeUpgrade)
-        {
-            isGunUnlocked = true;
-            lockGun.SetActive(false);
-            lockRayTwo.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-
-        }
     }
     public void UnlockRay(int precio)
     {
+        if (freeUpgrade)
+        {
+            isBombUnlocked = true;
+            bombUI.SetActive(true);
+            lockBomb.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        }
+        else
         if (precio <= MoneySystem.instance.money && availablePoints > 0 )
         {
             MoneySystem.instance.money -= precio;
@@ -219,18 +231,19 @@ public void UpgradeWall()
             UpdateSkillValues();
             MoneySystem.instance.UpdateMoneyText();
         }
-        else if (freeUpgrade)
+    }
+    public void UnlockMine(int precio)
+    {
+        if (freeUpgrade)
         {
-            isRayUnlocked = true;
-            RayUI.SetActive(true);
-            lockRay.SetActive(false);
+            isBombUnlocked = true;
+            bombUI.SetActive(true);
+            lockBomb.SetActive(false);
             availablePoints--;
             UpdateSkillValues();
             freeUpgrade = false;
         }
-    }
-    public void UnlockMine(int precio)
-    {
+        else
         if (precio <= MoneySystem.instance.money && availablePoints > 0)
         {
             MoneySystem.instance.money -= precio;
@@ -242,18 +255,18 @@ public void UpgradeWall()
             UpdateSkillValues();
             MoneySystem.instance.UpdateMoneyText();
         }
-        else if (freeUpgrade) {
-
-            MineUI.SetActive(true);
-            lockMine.SetActive(false);
-            lockBombTwo.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            freeUpgrade = false;
-        }
     }
     public void UnlockBomb(int precio)
     {
+        if (freeUpgrade)
+        {
+            isBombUnlocked = true;
+            bombUI.SetActive(true);
+            lockBomb.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        } else
         if (precio <= MoneySystem.instance.money && availablePoints > 0)
         {
             MoneySystem.instance.money -= precio;
@@ -263,19 +276,20 @@ public void UpgradeWall()
             availablePoints--;
             UpdateSkillValues();
             MoneySystem.instance.UpdateMoneyText();
-        }
-        else if (freeUpgrade)
-        {
-            isBombUnlocked = true;
-            bombUI.SetActive(true);
-            lockBomb.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            freeUpgrade = false;
         }
     }
     public void UnlockSpin(int precio)
     {
+        if (freeUpgrade)
+        {
+            isSpinUnlocked = true;
+            SpinUI.SetActive(true);
+            lockSpin.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        }
+        else 
         if (precio <= MoneySystem.instance.money && availablePoints > 0)
         {
             MoneySystem.instance.money -= precio;
@@ -285,15 +299,6 @@ public void UpgradeWall()
             availablePoints--;
             UpdateSkillValues();
             MoneySystem.instance.UpdateMoneyText();
-        }
-        else if (freeUpgrade)
-        {
-            isSpinUnlocked = true;
-            SpinUI.SetActive(true);
-            lockSpin.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            freeUpgrade = false;
         }
     }
     public void SwapWallModelsOnUpgrade()
@@ -308,6 +313,9 @@ public void UpgradeWall()
             Vector3 position = wall.transform.position;
             Quaternion rotation = wall.transform.rotation;
             GameObject newWall = Instantiate(wallBuild.build, position, rotation);
+            Building oldWallBuild = wall.GetComponent<Building>();
+            Building newWallBuild = newWall.GetComponent<Building>();
+            newWallBuild.area.position = oldWallBuild.area.position;
             newWalls.Add(newWall);
             WallHP wallHP = wall.GetComponent<WallHP>();
             if (wallHP == null) continue;
@@ -365,6 +373,10 @@ public void UpgradeWall()
         mainBuildText.text = mainBuildvalue.ToString();
         towerText.text = towerBuildvalue.ToString();
         wallText.text = wallBuildvalue.ToString();
+    }
+    public void UpdateValuePowerUp()
+    {
+        upgradesText.text = upgradeValue.ToString();
     }
     private void UpdateSkillValues()
     {

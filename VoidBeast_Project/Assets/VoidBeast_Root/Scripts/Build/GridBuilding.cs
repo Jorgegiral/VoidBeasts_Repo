@@ -210,15 +210,16 @@ public class GridBuilding : MonoBehaviour
     }
     public void UnTakeArea(BoundsInt area)
     {
+
+        SetTilesBlock(area, TileType.Empty, tempTilemap);
+        SetTilesBlock(area, TileType.White, mainTilemap);
+        buildingTemp = null;
+        isWall = false;
         if (isWall)
         {
             WallBehaviour wall = buildingTemp.GetComponent<WallBehaviour>();
             wall.ThrowRaycast();
         }
-        SetTilesBlock(area, TileType.Empty, tempTilemap);
-        SetTilesBlock(area, TileType.White, mainTilemap);
-        buildingTemp = null;
-        isWall = false;
     }
     private void FollowMouse()
     {
