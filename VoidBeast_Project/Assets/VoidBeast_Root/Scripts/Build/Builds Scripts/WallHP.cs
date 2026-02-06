@@ -35,7 +35,7 @@ public class WallHP : MonoBehaviour
                 GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
                 Destroy(destroyvfx, 3f);
                 UpgradeManager.instance.UnRegisterWall(gameObject);
-                gameObject.SetActive(false);
+                Destroy(gameObject);
             }
         }
 

@@ -40,7 +40,7 @@ public class TowerHP : MonoBehaviour
                 UpgradeManager.instance.towerBought++;
                 Settings.instance.PlayUniqueSoundSFXClip(deathSound, transform, 3f);
                 Destroy(destroyvfx, 3f);
-                gameObject.SetActive(false);
+                Destroy(gameObject);
             }
         }
         UpdateHPTurrets();
