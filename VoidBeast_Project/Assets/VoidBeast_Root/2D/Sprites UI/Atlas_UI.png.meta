@@ -944,12 +944,12 @@ TextureImporter:
       name: Atlas_UI_28
       rect:
         serializedVersion: 2
-        x: 1631
-        y: 292
+        x: 1642
+        y: 291
         width: 91
         height: 90
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
