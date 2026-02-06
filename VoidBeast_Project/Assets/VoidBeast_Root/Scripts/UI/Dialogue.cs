@@ -20,25 +20,37 @@ public class Dialogue : MonoBehaviour
     private Coroutine typingCoroutine;
     [SerializeField] private RectTransform backgroundPanel;
     [SerializeField] private ContentSizeFitter sizeFitter;
-    void Start()
+    IEnumerator Start()
     {
-        GetCurrentLanguageId();
-        SelectLanguageArray(); 
+        yield return UnityEngine.Localization.Settings.LocalizationSettings.InitializationOperation;
+
+        GetCurrentLanguageIdFromLocalization();
+        SelectLanguageArray();
+
         dialogueText.text = string.Empty;
         StartDialogue();
     }
-    private void GetCurrentLanguageId()
+
+
+    private void GetCurrentLanguageIdFromLocalization()
     {
-        if (PlayerPrefs.HasKey("LocaleKey"))
-        {
-            currentLanguageId = PlayerPrefs.GetInt("LocaleKey");
-        }
-        else
+        var locale = UnityEngine.Localization.Settings.LocalizationSettings.SelectedLocale;
+
+        if (locale == null)
         {
             currentLanguageId = 0;
+            return;
         }
 
-        Debug.Log($"Idioma ID: {currentLanguageId}");
+        if (locale.Identifier.Code == "en")
+            currentLanguageId = 0;
+        else if (locale.Identifier.Code == "es")
+            currentLanguageId = 1;
+        else if (locale.Identifier.Code == "ca")
+            currentLanguageId = 2;
+        else
+            currentLanguageId = 0;
+
     }
     private void SelectLanguageArray()
     {
