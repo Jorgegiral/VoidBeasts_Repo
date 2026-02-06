@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class HoverUpgrade : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler
@@ -13,9 +14,10 @@ public class HoverUpgrade : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text infoText;
     [SerializeField] TMP_Text costText;
-    [SerializeField] string nameSkill;
+    [Header("Localization")]
+    [SerializeField] LocalizedString nameSkill;
     [SerializeField] string costSkill;
-    [SerializeField] string infoSkill;
+    [SerializeField] LocalizedString infoSkill;
     private void Start()
     {
         etiquetaRect = etiquetaImg.GetComponent<RectTransform>();
@@ -27,9 +29,9 @@ public class HoverUpgrade : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
     private void UpdateText()
     {
-        nameText.text = nameSkill;
+        nameText.text = nameSkill.GetLocalizedString();
         costText.text = costSkill;
-        infoText.text = infoSkill;
+        infoText.text = infoSkill.GetLocalizedString();
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
