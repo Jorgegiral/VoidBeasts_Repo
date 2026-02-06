@@ -169,6 +169,9 @@ public class DayNightSystem : MonoBehaviour
         float startTemp = globalLight.colorTemperature;
         float elapsed = 0f;
 
+        var previousShadowMode = globalLight.shadows;
+        globalLight.shadows = LightShadows.None; 
+
         while (elapsed < lightTransitionDuration)
         {
             elapsed += Time.deltaTime;
@@ -178,6 +181,7 @@ public class DayNightSystem : MonoBehaviour
         }
 
         globalLight.colorTemperature = targetTemperature;
+        globalLight.shadows = previousShadowMode; 
     }
 }
 
