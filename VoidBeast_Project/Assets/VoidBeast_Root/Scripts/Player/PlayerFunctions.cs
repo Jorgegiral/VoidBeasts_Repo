@@ -33,24 +33,6 @@ public class PlayerFunctions : MonoBehaviour
     {
         if (PlayerStats.instance.isDeath) return;
         if (!context.performed) return;
-
-        RaycastHit hit;
-
-
-        if (DayNightSystem.Instance.isDay)
-        {
-            if (Physics.Raycast(transform.position + new Vector3(0, 0.3f, 0), transform.TransformDirection(Vector3.forward), out hit, 3, layerWall))
-            {
-                WallBehaviour adaptWall = hit.collider.GetComponentInParent<WallBehaviour>();
-                Building area = hit.collider.GetComponentInParent<Building>();
-                area.Destroyed();
-                adaptWall.ThrowRaycastNeighbours();
-                UpgradeManager.instance.wallAvailable++;
-                UpgradeManager.instance.wallBought--;
-                adaptWall.gameObject.SetActive(false);
-
-            }
-        }
 }
 
 
