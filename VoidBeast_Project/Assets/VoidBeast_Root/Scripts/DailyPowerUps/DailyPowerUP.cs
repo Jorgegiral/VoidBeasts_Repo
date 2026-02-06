@@ -34,6 +34,7 @@ public class DailyPowerUP : MonoBehaviour
         PickPowerUps();
         Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
         Time.timeScale = 0f;
+        Settings.instance.StopSingleSoundFX();
         if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Collection)
         {
             if (!recollection)
@@ -165,7 +166,8 @@ public class DailyPowerUP : MonoBehaviour
         PickPowerUps();
         Settings.instance.PlayUniqueSoundSFXClip(startPickSound, transform, 1f);
         Time.timeScale = 0f;
-        UpgradeManager.instance.upgradeValue *= 2;
+            Settings.instance.StopSingleSoundFX();
+            UpgradeManager.instance.upgradeValue *= 2;
         UpgradeManager.instance.UpdateValuePowerUp();
         }
     }

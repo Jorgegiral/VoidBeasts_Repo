@@ -48,6 +48,7 @@ public class PlayerFunctions : MonoBehaviour
 
             PlayerStats.instance.escapeMenuOpened = true;
             Time.timeScale = 0f;
+            Settings.instance.StopSingleSoundFX();
         }
         else
         {
