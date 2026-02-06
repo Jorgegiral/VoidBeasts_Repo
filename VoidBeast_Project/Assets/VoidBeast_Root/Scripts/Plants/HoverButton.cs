@@ -32,9 +32,9 @@ public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         else
         {
-            nameText.text = buildingToWatch.nameBuild;
+            nameText.text = buildingToWatch.nameBuild.GetLocalizedString();
             costText.text = buildingToWatch.precio.ToString();
-            infoText.text = buildingToWatch.info;
+            infoText.text = buildingToWatch.info.GetLocalizedString();
             UpdateAvailable();
             //build
         }

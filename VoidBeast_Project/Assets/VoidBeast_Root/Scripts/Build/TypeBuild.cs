@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using System;
+using UnityEngine.Localization;
 
 [CreateAssetMenu(fileName = "TypeBuild", menuName = "Scriptable Objects/TypeBuild")]
 public class TypeBuild : ScriptableObject
@@ -10,11 +11,10 @@ public class TypeBuild : ScriptableObject
     public Vector3 clickOffSet;
     public Vector3 placeOffSet;
     public BuildType type;
-    public string nameBuild;
     public int precio;
-    public string info;
     public event Action OnBuildChanged;
-
+    public LocalizedString nameBuild;
+    public LocalizedString info;
     public void Upgrade(int level)
     {
         build = levelModels[level];
