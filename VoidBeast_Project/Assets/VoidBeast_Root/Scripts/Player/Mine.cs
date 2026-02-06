@@ -5,7 +5,6 @@ public class Mine : MonoBehaviour
 {
     public GameObject VFXexplosion;
     public Transform explosionTransform;
-    public AudioClip placeMine;
     public AudioClip mineExplosion;
 
     private void Start()
@@ -19,6 +18,7 @@ public class Mine : MonoBehaviour
         GameObject tempExplosion = Instantiate(VFXexplosion, explosionTransform.position, explosionTransform.rotation);
 
         Explosion explosionMine = tempExplosion.GetComponent<Explosion>();
+        Settings.instance.PlaySoundFXClip(mineExplosion, transform, 1f);
         Destroy(tempExplosion, 3f);
         Destroy(gameObject);
 

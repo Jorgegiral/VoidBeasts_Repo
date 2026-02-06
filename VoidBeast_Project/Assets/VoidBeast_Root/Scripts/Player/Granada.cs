@@ -4,7 +4,6 @@ public class Granada : MonoBehaviour
 {
     [Header("Sounds and VFX")]
     public GameObject VFXexplosion;
-    public AudioClip initialSound;
     public AudioClip bombExplosion;
 
     private void OnTriggerEnter(Collider other)
@@ -14,6 +13,7 @@ public class Granada : MonoBehaviour
             GameObject tempExplosion = Instantiate(VFXexplosion, transform.position, transform.rotation);
 
             Explosion explosionMine = tempExplosion.GetComponent<Explosion>();
+            Settings.instance.PlaySoundFXClip(bombExplosion, transform, 1f);
 
             Destroy(tempExplosion, 3f);
             Destroy(gameObject);
