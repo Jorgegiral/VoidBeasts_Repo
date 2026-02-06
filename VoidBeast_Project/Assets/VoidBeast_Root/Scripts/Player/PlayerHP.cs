@@ -19,6 +19,7 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private Material damageMaterial;
     [SerializeField] private Material baseMaterial;
     [SerializeField] Renderer rend;
+    [SerializeField] Renderer[] renderers;
 
     bool isInvicible = false;
     float deathCountdown = 5f;
@@ -50,6 +51,7 @@ public class PlayerHP : MonoBehaviour
         if (PlayerStats.instance.playerCurrentHealth <= 0)
         {
             Settings.instance.PlaySoundFXClip(deathSound, transform, 1f);
+            HidePlayer();
             StartDeathTimer();
             return;
         }
@@ -118,6 +120,7 @@ public class PlayerHP : MonoBehaviour
             if (spawnpoint != null)
             {
                 transform.position = spawnpoint.position;
+                ShowPlayer();
                 Debug.Log("Spawning");
                 deathTimerText.gameObject.SetActive(false);
                 blackAndWhiteImage.gameObject.SetActive(false);
@@ -128,6 +131,17 @@ public class PlayerHP : MonoBehaviour
             UpdateHP();
             PlayerStats.instance.isDeath = false;
         }
+    }
+    private void HidePlayer()
+    {
+        foreach (var r in renderers)
+            r.enabled = false;
+    }
+
+    private void ShowPlayer()
+    {
+        foreach (var r in renderers)
+            r.enabled = true;
     }
     IEnumerator TakeDamageMaterial()
     {
