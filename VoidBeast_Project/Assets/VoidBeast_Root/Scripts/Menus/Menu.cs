@@ -59,7 +59,9 @@ public class Menu : MonoBehaviour
             MusicManager.instance.PlayDaySong();
 
         }
-        int Id = PlayerPrefs.GetInt("LocaleKey", 0);
+        int id = PlayerPrefs.GetInt("LocaleKey", 0);
+        idiomaActual = id;
+        StartCoroutine(SetIdLocal(id));
         musicSlider.value = Settings.instance.GetMusicVolume();
         SFXSlider.value = Settings.instance.GetSFXVolume();
         StartCoroutine(SelectFirstButtonDelayed());
