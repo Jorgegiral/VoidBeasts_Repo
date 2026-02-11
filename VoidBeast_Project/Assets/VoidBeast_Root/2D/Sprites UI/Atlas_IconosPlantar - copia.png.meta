@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5ce34daa2ab79424b8b0af7328776f0a
+guid: 7dc119e52fe21de41aa6466eac242b1f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_0
+      name: Atlas_IconosPlantar - copia_0
       rect:
         serializedVersion: 2
-        x: 17
-        y: 314
-        width: 497
-        height: 301
+        x: 8
+        y: 265
+        width: 485
+        height: 233
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,20 +112,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 78dcf93d257300d4180cf620ea46fcbd
-      internalID: 2057360714
+      spriteID: 84c2d73729d14aa44a1ac6bde33cd3b8
+      internalID: -2039054240
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_1
+      name: Atlas_IconosPlantar - copia_1
       rect:
         serializedVersion: 2
-        x: 532
-        y: 518
-        width: 95
-        height: 129
+        x: 517
+        y: 399
+        width: 98
+        height: 103
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,20 +134,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 414b296fac894154ca186115d1465048
-      internalID: -1074872049
+      spriteID: da242688305675342b672311aa48e50e
+      internalID: 1161253914
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_2
+      name: Atlas_IconosPlantar - copia_2
       rect:
         serializedVersion: 2
-        x: 661
-        y: 512
-        width: 95
-        height: 129
+        x: 643
+        y: 395
+        width: 98
+        height: 98
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ea3aa6a09fba7d24388b77fa584952ee
-      internalID: 536358757
+      spriteID: 32675bdd007a80b4db120e971a037f83
+      internalID: -943110705
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_3
+      name: Atlas_IconosPlantar - copia_3
       rect:
         serializedVersion: 2
-        x: 786
-        y: 514
-        width: 95
-        height: 129
+        x: 769
+        y: 404
+        width: 82
+        height: 82
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,20 +178,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 702c0c32515aa634e804c86e7d64c9e0
-      internalID: -1487726001
+      spriteID: 739eb336dbe1c154583fca7112af8441
+      internalID: 1029199134
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_4
+      name: Atlas_IconosPlantar - copia_4
       rect:
         serializedVersion: 2
-        x: 534
-        y: 352
-        width: 95
-        height: 129
+        x: 903
+        y: 422
+        width: 72
+        height: 53
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,20 +200,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ed338692285a25f4e89e25683ee8b2f7
-      internalID: 845806545
+      spriteID: 5df9ae604ae06454aa87c4c2b30c84f8
+      internalID: 19664676
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_5
+      name: Atlas_IconosPlantar - copia_5
       rect:
         serializedVersion: 2
-        x: 658
-        y: 354
-        width: 95
-        height: 129
+        x: 529
+        y: 283
+        width: 80
+        height: 82
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -222,20 +222,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8eb54aaa0ac2ca746a30386ee8072a91
-      internalID: -174079592
+      spriteID: fa90df1a3e42e1b42b32e98289faba4f
+      internalID: -873799406
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_6
+      name: Atlas_IconosPlantar - copia_6
       rect:
         serializedVersion: 2
-        x: 781
-        y: 359
-        width: 95
-        height: 129
+        x: 656
+        y: 283
+        width: 63
+        height: 82
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -244,20 +244,64 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46a1c6c27842d354f92757ca760523bf
-      internalID: -958278865
+      spriteID: ec2b5a79d5195e842b0f7cdda699f11e
+      internalID: -69601389
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_7
+      name: Atlas_IconosPlantar - copia_7
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 301
+        width: 75
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c08521e9b3111a48afded24f50624e1
+      internalID: -1510986827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_IconosPlantar - copia_8
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 284
+        width: 75
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d0e9c634fbc5884391b76a17823da8c
+      internalID: -549711018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_IconosPlantar - copia_9
       rect:
         serializedVersion: 2
         x: 0
-        y: 202
-        width: 589
-        height: 105
+        y: 155
+        width: 377
+        height: 67
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -266,20 +310,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af95e583d27e186478cdd460279eacf4
-      internalID: 472598902
+      spriteID: 916d6e2e0dde6c441a39cc7de45ffcda
+      internalID: 797314366
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_8
+      name: Atlas_IconosPlantar - copia_10
       rect:
         serializedVersion: 2
-        x: 595
-        y: 199
-        width: 236
-        height: 130
+        x: 375
+        y: 143
+        width: 122
+        height: 118
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -288,20 +332,130 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c150593b2931ef4bb0c1b41eaef9937
-      internalID: 502098965
+      spriteID: ae4413eafd749ae40a2ae892afe9c6c8
+      internalID: 216431519
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Atlas_PlantBuildMode_9
+      name: Atlas_IconosPlantar - copia_11
+      rect:
+        serializedVersion: 2
+        x: 542
+        y: 183
+        width: 52
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85ca7f02e8a336245a5d78f4a3a326ee
+      internalID: 1765616549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_IconosPlantar - copia_12
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 182
+        width: 52
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7523fdb8d2f8cf94b973d9537d8742d1
+      internalID: -1139024698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_IconosPlantar - copia_13
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 163
+        width: 92
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 228ae0f10698be041bc733ff13ab7163
+      internalID: 1323619830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_IconosPlantar - copia_14
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 169
+        width: 80
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a91bad34c600a3642955108eb32c819d
+      internalID: 2138722975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_IconosPlantar - copia_15
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 164
+        width: 46
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac3d310bec424cd48b284851e838454e
+      internalID: 793842394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Atlas_IconosPlantar - copia_16
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1025
-        height: 182
+        width: 1001
+        height: 141
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -310,52 +464,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a585f90aae0e23c479474ebe3f61d7e1
-      internalID: -2109827024
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Atlas_PlantBuildMode_10
-      rect:
-        serializedVersion: 2
-        x: 27
-        y: 712
-        width: 620
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0610f029fde827a4a80c2e342fc6684d
-      internalID: -1613176681
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Atlas_PlantBuildMode_11
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 657
-        width: 613
-        height: 45
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 64af0d609a2d8aa44ba7bdea659661f9
-      internalID: -1212100011
+      spriteID: 7e92287892dafee428665e43e398f224
+      internalID: 1120419190
       vertices: []
       indices: 
       edges: []
@@ -364,7 +474,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 16e192d8bb732884facac79efaebc896
+    spriteID: a897b3f143630f946b0e4082e2a191cb
     internalID: 0
     vertices: []
     indices: 
@@ -372,20 +482,27 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Atlas_PlantBuildMode_0: 2057360714
-      Atlas_PlantBuildMode_1: -1074872049
-      Atlas_PlantBuildMode_10: -1613176681
-      Atlas_PlantBuildMode_11: -1212100011
-      Atlas_PlantBuildMode_2: 536358757
-      Atlas_PlantBuildMode_3: -1487726001
-      Atlas_PlantBuildMode_4: 845806545
-      Atlas_PlantBuildMode_5: -174079592
-      Atlas_PlantBuildMode_6: -958278865
-      Atlas_PlantBuildMode_7: 472598902
-      Atlas_PlantBuildMode_8: 502098965
-      Atlas_PlantBuildMode_9: -2109827024
+      Atlas_IconosPlantar - copia_0: -2039054240
+      Atlas_IconosPlantar - copia_1: 1161253914
+      Atlas_IconosPlantar - copia_10: 216431519
+      Atlas_IconosPlantar - copia_11: 1765616549
+      Atlas_IconosPlantar - copia_12: -1139024698
+      Atlas_IconosPlantar - copia_13: 1323619830
+      Atlas_IconosPlantar - copia_14: 2138722975
+      Atlas_IconosPlantar - copia_15: 793842394
+      Atlas_IconosPlantar - copia_16: 1120419190
+      Atlas_IconosPlantar - copia_2: -943110705
+      Atlas_IconosPlantar - copia_3: 1029199134
+      Atlas_IconosPlantar - copia_4: 19664676
+      Atlas_IconosPlantar - copia_5: -873799406
+      Atlas_IconosPlantar - copia_6: -69601389
+      Atlas_IconosPlantar - copia_7: -1510986827
+      Atlas_IconosPlantar - copia_8: -549711018
+      Atlas_IconosPlantar - copia_9: 797314366
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
