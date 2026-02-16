@@ -9,8 +9,6 @@ public class TankEnemy : MonoBehaviour
     [SerializeField] private LayerMask attackLayer;
     [SerializeField] float timeBetweenAttacks;
 
-
-
     [Header("Enemy Parameters")]
     [SerializeField] float enemyDamage;
     [SerializeField] private float minSpeed = 0.6f;
@@ -31,7 +29,8 @@ public class TankEnemy : MonoBehaviour
     private bool hasAttackPoint = false;
     private Animator anim; //Jorge
     private BuildingHP targetBuilding;
-
+    private bool isAttackingWall = false;
+    private WallHP currentWall;
 
     private void Awake()
     {
@@ -43,35 +42,42 @@ public class TankEnemy : MonoBehaviour
 
     void Update()
     {
-
-        UpdateEnemyTarget(); 
-        MoveEnemyBuild();
+        UpdateEnemyTarget();
+        CheckWallInFront();
+        if (isAttackingWall)
+        {
+            StartAttackingWall();
+        }
+        else
+        {
+            MoveEnemyBuild();
+        }
         UpdateAttackCooldown();
 
     }
     void UpdateEnemyTarget()
     {
-        GameObject[] plants = GameObject.FindGameObjectsWithTag("Plant");
-        GameObject nearestPlant = null;
+        GameObject[] towers = GameObject.FindGameObjectsWithTag("Tower");
+        GameObject nearestTower = null;
         float nearestDistance = Mathf.Infinity;
 
-        foreach (GameObject plant in plants)
+        foreach (GameObject tower in towers)
         {
-            float distance = Vector3.Distance(transform.position, plant.transform.position);
+            float distance = Vector3.Distance(transform.position, tower.transform.position);
             if (distance < nearestDistance)
             {
                 nearestDistance = distance;
-                nearestPlant = plant;
+                nearestTower = tower;
             }
         }
-        if (nearestPlant != null)
+        if (nearestTower != null)
         {
-            if (target == null || target != nearestPlant.transform)
+            if (target == null || target != nearestTower.transform)
             {
-                hasAttackPoint = false; 
+                hasAttackPoint = false;
                 targetBuilding = null;
             }
-            target = nearestPlant.transform;
+            target = nearestTower.transform;
         }
         else
         {
@@ -79,6 +85,8 @@ public class TankEnemy : MonoBehaviour
             if (target == null || target != mainBuilding.transform)
             {
                 hasAttackPoint = false;
+                targetBuilding = null;
+
             }
             target = mainBuilding.transform;
             targetBuilding = mainBuilding.GetComponent<BuildingHP>();
@@ -93,31 +101,45 @@ public class TankEnemy : MonoBehaviour
         if (target.name == "MainBuild")
         {
             BuildingHP building = target.GetComponent<BuildingHP>();
+
             if (!hasAttackPoint && building)
             {
-                if (building.GetFreeAttackPoint(transform.position, out Vector3 newPoint))
-                {
-                    if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                        assignedAttackPoint = hit.position;
-                    else
-                        assignedAttackPoint = newPoint;
-                    targetBuilding = building;
-                    hasAttackPoint = true;
-                }
+                Vector3 newPoint = building.GetAttackPointInfinite(transform.position);
+
+                if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+                    assignedAttackPoint = hit.position;
                 else
+                    assignedAttackPoint = newPoint;
+
+                targetBuilding = building;
+                hasAttackPoint = true;
+
+            }
+            if (PathIsBlocked())
+            {
+                if (!isAttackingWall)
                 {
-                    assignedAttackPoint = target.position;
+                    MoveForwardBlindly();
                 }
+                return;
             }
         }
         else
         {
-            assignedAttackPoint = target.position; // Planta
+            assignedAttackPoint = target.position; // Tower
+            if (PathIsBlocked())
+            {
+                if (!isAttackingWall)
+                {
+                    MoveForwardBlindly();
+                }
+                return;
+            }
         }
 
         // Movimiento
         float dist = Vector3.Distance(transform.position, assignedAttackPoint);
-        if (dist > 2.0f)
+        if (dist > 1.5f)
         {
             Settings.instance.PlayUniqueSoundSFXClip(moveEnemySound, transform, 1f);
             agent.isStopped = false;
@@ -130,6 +152,65 @@ public class TankEnemy : MonoBehaviour
             LookAtTarget();
             AttackTarget();
         }
+    }
+    void MoveForwardBlindly()
+    {
+        agent.isStopped = true;
+
+        Vector3 dir = (assignedAttackPoint - transform.position).normalized;
+        dir.y = 0f;
+
+        transform.position += dir * agent.speed * Time.deltaTime;
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(dir),
+            Time.deltaTime * 5f
+        );
+
+    }
+    void CheckWallInFront()
+    {
+        if (isAttackingWall) return;
+
+        Vector3 origin = attackPoint.position;
+        RaycastHit hit;
+
+        if (Physics.Raycast(origin, transform.forward, out hit, attackRange, attackLayer))
+        {
+            WallHP wall = hit.collider.GetComponentInParent<WallHP>();
+            if (wall != null)
+            {
+                currentWall = wall;
+                isAttackingWall = true;
+                agent.isStopped = true;
+            }
+        }
+    }
+
+    void StartAttackingWall()
+    {
+        if (!isAttackingWall) return;
+        if (currentWall == null)
+        {
+            isAttackingWall = false;
+            agent.isStopped = false;
+            anim.SetBool("isAttackingWall", false);
+            return;
+        }
+        agent.isStopped = true;
+        anim.SetBool("isAttackingWall", true);
+
+        if (!canAttack) return;
+
+        Settings.instance.PlaySoundFXClip(attackEnemySound, transform, 1f);
+
+        if (currentWall != null)
+        {
+            currentWall.TakeDamage(enemyDamage);
+        }
+
+        canAttack = false;
+        attackCD = timeBetweenAttacks;
     }
 
 
@@ -145,15 +226,15 @@ public class TankEnemy : MonoBehaviour
         {
 
             var health = hit.collider.GetComponent<BuildingHP>();
-            var planthealth = hit.collider.GetComponent<PlantHP>();
+            var towerhealth = hit.collider.GetComponent<TowerHP>();
 
             if (health != null)
             {
                 health.TakeDamage(enemyDamage);
             }
-            if (planthealth != null)
+            if (towerhealth != null)
             {
-                planthealth.TakeDamage(enemyDamage);
+                towerhealth.TakeDamage(enemyDamage);
             }
         }
 
@@ -168,7 +249,6 @@ public class TankEnemy : MonoBehaviour
             if (attackCD <= 0f)
             {
                 canAttack = true;
-
             }
         }
     }
@@ -177,7 +257,7 @@ public class TankEnemy : MonoBehaviour
         if (!target) return;
 
         Vector3 direction = (target.position - transform.position).normalized;
-        direction.y = 0f; 
+        direction.y = 0f;
 
         if (direction.sqrMagnitude > 0.01f)
         {
@@ -187,11 +267,11 @@ public class TankEnemy : MonoBehaviour
     }
     public void OnDeath()
     {
-        if (targetBuilding && hasAttackPoint)
-        {
-            targetBuilding.ReleaseAttackPoint(assignedAttackPoint);
-        }
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
-
+    bool PathIsBlocked()
+    {
+        return agent.pathStatus == NavMeshPathStatus.PathInvalid ||
+               agent.pathStatus == NavMeshPathStatus.PathPartial;
+    }
 }

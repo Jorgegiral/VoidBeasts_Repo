@@ -31,7 +31,8 @@ public class DayNightSystem : MonoBehaviour
     float lightTransitionDuration = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
-    private bool collected;
+    //Jorge:
+    bool enemies = false;
     //provisional
     [SerializeField]public  GameObject selection;
 
@@ -59,7 +60,7 @@ public class DayNightSystem : MonoBehaviour
 
     private void UpdateDayNightUI()
     {
-        string key = isDay ? "A008" : "A009";
+        string key = isDay ? "Day" : "Night";
         var localizedString = LocalizationSettings.StringDatabase.GetLocalizedString("Tabla1", key);
 
         int number = isDay ? dayNumber : nightNumber;
@@ -70,6 +71,14 @@ public class DayNightSystem : MonoBehaviour
     {
         if (isNight)
         {
+            if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.KillEnemies)
+            {
+                if (!enemies)
+                {
+                    enemies = true;
+                    TutorialManager.instance.CompleteStep();
+                }
+            }
             isDay = true;
             isNight = false;
             nightNumber++;
@@ -84,13 +93,13 @@ public class DayNightSystem : MonoBehaviour
             dayButton[0].gameObject.SetActive(true);
             dayButton[1].gameObject.SetActive(true);
             dayButton[2].gameObject.SetActive(true);
+            dayButton[3].gameObject.SetActive(true);
             DayNightIcons[0].sprite = dayNightSprites[3];
             DayNightIcons[1].sprite = dayNightSprites[2];
 
             foreach (ParcelaOrder p in parcelasOrder)
             {
                 p.PlayRecolect();
-                collected = true;
             }
             foreach (Parcela p in parcelas)
             {
@@ -98,18 +107,13 @@ public class DayNightSystem : MonoBehaviour
                 p.DayCountdown();  
                 p.UnPlanted();                 
             }
-            if (!collected)
-            {
-                dailyPowerUPPopUp();
-            }
         }
         MusicManager.instance.PlayDaySong();
         UpdateDayNightUI();
-        collected = false;
     }
     public void ToNight()
     {
-        if (isDay)
+        if (isDay && PlayerStats.instance.isActionMode)
         {
             isDay = false;
             isNight = true;
@@ -123,6 +127,7 @@ public class DayNightSystem : MonoBehaviour
             dayButton[0].gameObject.SetActive(false);
             dayButton[1].gameObject.SetActive(false);
             dayButton[2].gameObject.SetActive(false);
+            dayButton[3].gameObject.SetActive(false);
             DayNightIcons[0].sprite = dayNightSprites[1];
             DayNightIcons[1].sprite = dayNightSprites[0];
             foreach (Parcela p in parcelas)
@@ -164,6 +169,9 @@ public class DayNightSystem : MonoBehaviour
         float startTemp = globalLight.colorTemperature;
         float elapsed = 0f;
 
+        var previousShadowMode = globalLight.shadows;
+        globalLight.shadows = LightShadows.None; 
+
         while (elapsed < lightTransitionDuration)
         {
             elapsed += Time.deltaTime;
@@ -173,6 +181,7 @@ public class DayNightSystem : MonoBehaviour
         }
 
         globalLight.colorTemperature = targetTemperature;
+        globalLight.shadows = previousShadowMode; 
     }
 }
 

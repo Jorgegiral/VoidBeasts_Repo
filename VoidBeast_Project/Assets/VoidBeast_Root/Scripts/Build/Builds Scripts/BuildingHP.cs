@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class BuildingHP : MonoBehaviour
@@ -7,14 +8,12 @@ public class BuildingHP : MonoBehaviour
     [SerializeField] float buildHP;
     [SerializeField] float currentBuildHP;
     [SerializeField] Canvas deathCanvas;
-    public int numberOfAttackPoints = 12;     
     public float attackRadius = 3f;
     [SerializeField] Image fillImage;
     [SerializeField] public GameObject imageHP;
-    private List<Vector3> attackPoints = new List<Vector3>();
-    private List<bool> attackPointOccupied = new List<bool>();
     [SerializeField] AudioClip deathSound;
-
+    private int enemyCounter = 0;
+    [SerializeField] GameObject vfxRepair;
     Renderer rend; //jorge
     MaterialPropertyBlock mpb;
     Renderer[] renderers;
@@ -28,7 +27,6 @@ public class BuildingHP : MonoBehaviour
 
         deathCanvas.gameObject.SetActive(false);
         imageHP.SetActive(false);
-        GenerateAttackPoints();
         currentBuildHP = buildHP;
 
     }
@@ -39,6 +37,8 @@ public class BuildingHP : MonoBehaviour
     }
     public void NewDayHealth()
     {
+        GameObject vfxRepairobj = Instantiate(vfxRepair, transform.position, transform.rotation);
+        Destroy(vfxRepairobj,5f);
         currentBuildHP = buildHP;
         UpdateHP();
     }
@@ -56,60 +56,36 @@ public class BuildingHP : MonoBehaviour
         }
 
     }
-    void GenerateAttackPoints()
+    public Vector3 GetAttackPointInfinite(Vector3 enemyPosition)
     {
-        attackPoints.Clear();
-        attackPointOccupied.Clear();
+        enemyCounter++;
 
-        for (int i = 0; i < numberOfAttackPoints; i++)
-        {
-            float angle = i * Mathf.PI * 2f / numberOfAttackPoints;
-            Vector3 point = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * attackRadius;
-            point += transform.position;
-            attackPoints.Add(point);
-            attackPointOccupied.Add(false);
-        }
-    }
-    public bool GetFreeAttackPoint(Vector3 enemyPos, out Vector3 point)
-    {
-        float minDist = float.MaxValue;
-        int closestIndex = -1;
+        Vector3 dir = (enemyPosition - transform.position);
+        dir.y = 0f;
 
-        for (int i = 0; i < attackPoints.Count; i++)
-        {
-            if (!attackPointOccupied[i])
-            {
-                float dist = Vector3.Distance(enemyPos, attackPoints[i]);
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    closestIndex = i;
-                }
-            }
-        }
+        float baseAngle = Mathf.Atan2(dir.z, dir.x);
 
-        if (closestIndex >= 0)
-        {
-            attackPointOccupied[closestIndex] = true;
-            point = attackPoints[closestIndex];
-            return true;
-        }
+        float angleStep = 0.5f;
 
-        point = Vector3.zero;
-        return false;
+        int side = enemyCounter % 2 == 0 ? 1 : -1;
+        float ringOffset = (enemyCounter / 2) * angleStep;
+
+        float finalAngle = baseAngle + side * ringOffset;
+
+        Vector3 offset = new Vector3(
+            Mathf.Cos(finalAngle),
+            0f,
+            Mathf.Sin(finalAngle)
+        ) * attackRadius;
+
+        Vector3 worldPoint = transform.position + offset;
+
+        if (NavMesh.SamplePosition(worldPoint, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
+            return hit.position;
+
+        return worldPoint;
     }
 
-    public void ReleaseAttackPoint(Vector3 position)
-    {
-        for (int i = 0; i < attackPoints.Count; i++)
-        {
-            if (Vector3.Distance(attackPoints[i], position) < 0.5f)
-            {
-                attackPointOccupied[i] = false;
-                break;
-            }
-        }
-    }
     public void UpdateHP()
     {
         float fill = currentBuildHP / buildHP;

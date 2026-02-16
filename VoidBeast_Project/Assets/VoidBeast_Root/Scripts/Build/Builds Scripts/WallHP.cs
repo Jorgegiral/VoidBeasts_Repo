@@ -5,8 +5,10 @@ public class WallHP : MonoBehaviour
     [Header("HP Options")]
     [SerializeField] float maxHealth;
     [SerializeField] float currentHealth;
-
+    [SerializeField] GameObject VFXUpgrade;
+    [SerializeField] GameObject VFXDestroy;
     Renderer rend; //jorge
+    public AudioClip destructionWall;
     MaterialPropertyBlock mpb;
     Renderer[] renderers;
     [SerializeField] string damagePropertyName = "_DamageAmount";
@@ -25,8 +27,32 @@ public class WallHP : MonoBehaviour
         UpdateHPWalls();
         if (currentHealth < 0)
         {
-            Destroy(gameObject);
+            Building area = GetComponent<Building>();
+            if (area != null)
+            {
+                area.Destroyed();
+                UpgradeManager.instance.wallAvailable++;
+                UpgradeManager.instance.wallBought++;
+                GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
+
+                Destroy(destroyvfx, 3f);
+                UpgradeManager.instance.UnRegisterWall(gameObject);
+                Destroy(gameObject);
+            }
+        }
+
+    }
+    public void UpgradeDamage(float upgradeDamage)
+    {
+        currentHealth -= upgradeDamage;
+        UpdateHPWalls();
+        if (currentHealth < 0)
+        {
             UpgradeManager.instance.UnRegisterWall(gameObject);
+            GameObject upgradevfx = Instantiate(VFXUpgrade, transform.position, transform.rotation);
+            Settings.instance.PlaySoundFXClip(destructionWall, transform, 1f);
+            Destroy(upgradevfx, 1f);
+            Destroy(gameObject);
         }
     }
     public void UpdateHPWalls()

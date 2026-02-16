@@ -31,7 +31,8 @@ public class BasicEnemy : MonoBehaviour
     private bool hasAttackPoint = false;
     private Animator anim; //Jorge
     private BuildingHP targetBuilding;
-
+    private bool isAttackingWall = false;
+    private WallHP currentWall;
 
     private void Awake()
     {
@@ -44,10 +45,17 @@ public class BasicEnemy : MonoBehaviour
     void Update()
     {
 
-        UpdateEnemyTarget(); 
-        MoveEnemyBuild();
+        UpdateEnemyTarget();
+        CheckWallInFront();
+        if (isAttackingWall)
+        {
+            StartAttackingWall();
+        }
+        else
+        {
+            MoveEnemyBuild();
+        }
         UpdateAttackCooldown();
-
     }
     void UpdateEnemyTarget()
     {
@@ -79,6 +87,7 @@ public class BasicEnemy : MonoBehaviour
             if (target == null || target != mainBuilding.transform)
             {
                 hasAttackPoint = false;
+                targetBuilding = null;
             }
             target = mainBuilding.transform;
             targetBuilding = mainBuilding.GetComponent<BuildingHP>();
@@ -93,31 +102,46 @@ public class BasicEnemy : MonoBehaviour
         if (target.name == "MainBuild")
         {
             BuildingHP building = target.GetComponent<BuildingHP>();
+
             if (!hasAttackPoint && building)
             {
-                if (building.GetFreeAttackPoint(transform.position, out Vector3 newPoint))
-                {
-                    if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                        assignedAttackPoint = hit.position;
-                    else
-                        assignedAttackPoint = newPoint;
-                    targetBuilding = building;
-                    hasAttackPoint = true;
-                }
+                Vector3 newPoint = building.GetAttackPointInfinite(transform.position);
+
+                if (NavMesh.SamplePosition(newPoint, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+                    assignedAttackPoint = hit.position;
                 else
-                {
-                    assignedAttackPoint = target.position;
-                }
+                    assignedAttackPoint = newPoint;
+
+                targetBuilding = building;
+                hasAttackPoint = true;
             }
+            if (PathIsBlocked())
+            {
+                if (!isAttackingWall)
+                {
+                    MoveForwardBlindly();
+                }
+                return;
+            }
+
         }
         else
         {
             assignedAttackPoint = target.position; // Planta
+            if (PathIsBlocked())
+            {
+                if (!isAttackingWall)
+                {
+                    MoveForwardBlindly();
+                }
+                return;
+            }
+
         }
 
         // Movimiento
         float dist = Vector3.Distance(transform.position, assignedAttackPoint);
-        if (dist > 2.0f)
+        if (dist > 1.5f)
         {
             Settings.instance.PlayUniqueSoundSFXClip(moveEnemySound, transform, 1f);
             agent.isStopped = false;
@@ -132,7 +156,64 @@ public class BasicEnemy : MonoBehaviour
         }
     }
 
+    void MoveForwardBlindly()
+    {
+        agent.isStopped = true; 
 
+        Vector3 dir = (assignedAttackPoint - transform.position).normalized;
+        dir.y = 0f;
+
+        transform.position += dir * agent.speed * Time.deltaTime;
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(dir),
+            Time.deltaTime * 5f
+        );
+
+    }
+    void CheckWallInFront()
+    {
+        if (isAttackingWall) return;
+
+        Vector3 origin = attackPoint.position;
+        RaycastHit hit;
+
+        if (Physics.Raycast(origin, transform.forward, out hit, attackRange, attackLayer))
+        {
+            WallHP wall = hit.collider.GetComponentInParent<WallHP>();
+            if (wall != null)
+            {
+                currentWall = wall;
+                isAttackingWall = true;
+                agent.isStopped = true;
+            }
+        }
+    }
+
+    void StartAttackingWall()
+    {
+        if (!isAttackingWall) return;
+        if (currentWall == null)
+        {
+            isAttackingWall = false;
+            agent.isStopped = false;
+            return;
+        }
+        agent.isStopped = true;
+        anim.SetBool("isAttacking", true);
+
+        if (!canAttack) return;
+
+        Settings.instance.PlaySoundFXClip(attackEnemySound, transform, 1f);
+
+        if (currentWall != null)
+        {
+            currentWall.TakeDamage(enemyDamage);
+        }
+
+        canAttack = false;
+        attackCD = timeBetweenAttacks;
+    }
 
     void AttackTarget()
     {
@@ -187,11 +268,12 @@ public class BasicEnemy : MonoBehaviour
     }
     public void OnDeath()
     {
-        if (targetBuilding && hasAttackPoint)
-        {
-            targetBuilding.ReleaseAttackPoint(assignedAttackPoint);
-        }
         Destroy(gameObject); 
+    }
+    bool PathIsBlocked()
+    {
+        return agent.pathStatus == NavMeshPathStatus.PathInvalid ||
+               agent.pathStatus == NavMeshPathStatus.PathPartial;
     }
 
 }

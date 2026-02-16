@@ -210,15 +210,16 @@ public class GridBuilding : MonoBehaviour
     }
     public void UnTakeArea(BoundsInt area)
     {
+
+        SetTilesBlock(area, TileType.Empty, tempTilemap);
+        SetTilesBlock(area, TileType.White, mainTilemap);
+        buildingTemp = null;
+        isWall = false;
         if (isWall)
         {
             WallBehaviour wall = buildingTemp.GetComponent<WallBehaviour>();
             wall.ThrowRaycast();
         }
-        SetTilesBlock(area, TileType.Empty, tempTilemap);
-        SetTilesBlock(area, TileType.White, mainTilemap);
-        buildingTemp = null;
-        isWall = false;
     }
     private void FollowMouse()
     {
@@ -243,10 +244,8 @@ public class GridBuilding : MonoBehaviour
     }
     public void LockPositionBuildAction(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
         if (!buildingTemp) return;
         if (buildingTemp.Placed) return;
-
         if (buildingTemp.CanBePlaced())
         {
             positionLocked = true;
@@ -275,9 +274,13 @@ public class GridBuilding : MonoBehaviour
 
         if (buildingTemp.CanBePlaced())
         {
+            if (isBuild) UpgradeManager.instance.cropsBought++;
+            if (isTower) UpgradeManager.instance.towerBought++;
+            if (isWall) UpgradeManager.instance.wallBought++;
             buildingTemp.Place();
             positionLocked = false;
             BuildConfirmUI.instance.Hide();
+
 
             //Jorge:
 
@@ -286,7 +289,7 @@ public class GridBuilding : MonoBehaviour
 
                 if (!parcela)
                 {
-                    if (TutorialManager.instance.step == 3 &&
+                    if (TutorialManager.instance.currentStep == TutorialManager.Step.PlacePlot &&
                         currentBuildType.type == TypeBuild.BuildType.Build)
                     {
                         TutorialManager.instance.CompleteStep();

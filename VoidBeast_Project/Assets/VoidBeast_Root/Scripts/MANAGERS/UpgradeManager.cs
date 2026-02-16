@@ -15,12 +15,16 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text mainBuildText;
     public TMP_Text wallText;
     public TMP_Text towerText;
+    public TMP_Text upgradesText;
 
     public GameObject bombUI;
     public GameObject RayUI;
     public GameObject MineUI;
     public GameObject SpinUI;
-
+    public GameObject buildBlock;
+    public GameObject towerBlock;
+    public GameObject wallBlock;
+    [SerializeField] GameObject buyDailyPowerUp;
     [Header("Skill References")]
     public GameObject lockMine;
     public GameObject lockGun;
@@ -31,21 +35,27 @@ public class UpgradeManager : MonoBehaviour
     public GameObject lockRay;
     private int availablePoints = 3;
     public TMP_Text availablePointsText;
-
-
+    [SerializeField] GameObject upgradeVFX;
+    [SerializeField] Transform mbuild;
     [Header("Stats References")]
     public int mainBuildingLevel = 1;
     public int wallLevel = 0;
     public int towerLevel = 0;
-    public int wallAvailable = 10;
+    public int wallAvailable = 8;
     public int towerAvailable = 0;
     public int cropAvailable = 1;
+    public int cropsBought = 0;
+    public int towerBought = 0;
+    public int wallBought = 0;
+    public int maxTower = 0;
+    public int maxWall = 8;
+    public int maxCrop = 1;
     public TypeBuild wallBuild;
     public TypeBuild towerBuild;
     public List<GameObject> walls = new List<GameObject>();
     public List<GameObject> towers = new List<GameObject>();
-    private int maxTowerLevel = 3;
-    private int maxWallLevel = 3;
+    private int maxTowerLevel = 2;
+    private int maxWallLevel = 2;
     public bool isGunUnlocked;
     public bool isSpinUnlocked;
     public bool isMineUnlocked;
@@ -56,7 +66,9 @@ public class UpgradeManager : MonoBehaviour
     private int mainBuildvalue = 250;
     private int wallBuildvalue = 500;
     private int towerBuildvalue = 500;
-
+    public int upgradeValue = 100;
+    public bool freeUpgrade;
+   
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -67,67 +79,80 @@ public class UpgradeManager : MonoBehaviour
         isMineUnlocked = false;
         isBombUnlocked = false;
         isRayUnlocked = false;
-}
+    }
 
-public void UpgradeWall(int precio)
+public void UpgradeWall()
     {
         if (wallLevel >= maxWallLevel) return;
-        if (precio > MoneySystem.instance.money) return;
-        if (walls.Count <= 0) return;
-            MoneySystem.instance.money -= precio;
+        if (wallBuildvalue > MoneySystem.instance.money) return;
+            MoneySystem.instance.BuyMoney(wallBuildvalue);
             wallLevel++;
             wallBuild.Upgrade(wallLevel);
             wallBuildvalue += 500;
             UpdateValuesBuildings();
-        MoneySystem.instance.UpdateMoneyText();
-            SwapWallModelsOnUpgrade();
+            MoneySystem.instance.UpdateMoneyText();
+         if(walls.Count>0)   SwapWallModelsOnUpgrade();
+        if (wallLevel == maxWallLevel) wallBlock.SetActive(true);
 
     }
     public void UpgradeTower()
     {
         if (towerLevel >= maxTowerLevel) return;
         if (towerBuildvalue > MoneySystem.instance.money) return;
-            MoneySystem.instance.money -= towerBuildvalue;
+            MoneySystem.instance.BuyMoney(towerBuildvalue);
             towerLevel++;
             towerBuild.Upgrade(towerLevel);
             towerBuildvalue += 500;
         UpdateValuesBuildings();
         MoneySystem.instance.UpdateMoneyText();
         if (towers.Count > 0) SwapTowerModelsOnUpgrade();
+        if(towerLevel == maxTowerLevel) towerBlock.SetActive(true);
 
         
     }
-    public void UpgradeMainBuild(int precio)
+    public void UpgradeMainBuild()
     {
-        if (precio <= MoneySystem.instance.money )
-        {
-            MoneySystem.instance.money -= precio;
+        if (mainBuildingLevel == 6) return;
+        if (mainBuildvalue > MoneySystem.instance.money ) return;
+        else { 
+        
+            MoneySystem.instance.BuyMoney(mainBuildvalue);
             mainBuildingLevel++;
+            GameObject upgradeVFXobj = Instantiate(upgradeVFX, mbuild);
+            Destroy(upgradeVFXobj,3f);
             switch (mainBuildingLevel)
             {
                 case 2:
-                    ExpandBuildArea(2, 2);
+                    ExpandBuildArea(1, 1);
                     updateModelMainBuild[1].SetActive(true);
                     wallAvailable += 5;
+                    maxWall += 5;
                     cropAvailable += 1;
-                    wallBuildvalue += 300;
+                    maxCrop += 1;
+                    towerAvailable += 1;
+                    maxTower += 1;
+                    mainBuildvalue += 250;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 3:
                     ExpandBuildArea(2, 2);
                     updateModelMainBuild[2].SetActive(true);
-                    towerAvailable += 1;
-                    wallBuildvalue += 400;
+                    mainBuildvalue += 400;
+                    wallAvailable += 2;
+                    maxWall += 2;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 4:
-                    ExpandBuildArea(4, 4);
+                    ExpandBuildArea(1, 1);
                     updateModelMainBuild[3].SetActive(true);
                     updateModelMainBuild[1].SetActive(false);
                     wallAvailable += 5;
-                    wallBuildvalue += 500;
+                    maxWall += 5;
+                    towerAvailable += 1;
+                    maxTower += 1;
+                    mainBuildvalue += 500;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
@@ -135,20 +160,27 @@ public void UpgradeWall(int precio)
                     ExpandBuildArea(2, 2);
                     updateModelMainBuild[4].SetActive(true);
                     cropAvailable += 1;
+                    maxCrop += 1;
                     wallAvailable += 5;
-                    wallBuildvalue += 500;
+                    maxWall += 5;
+                    mainBuildvalue += 500;
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
                     break;
                 case 6:
-                    ExpandBuildArea(4, 4);
+                    ExpandBuildArea(2, 2);
                     updateModelMainBuild[5].SetActive(true);
                     updateModelMainBuild[4].SetActive(false);
-                    wallAvailable += 10;
-                    towerAvailable += 1;
-                    wallBuildvalue += 1000;
+                    wallAvailable += 18;
+                    maxWall += 18;
+                    towerAvailable += 2;
+                    maxTower += 2;
+                    cropAvailable += 1;
+                    maxCrop += 1;
+                    buildBlock.SetActive(true);
                     UpdateValuesBuildings();
                     MoneySystem.instance.UpdateMoneyText();
+                    buyDailyPowerUp.SetActive(true);
                     break;
                 default: break;
             }
@@ -157,6 +189,16 @@ public void UpgradeWall(int precio)
     }
     public void UnlockGun(int precio)
     {
+        if (freeUpgrade)
+        {
+            isBombUnlocked = true;
+            bombUI.SetActive(true);
+            lockBomb.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        }
+        else
         if (precio <= MoneySystem.instance.money && availablePoints > 0)
         {
             MoneySystem.instance.money -= precio;
@@ -170,7 +212,17 @@ public void UpgradeWall(int precio)
     }
     public void UnlockRay(int precio)
     {
-        if (precio <= MoneySystem.instance.money && availablePoints > 0)
+        if (freeUpgrade)
+        {
+            isBombUnlocked = true;
+            bombUI.SetActive(true);
+            lockBomb.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        }
+        else
+        if (precio <= MoneySystem.instance.money && availablePoints > 0 )
         {
             MoneySystem.instance.money -= precio;
             isRayUnlocked = true;
@@ -183,6 +235,16 @@ public void UpgradeWall(int precio)
     }
     public void UnlockMine(int precio)
     {
+        if (freeUpgrade)
+        {
+            isBombUnlocked = true;
+            bombUI.SetActive(true);
+            lockBomb.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        }
+        else
         if (precio <= MoneySystem.instance.money && availablePoints > 0)
         {
             MoneySystem.instance.money -= precio;
@@ -197,6 +259,15 @@ public void UpgradeWall(int precio)
     }
     public void UnlockBomb(int precio)
     {
+        if (freeUpgrade)
+        {
+            isBombUnlocked = true;
+            bombUI.SetActive(true);
+            lockBomb.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        } else
         if (precio <= MoneySystem.instance.money && availablePoints > 0)
         {
             MoneySystem.instance.money -= precio;
@@ -210,6 +281,16 @@ public void UpgradeWall(int precio)
     }
     public void UnlockSpin(int precio)
     {
+        if (freeUpgrade)
+        {
+            isSpinUnlocked = true;
+            SpinUI.SetActive(true);
+            lockSpin.SetActive(false);
+            availablePoints--;
+            UpdateSkillValues();
+            freeUpgrade = false;
+        }
+        else 
         if (precio <= MoneySystem.instance.money && availablePoints > 0)
         {
             MoneySystem.instance.money -= precio;
@@ -228,12 +309,18 @@ public void UpgradeWall(int precio)
 
         foreach (var wall in walls.ToList())
         {
+            if (wall == null) continue;
+            UnRegisterWall(wall);
             Vector3 position = wall.transform.position;
             Quaternion rotation = wall.transform.rotation;
             GameObject newWall = Instantiate(wallBuild.build, position, rotation);
+            Building oldWallBuild = wall.GetComponent<Building>();
+            Building newWallBuild = newWall.GetComponent<Building>();
+            newWallBuild.area.position = oldWallBuild.area.position;
             newWalls.Add(newWall);
             WallHP wallHP = wall.GetComponent<WallHP>();
-            wallHP.TakeDamage(100000);
+            if (wallHP == null) continue;
+            wallHP.UpgradeDamage(100000);
         }
         walls = newWalls;
         AdaptModels();
@@ -255,7 +342,7 @@ public void UpgradeWall(int precio)
             Quaternion rotation = towers[i].transform.rotation;
             Instantiate(towerBuild.build, position, rotation);
             TowerHP towerHP = towers[i].GetComponent<TowerHP>();
-            towerHP.TakeDamage(100000);
+            towerHP.UpgradeDamage(100000);
             
         }
     }
@@ -278,12 +365,19 @@ public void UpgradeWall(int precio)
         }
         }
     }
-
+    public void TakeUpgrade()
+    {
+        availablePoints++;
+    }
     private void UpdateValuesBuildings()
     {
         mainBuildText.text = mainBuildvalue.ToString();
         towerText.text = towerBuildvalue.ToString();
         wallText.text = wallBuildvalue.ToString();
+    }
+    public void UpdateValuePowerUp()
+    {
+        upgradesText.text = upgradeValue.ToString();
     }
     private void UpdateSkillValues()
     {

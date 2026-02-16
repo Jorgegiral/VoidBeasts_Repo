@@ -16,6 +16,7 @@ public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [Header("Build Refs")]
     [SerializeField] TMP_Text infoText;
     [SerializeField] TypeBuild buildingToWatch;
+    [SerializeField] TMP_Text available;
 
 
 
@@ -31,13 +32,28 @@ public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         else
         {
-            nameText.text = buildingToWatch.nameBuild;
+            nameText.text = buildingToWatch.nameBuild.GetLocalizedString();
             costText.text = buildingToWatch.precio.ToString();
-            infoText.text = buildingToWatch.info;
-
+            infoText.text = buildingToWatch.info.GetLocalizedString();
+            UpdateAvailable();
             //build
         }
 
+    }
+    private void UpdateAvailable()
+    {
+        if(buildingToWatch.type == TypeBuild.BuildType.Wall)
+        {
+            available.text = UpgradeManager.instance.wallBought +"/"+ UpgradeManager.instance.maxWall;
+        }
+        if (buildingToWatch.type == TypeBuild.BuildType.Tower)
+        {
+            available.text = UpgradeManager.instance.towerBought + "/" + UpgradeManager.instance.maxTower;
+        }
+        if (buildingToWatch.type == TypeBuild.BuildType.Build)
+        {
+            available.text = UpgradeManager.instance.cropsBought + "/" + UpgradeManager.instance.maxCrop;
+        }
     }
     public void OnPointerEnter(PointerEventData eventData)
     {

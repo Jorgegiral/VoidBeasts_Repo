@@ -39,8 +39,19 @@ public class Building : MonoBehaviour
     }
     public void Destroyed()
     {
+        SetArea(area);
         GridBuilding.instance.UnTakeArea(occupiedArea);
-
+        UpgradeManager.instance.wallAvailable++;
+        UpgradeManager.instance.wallBought--;
+        gameObject.SetActive(false);
+    }
+    public void DestroyedTower()
+    {
+        SetArea(area);
+        GridBuilding.instance.UnTakeArea(occupiedArea);
+        UpgradeManager.instance.towerAvailable++;
+        UpgradeManager.instance.towerBought--;
+        gameObject.SetActive(false);
     }
     IEnumerator debrisCD()
     {

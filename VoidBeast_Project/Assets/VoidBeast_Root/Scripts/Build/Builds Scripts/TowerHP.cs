@@ -6,12 +6,16 @@ public class TowerHP : MonoBehaviour
     [Header("HP Options")]
     [SerializeField] float maxHealth;
     [SerializeField] float currentHealth;
+    [SerializeField] GameObject VFXUpgrade;
+    [SerializeField] GameObject VFXDestroy;
+
 
     Renderer rend; //jorge
     MaterialPropertyBlock mpb;
     Renderer[] renderers;
     [SerializeField] string damagePropertyName = "_DamageAmount";
     [SerializeField] string intensityPropertyName = "_IntensityStains";
+    [SerializeField] AudioClip deathSound;
 
     void Start()
     {
@@ -26,12 +30,33 @@ public class TowerHP : MonoBehaviour
         currentHealth -= enemyDamage;
         if (currentHealth < 0)
         {
-            Destroy(gameObject);
-            UpgradeManager.instance.UnRegisterTower(gameObject);
+            Building area = GetComponent<Building>();
+            if (area != null)
+            {
+                UpgradeManager.instance.UnRegisterTower(gameObject);
+                area.Destroyed();
+                GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
+                UpgradeManager.instance.towerAvailable++;
+                UpgradeManager.instance.towerBought++;
+                Settings.instance.PlayUniqueSoundSFXClip(deathSound, transform, 3f);
+                Destroy(destroyvfx, 3f);
+                Destroy(gameObject);
+            }
         }
         UpdateHPTurrets();
     }
+    public void UpgradeDamage(float upgradeDamage)
+    {
+        currentHealth -= upgradeDamage;
+        if (currentHealth < 0)
+        {
+            UpgradeManager.instance.UnRegisterTower(gameObject);
+            GameObject upgradevfx = Instantiate(VFXUpgrade, transform.position, transform.rotation);
+            Destroy(upgradevfx, 1f);
+            Destroy(gameObject);
+        }
 
+    }
     IEnumerator RegisterCooldown()
     {
         yield return new WaitForSeconds(1f);

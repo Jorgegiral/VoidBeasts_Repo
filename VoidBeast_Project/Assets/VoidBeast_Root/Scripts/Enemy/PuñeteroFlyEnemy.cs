@@ -22,7 +22,6 @@ public class PuñeteroFlyEnemy : MonoBehaviour
 
     [SerializeField] AudioClip attackEnemySound;
     [SerializeField] AudioClip moveEnemySound;
-
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -50,7 +49,7 @@ public class PuñeteroFlyEnemy : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, target.position);
 
-        if (distance > 3f)
+        if (distance > 2.0f)
         {
             Settings.instance.PlayUniqueSoundSFXClip(moveEnemySound, transform, 1f);
 

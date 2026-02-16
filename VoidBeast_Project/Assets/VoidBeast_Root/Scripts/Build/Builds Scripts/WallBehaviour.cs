@@ -37,27 +37,23 @@ public class WallBehaviour : MonoBehaviour
         {
             northRay = true;
             hittedWalls.Add(hit.collider.gameObject);
-            Debug.Log("N Parent");
 
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.right, out hit, rayRange, wallLayer))
         {
             rightRay = true;
             hittedWalls.Add(hit.collider.gameObject);
-            Debug.Log("R Parent");
 
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.left, out hit, rayRange, wallLayer))
         {
             leftRay = true;
             hittedWalls.Add(hit.collider.gameObject);
-            Debug.Log("L Parent");
         }
         if (Physics.Raycast(rayOrigin.position, Vector3.back, out hit, rayRange, wallLayer))
         {
             southRay = true;
             hittedWalls.Add(hit.collider.gameObject);
-            Debug.Log("S Parent");
 
         }
         ChoseModel();
@@ -74,26 +70,22 @@ public class WallBehaviour : MonoBehaviour
         if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out hit, rayRange, wallLayer))
         {
             northRay = true;
-            Debug.Log("N neigh");
             
 
         }
         if (Physics.Raycast(rayOrigin.position, rayOrigin.right, out hit, rayRange, wallLayer))
         {
             rightRay = true;
-            Debug.Log("R neigh");
 
         }
         if (Physics.Raycast(rayOrigin.position, -rayOrigin.right, out hit, rayRange, wallLayer))
         {
             leftRay = true;
-            Debug.Log("L neigh");
 
         }
         if (Physics.Raycast(rayOrigin.position, -rayOrigin.forward, out hit, rayRange, wallLayer))
         {
             southRay = true;
-            Debug.Log("S neigh");
 
         }
         ChoseModel();

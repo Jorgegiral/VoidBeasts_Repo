@@ -5,9 +5,18 @@ public class Selection : MonoBehaviour
     [SerializeField] GameObject selection;
     [SerializeField] bool layerPlants;
 
+    private void Update()
+    {
+        if (DayNightSystem.Instance.isNight)
+        {
+            selection.SetActive(false);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (PlayerStats.instance.isActionMode)
+        { 
+        if (other.CompareTag("Player") && DayNightSystem.Instance.isDay)
         {
             selection.SetActive(true);
             PlayerStats.instance.playerisInside = true;
@@ -21,9 +30,11 @@ public class Selection : MonoBehaviour
             }
         }
     }
-    private void OnTriggerExit(Collider other)
+
+}
+private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && DayNightSystem.Instance.isDay)
         {
             selection.SetActive(false);
             PlayerStats.instance.playerisInside = false;

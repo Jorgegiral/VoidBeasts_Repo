@@ -1,27 +1,64 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using static TutorialManager;
 
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager instance;
     public Dialogue dialogue;
-    public int step = 0;
+    //public int step = 0;
+    public Step currentStep = Step.Movement;
+    public bool IsAnyStep(params Step[] steps)
+    {
+        foreach (Step step in steps)
+        {
+            if (currentStep == step)
+                return true;
+        }
+        return false;
+    }
+    public enum Step
+    {
+        Movement = 0,
+        OpenBuildMenu = 1,
+        BuyPlot = 2,
+        PlacePlot = 3,
+        CloseBuild = 4,
+        Interact = 5,
+        Notification = 6,
+        PlantingExplanation = 7,
+        Plant = 8,
+        ExitPlanting = 9,
+        Night = 10,
+        KillEnemies = 11,
+        Collection = 12,
+        Upgrade = 13,
+        Money = 14,
+        Upgrades = 15,
+        Final = 16
+    }
     [SerializeField] private GameObject arrow;
     [SerializeField] private GameObject arrow1;
     [SerializeField] private GameObject arrow2;
     [SerializeField] private GameObject arrow3;
     [SerializeField] private GameObject arrow4;
+    [SerializeField] private GameObject arrow5;
+    [SerializeField] private GameObject arrow6;
     [SerializeField] private GameObject bloqueo;
     [SerializeField] private GameObject bloqueo2;
+    [SerializeField] private GameObject bloqueoN;
+    [SerializeField] private GameObject bloqueoBotones;
     [SerializeField] private GameObject close;
     [SerializeField] private GameObject black;
     [SerializeField] private GameObject black2;
     [SerializeField] private GameObject dialoguetext;
     [SerializeField] private GameObject buildBlock;
     [SerializeField] private GameObject seedBlock;
+    [SerializeField] private GameObject seedUnblock;
     [SerializeField] private RectTransform seedmode;
     [SerializeField] private RectTransform buildmode;
+    [SerializeField] private RectTransform money;
     private RectTransform rectTransform;
     private RectTransform blackR;
     private void Awake()
@@ -37,140 +74,150 @@ public class TutorialManager : MonoBehaviour
     }
     void StartStep()
     {
-        switch (step)
+        switch (currentStep)
         {
-            case 0: // moverse
+            case Step.Movement: // moverse
+                dialogue.WaitForAction();
+                bloqueoN.gameObject.SetActive(true);
+                bloqueoBotones.gameObject.SetActive(true);
+                break;
+
+            case Step.OpenBuildMenu: // TAB construcción
+                arrow6.SetActive(true);
                 dialogue.WaitForAction();
                 break;
 
-            case 1: // TAB construcción
-                dialogue.WaitForAction();
-                break;
-
-            case 2: //Comprar parcela
+            case Step.BuyPlot: //Comprar parcela
                 dialogue.WaitForAction();
                 buildmode.SetAsLastSibling();
                 black2.SetActive(true);
                 buildBlock.SetActive(true);
-                rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
                 bloqueo2.SetActive(true);
                 arrow.SetActive(true);
+                arrow6.SetActive(false);
                 break;
 
-            case 3: // Poner parcela
+            case Step.PlacePlot: // Poner parcela
                 dialogue.WaitForAction();
+                buildBlock.SetActive(false);
                 black2.SetActive(false);
                 arrow.SetActive(false);
                 break;
 
-            case 4: // Cancelar
-                dialogue.WaitForAction();
-                buildmode.SetSiblingIndex(4);
-                black2.SetActive(true);
-                break;
-
-            case 5: // Tab otra vez
+            case Step.CloseBuild: // Tab otra vez
                 dialogue.WaitForAction();
                 black2.SetActive(false);
                 break;
 
-            case 6: //  Interactuar
+            case Step.Interact: //  Interactuar
                 dialogue.WaitForAction();
-                buildBlock.SetActive(false);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
-            case 7: // Notificacion
+            case Step.Notification: // Notificacion
                 dialogue.WaitForAction();
                 black.SetActive(true);
-                blackR.SetSiblingIndex(5);
+                blackR.SetSiblingIndex(4);
+                bloqueo.SetActive(true);
                 rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
                 arrow2.SetActive(true);
                 break;
 
-            case 8: //explicación plantar
+            case Step.PlantingExplanation: //explicación plantar
                 dialogue.WaitForAction();
                 seedmode.SetAsLastSibling();
                 seedBlock.SetActive(true);
                 black.SetActive(false);
                 black2.SetActive(true);
                 arrow2.SetActive(false);
-                bloqueo.SetActive(true);
                 break;
 
-            case 9: // Plantar
+            case Step.Plant: // Plantar
                 dialogue.WaitForAction();
-                seedBlock.SetActive(false);
-                arrow1.SetActive(true);
                 bloqueo.SetActive(false);
+                bloqueo2.SetActive(false);
+                seedUnblock.SetActive(false);
+                arrow1.SetActive(true);
                 break;
 
-            case 10: // Salir de plantar
+            case Step.ExitPlanting: // Salir de plantar
                 dialogue.WaitForAction();
                 black2.SetActive(false);
+                seedBlock.SetActive(false);
                 seedmode.SetSiblingIndex(3);
                 arrow1.SetActive(false);
                 break;
 
-            case 11: // Banco
+            case Step.Night: // Noche
                 dialogue.WaitForAction();
-                bloqueo2.SetActive(false);
+                bloqueoN.gameObject.SetActive(false);
                 arrow3.SetActive(true);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
-            case 12: // Mata los enemigos
+            case Step.KillEnemies: // Mata los enemigos
                 dialogue.WaitForAction();
                 arrow3.SetActive(false);
+                rectTransform.offsetMin = new Vector2(800f, rectTransform.offsetMin.y);
                 break;
 
-            case 13: // Mejora
-                dialogue.WaitForAction();
-                close.SetActive(false);
-                rectTransform.offsetMin = new Vector2(596f, rectTransform.offsetMin.y);
-                break;
-
-            case 14: // recoleccion
+            case Step.Collection: // recoleccion
                 dialogue.WaitForAction();
                 close.SetActive(true);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 break;
 
-            case 15: // dinero
+            case Step.Upgrade: // Mejora
                 dialogue.WaitForAction();
+                close.SetActive(false);
+                rectTransform.offsetMin = new Vector2(596f, rectTransform.offsetMin.y);
                 break;
 
-            case 16: // Mejoras
+            case Step.Money: // dinero
+                dialogue.WaitForAction();
+                black.SetActive(true);
+                blackR.SetSiblingIndex(5);
+                money.SetAsLastSibling();
+                arrow5.SetActive(true);
+                break;
+
+            case Step.Upgrades: // Mejoras
                 dialogue.WaitForAction();
                 arrow4.SetActive(true);
+                arrow5.SetActive(false);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
+                rectTransform.offsetMax = new Vector2(-450f, rectTransform.offsetMax.y);
+                break;
+
+            case Step.Final:
+                dialogue.WaitForAction();
+                black.SetActive(false);
+                arrow4.SetActive(false);
+                rectTransform.offsetMax = new Vector2(-215f, rectTransform.offsetMax.y);
                 break;
         }
     }
 
-    private void Update()
-    {
-        EscapeTecle();
-    }
     public void CompleteStep()
     {
-        step++;
+        int nextStepValue = (int)currentStep + 1;
+        if (Enum.IsDefined(typeof(Step), nextStepValue))
+        {
+            currentStep = (Step)nextStepValue;
+        }
         dialogue.ForceNextText();
         StartStep();
     }
 
     public void OnTutorialButtonPressed()
     {
-        if (step != 2) return;
+        if (currentStep != Step.BuyPlot) return;
         CompleteStep();
     }
 
-    public void EscapeTecle()
+    public void OnNightButtonPressed()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && step != 4)
-        {
-            CompleteStep();
-            return;
-        }
+        if (currentStep != Step.Night) return;
+        CompleteStep();
     }
 }

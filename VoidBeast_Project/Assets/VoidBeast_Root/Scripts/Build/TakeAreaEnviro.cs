@@ -32,7 +32,7 @@ public class TakeAreaEnviro : MonoBehaviour
     public void Destroyed()
     {
         GridBuilding.instance.UnTakeArea(occupiedArea);
-
+        gameObject.SetActive(false);
     }
     public bool CanBePlaced()
     {

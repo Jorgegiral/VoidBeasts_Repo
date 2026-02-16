@@ -20,8 +20,11 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Ray config")]
     private bool canRay = true;
+    [SerializeField] GameObject rayVFX;
+    [SerializeField] Transform rayPoint;
     [SerializeField] Image RayPanel;
     [SerializeField] GameObject tornadoVFX;
+    [SerializeField] Transform nadoPoint;
     [Header("Melee config")]
     private bool canMelee = true;
     private bool canSpin = true;
@@ -31,6 +34,9 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] private bool isHolding;
     [SerializeField] private float holdThreshold = 2f;
     [SerializeField] Image SpinPanel;
+    float attackComboTimer = 0f;
+    float comboResetTimer = 2f;
+
 
 
     [Header("Bomb config")]
@@ -50,6 +56,9 @@ public class PlayerAttacks : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] AudioClip shootSound;
+    [SerializeField] AudioClip beamSound;
+    [SerializeField] AudioClip spinSound;
+    [SerializeField] AudioClip meleeSound;
 
 
     private Animator anim;
@@ -60,7 +69,6 @@ public class PlayerAttacks : MonoBehaviour
         anim = GetComponent<Animator>(); 
         gun.SetActive(false);
         holderRect = holderImage.GetComponent<RectTransform>();
-
     }
     private void Update()
     {
@@ -73,6 +81,16 @@ public class PlayerAttacks : MonoBehaviour
             }
             holderFiller.fillAmount += 0.5f * Time.deltaTime;
             holderRect.position = Mouse.current.position.ReadValue();
+        }
+        if (comboIndex > 1)
+        {
+            attackComboTimer += Time.deltaTime;
+
+            if (attackComboTimer >= comboResetTimer)
+            {
+                comboIndex = 1;
+                attackComboTimer = 0f;
+            }
         }
     }
     void Shoot()
@@ -94,9 +112,11 @@ public class PlayerAttacks : MonoBehaviour
         if (!UpgradeManager.instance.isRayUnlocked) return;
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
-        anim.SetTrigger("Shoot");
+        anim.SetTrigger("Ray");
         anim.SetTrigger("Attack");
-
+        GameObject tempRay = Instantiate(rayVFX, rayPoint.transform.position, rayPoint.rotation,transform);
+        Settings.instance.PlaySoundFXClip(beamSound, transform, 6f);
+        Destroy(tempRay, 6f);
         StartCoroutine(RayCooldown());
 
 
@@ -137,7 +157,7 @@ public class PlayerAttacks : MonoBehaviour
         if (comboIndex == 3) comboIndex = 0;
         anim.SetTrigger("Attack");
         StartCoroutine(MeleeCooldown());
-
+        Settings.instance.PlaySoundFXClip(meleeSound, transform, 1f);
 
     }
     void SpinAttack()
@@ -146,7 +166,9 @@ public class PlayerAttacks : MonoBehaviour
         if (!canSpin) return;
         anim.SetTrigger("Spin");
         anim.SetTrigger("Attack");
-
+        GameObject tempNado = Instantiate(tornadoVFX, nadoPoint.transform.position, nadoPoint.rotation, transform);
+        Destroy(tempNado, 6f);
+        Settings.instance.PlaySoundFXClip(spinSound, transform, 6f);
         StartCoroutine(SpinCooldown());
 
 
@@ -228,45 +250,62 @@ public class PlayerAttacks : MonoBehaviour
     }
     IEnumerator Cooldown(Image panel, float cooldownTime, System.Action onFinish)
     {
-        panel.fillAmount = 0f;
+        panel.fillAmount = 1f;
         float timer = 0f;
 
         while (timer < cooldownTime)
         {
             timer += Time.deltaTime;
-            panel.fillAmount = timer / cooldownTime;
+            panel.fillAmount = 1f - (timer / cooldownTime);
             yield return null;
         }
 
-        panel.fillAmount = 1f;
+        panel.fillAmount = 0f;
         onFinish?.Invoke();
     }
     public void OnShoot(InputAction.CallbackContext context)
     {
 
         if (PlayerStats.instance.isDeath) return;
+        if (context.started)
+        {
+            if (UpgradeManager.instance.isRayUnlocked)
+            {
+                holderFiller.fillAmount = 0f;
+                isHolding = true;
+                holdTimer = 0f;
+            }
+        }
+        else if (context.canceled)
+        {
+            holderImage.SetActive(false);
+            isHolding = false;
 
-        Shoot();
+            if (holdTimer >= holdThreshold)
+            {
+                RayGun();
+            }
+            else
+            {
+                Shoot();
+
+            }
+        }
     }
-    public void OnRay(InputAction.CallbackContext context)
-    {
 
-        if (PlayerStats.instance.isDeath) return;
-
-        Shoot();
-    }
     public void OnMelee(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
         if (DayNightSystem.Instance.isDay) return;
+
         if (context.started)
         {
-         //   if (UpgradeManager.instance.isSpinUnlocked)
-        ///    {
+            if (UpgradeManager.instance.isSpinUnlocked)
+            {
                 holderFiller.fillAmount = 0f;
                 isHolding = true;
                 holdTimer = 0f;
-           // }
+           }
         }
         else if (context.canceled)
         {
@@ -309,4 +348,11 @@ public class PlayerAttacks : MonoBehaviour
             other.GetComponent<EnemyHP>().TakeDamage(PlayerStats.instance.meleeDamage);
         }
     }
+    IEnumerator SpeedBoost()
+    {
+        PlayerStats.instance.playerSpeed += 0.7f;
+        yield return new WaitForSeconds(5f);
+        PlayerStats.instance.playerSpeed -= 0.7f;
+    }
+
 }

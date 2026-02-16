@@ -13,7 +13,7 @@ public class DailyPowerUP : MonoBehaviour
     [Header("References")]
     [SerializeField] Image[] ImagePowerUp;
     [SerializeField] TMP_Text[] rarityText;
-    [SerializeField] TMP_Text[] upgradeText;
+    [SerializeField] Image[] upgradeSprite;
     [SerializeField] TMP_Text[] infoText;
     [SerializeField] AudioClip startPickSound;
     [SerializeField] AudioClip clickSound;
@@ -21,10 +21,10 @@ public class DailyPowerUP : MonoBehaviour
     public DailyPowerUpsSO[] selectedPowerUps;
     string upgradeName;
     private int selectedIndex = -1;
-    [SerializeField] GameObject firstSelectedMenu;
-    bool enemies = false;
     bool upgradeselect = false;
+    bool recollection = false;
     public bool poopedDay = false;
+
 
     public void StartPowerUp()
     {
@@ -33,14 +33,13 @@ public class DailyPowerUP : MonoBehaviour
         gameObject.SetActive(true);
         PickPowerUps();
         Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
-        EventSystem.current.SetSelectedGameObject(firstSelectedMenu);
         Time.timeScale = 0f;
-        //Jorge:
-        if (TutorialManager.instance != null && TutorialManager.instance.step == 12)
+        Settings.instance.StopSingleSoundFX();
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Collection)
         {
-            if (!enemies)
+            if (!recollection)
             {
-                enemies = true;
+                recollection = true;
                 TutorialManager.instance.CompleteStep();
             }
         }
@@ -51,7 +50,7 @@ public class DailyPowerUP : MonoBehaviour
         Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
         Time.timeScale = 1f;
 
-        if (TutorialManager.instance != null && TutorialManager.instance.step == 13)
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Upgrade)
         {
             if (!upgradeselect)
             {
@@ -75,7 +74,6 @@ public class DailyPowerUP : MonoBehaviour
             PlayerStats.instance.ApplyStats();
             Settings.instance.PlaySoundFXClip(clickSound, transform, 1f);
             gameObject.SetActive(false);
-
             return chosen;
     }
     public void SelectPowerUp(int index)
@@ -84,7 +82,7 @@ public class DailyPowerUP : MonoBehaviour
         Time.timeScale = 1f;
         SendClickPowerUpInfo();
         //Jorge:
-        if (TutorialManager.instance != null && TutorialManager.instance.step == 13)
+        if (TutorialManager.instance != null && TutorialManager.instance.currentStep == TutorialManager.Step.Upgrade)
         {
             if (!upgradeselect)
             {
@@ -96,10 +94,12 @@ public class DailyPowerUP : MonoBehaviour
     private void PickPowerUps()
     {
         selectedPowerUps = new DailyPowerUpsSO[3];
-        List<DailyPowerUpsSO> powerUpList = new List<DailyPowerUpsSO>(allPowerUps);
+        List<DailyPowerUpsSO> powerUpList = allPowerUps
+            .Where(p => IsPowerUpAvailable(p))
+            .ToList();
 
 
-        for(int i= 0; i< 3; i++)
+        for (int i= 0; i< 3; i++)
         {
             DailyPowerUpsSO picked = GetRandomPowerUps(powerUpList);
             selectedPowerUps[i] = picked;
@@ -109,17 +109,18 @@ public class DailyPowerUP : MonoBehaviour
         {
             ImagePowerUp[i].sprite= selectedPowerUps[i].raritySprite;
             rarityText[i].text = selectedPowerUps[i].rarityName.ToString();
-            upgradeText[i].text = selectedPowerUps[i].type.ToString();
+            upgradeSprite[i].sprite = selectedPowerUps[i].iconSprite;
             infoText[i].text = selectedPowerUps[i].description;
         }
     }
     private DailyPowerUpsSO GetRandomPowerUps(List<DailyPowerUpsSO> availablePowerUps)
     {
-        float commonWeight = 80f;
-        float rareWeight = 18f;
-        float legendaryWeight = 2f;
+        float commonWeight = 75f;
+        float rareWeight = 22.75f;
+        float legendaryWeight = 2.1f;
+        float voidWeight = 0.15f;
 
-        float total = commonWeight + rareWeight + legendaryWeight;
+        float total = commonWeight + rareWeight + legendaryWeight + voidWeight;
         float roll = Random.Range(0f, total);
 
         if (roll < commonWeight)
@@ -129,14 +130,46 @@ public class DailyPowerUP : MonoBehaviour
 
         if (roll < rareWeight)
             return RandomFrom(availablePowerUps, PowerUpRarity.Rare);
+        roll -= rareWeight;
+        if (roll < legendaryWeight)
+            return RandomFrom(availablePowerUps, PowerUpRarity.Legendary);
+        roll -= legendaryWeight;
 
-        return RandomFrom(availablePowerUps, PowerUpRarity.Legendary);
+        return RandomFrom(availablePowerUps, PowerUpRarity.Void);
     }
 
     private DailyPowerUpsSO RandomFrom(List<DailyPowerUpsSO> pool, PowerUpRarity rarity)
     {
         var list = pool.Where(p => p.rarityName == rarity).ToList();
         return list[Random.Range(0, list.Count)];
+    }
+    private bool IsPowerUpAvailable(DailyPowerUpsSO powerUp)
+    {
+        if (powerUp.type == PowerUpType.FireRate)
+        {
+            return PlayerStats.instance.gunAttackSpeed > 0.6f;
+        }
+
+        if (powerUp.type == PowerUpType.Resurrection)
+        {
+            return PlayerStats.instance.deathTimer > 1f;
+        }
+
+        return true;
+    }
+    public void BuyPowerUp()
+    {
+        if(UpgradeManager.instance.upgradeValue <= MoneySystem.instance.money)
+        {
+            MoneySystem.instance.BuyMoney(UpgradeManager.instance.upgradeValue);
+         gameObject.SetActive(true);
+        PickPowerUps();
+        Settings.instance.PlayUniqueSoundSFXClip(startPickSound, transform, 1f);
+        Time.timeScale = 0f;
+            Settings.instance.StopSingleSoundFX();
+            UpgradeManager.instance.upgradeValue *= 2;
+        UpgradeManager.instance.UpdateValuePowerUp();
+        }
     }
 }
 

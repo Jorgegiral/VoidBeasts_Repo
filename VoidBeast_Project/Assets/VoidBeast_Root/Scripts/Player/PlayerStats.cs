@@ -16,10 +16,8 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Player Damage Stats")]
     public float gunDamage;
-    public float mineDamage;
-    public float bombDamage;
+    public float explosionDamage;
     public float meleeDamage;
-    public float SpinDamage;
 
 
     [Header("Player Cooldown Stats")]
@@ -54,13 +52,13 @@ public class PlayerStats : MonoBehaviour
         {
             gunDamage += powerUpChosen.value;
         }
-        if (powerUpChosen.type.ToString() == "DeathTimer")
+        if (powerUpChosen.type.ToString() == "ExplosionDamage")
         {
-            deathTimer += powerUpChosen.value;
-            if(deathTimer <= 0)
-            {
-                deathTimer = 0;
-            }       
+            explosionDamage += powerUpChosen.value;
+        }
+        if (powerUpChosen.type.ToString() == "MeleeDamage")
+        {
+            meleeDamage += powerUpChosen.value;
         }
         if (powerUpChosen.type.ToString() == "Resurrection")
         {
@@ -86,10 +84,15 @@ public class PlayerStats : MonoBehaviour
         if (powerUpChosen.type.ToString() == "FireRate")
         {
             gunAttackSpeed += powerUpChosen.value;
-            if (gunAttackSpeed <= 0)
+            if (gunAttackSpeed <= 0.6f)
             {
-                gunAttackSpeed = 0;
+                gunAttackSpeed = 0.6f;
             }
+        }
+        if (powerUpChosen.type.ToString() == "availablePoints")
+        {
+            UpgradeManager.instance.freeUpgrade = true;
+            UpgradeManager.instance.TakeUpgrade();
         }
         powerUpChosen = null;
     }
