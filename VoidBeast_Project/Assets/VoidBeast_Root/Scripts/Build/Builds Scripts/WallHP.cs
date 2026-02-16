@@ -8,6 +8,7 @@ public class WallHP : MonoBehaviour
     [SerializeField] GameObject VFXUpgrade;
     [SerializeField] GameObject VFXDestroy;
     Renderer rend; //jorge
+    public AudioClip destructionWall;
     MaterialPropertyBlock mpb;
     Renderer[] renderers;
     [SerializeField] string damagePropertyName = "_DamageAmount";
@@ -33,6 +34,7 @@ public class WallHP : MonoBehaviour
                 UpgradeManager.instance.wallAvailable++;
                 UpgradeManager.instance.wallBought++;
                 GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
+
                 Destroy(destroyvfx, 3f);
                 UpgradeManager.instance.UnRegisterWall(gameObject);
                 Destroy(gameObject);
@@ -48,6 +50,7 @@ public class WallHP : MonoBehaviour
         {
             UpgradeManager.instance.UnRegisterWall(gameObject);
             GameObject upgradevfx = Instantiate(VFXUpgrade, transform.position, transform.rotation);
+            Settings.instance.PlaySoundFXClip(destructionWall, transform, 1f);
             Destroy(upgradevfx, 1f);
             Destroy(gameObject);
         }

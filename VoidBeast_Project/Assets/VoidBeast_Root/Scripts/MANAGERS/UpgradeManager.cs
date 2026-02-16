@@ -36,7 +36,7 @@ public class UpgradeManager : MonoBehaviour
     private int availablePoints = 3;
     public TMP_Text availablePointsText;
     [SerializeField] GameObject upgradeVFX;
-
+    [SerializeField] Transform mbuild;
     [Header("Stats References")]
     public int mainBuildingLevel = 1;
     public int wallLevel = 0;
@@ -118,12 +118,13 @@ public void UpgradeWall()
         
             MoneySystem.instance.BuyMoney(mainBuildvalue);
             mainBuildingLevel++;
+            GameObject upgradeVFXobj = Instantiate(upgradeVFX, mbuild);
+            Destroy(upgradeVFXobj,3f);
             switch (mainBuildingLevel)
             {
                 case 2:
                     ExpandBuildArea(1, 1);
                     updateModelMainBuild[1].SetActive(true);
-                   
                     wallAvailable += 5;
                     maxWall += 5;
                     cropAvailable += 1;
