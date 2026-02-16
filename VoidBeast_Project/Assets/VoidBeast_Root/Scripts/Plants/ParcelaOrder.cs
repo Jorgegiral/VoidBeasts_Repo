@@ -45,10 +45,7 @@ public class ParcelaOrder : MonoBehaviour
         {
             recolectVFX.SetActive(true);
         }
-        else
-        {
-            DayNightSystem.Instance.dailyPowerUPPopUp();
-        }
+
     }
     public void OpenSeedMenu()
     {
