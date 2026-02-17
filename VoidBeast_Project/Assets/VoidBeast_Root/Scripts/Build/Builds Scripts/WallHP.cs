@@ -32,7 +32,7 @@ public class WallHP : MonoBehaviour
             {
                 area.Destroyed();
                 UpgradeManager.instance.wallAvailable++;
-                UpgradeManager.instance.wallBought++;
+                UpgradeManager.instance.wallBought--;
                 GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
 
                 Destroy(destroyvfx, 3f);

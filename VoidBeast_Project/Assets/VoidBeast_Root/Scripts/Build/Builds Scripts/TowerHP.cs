@@ -22,28 +22,28 @@ public class TowerHP : MonoBehaviour
         renderers = GetComponentsInChildren<Renderer>();//Jorge
         mpb = new MaterialPropertyBlock(); //Jorge
         currentHealth = maxHealth;
-        StartCoroutine(RegisterCooldown());
+        UpgradeManager.instance.RegisterTower(gameObject);
     }
 
     public void TakeDamage(float enemyDamage)
     {
         currentHealth -= enemyDamage;
+        UpdateHPTurrets();
         if (currentHealth < 0)
         {
             Building area = GetComponent<Building>();
             if (area != null)
             {
-                UpgradeManager.instance.UnRegisterTower(gameObject);
                 area.Destroyed();
-                GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
                 UpgradeManager.instance.towerAvailable++;
-                UpgradeManager.instance.towerBought++;
+                UpgradeManager.instance.towerBought--;
+                GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
                 Settings.instance.PlayUniqueSoundSFXClip(deathSound, transform, 3f);
                 Destroy(destroyvfx, 3f);
+                UpgradeManager.instance.UnRegisterTower(gameObject);
                 Destroy(gameObject);
             }
         }
-        UpdateHPTurrets();
     }
     public void UpgradeDamage(float upgradeDamage)
     {
@@ -56,11 +56,6 @@ public class TowerHP : MonoBehaviour
             Destroy(gameObject);
         }
 
-    }
-    IEnumerator RegisterCooldown()
-    {
-        yield return new WaitForSeconds(1f);
-        UpgradeManager.instance.RegisterTower(gameObject);
     }
     public void UpdateHPTurrets()
     {

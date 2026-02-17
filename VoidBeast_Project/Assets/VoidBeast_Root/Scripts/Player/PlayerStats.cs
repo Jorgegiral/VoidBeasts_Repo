@@ -24,7 +24,7 @@ public class PlayerStats : MonoBehaviour
 
     public float gunAttackSpeed = 2f;
     public float rayGunCooldown = 10f;
-    public float meleeAttackSpeed = 2f;
+    public float dashCooldown = 7f;
     public float spinCooldown = 5f;
     public float mineCooldown = 5f;
     public float bombCooldown = 8f;
@@ -91,7 +91,7 @@ public class PlayerStats : MonoBehaviour
         }
         if (powerUpChosen.type.ToString() == "availablePoints")
         {
-            UpgradeManager.instance.freeUpgrade = true;
+            SkillManager.instance.freeUpgrade = true;
             UpgradeManager.instance.TakeUpgrade();
         }
         powerUpChosen = null;
