@@ -30,7 +30,7 @@ public class SkillManager : MonoBehaviour
     public bool isRightTwoUnlocked;
     public bool freeUpgrade;
     private int availablePoints = 3;
-
+    private bool skillShopOpened;
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -118,7 +118,7 @@ public class SkillManager : MonoBehaviour
             MoneySystem.instance.UpdateMoneyText();
         }
     }
-    public void UnlockBomb(int precio)
+    public void UnlockLeftTwo(int precio)
     {
         if (freeUpgrade)
         {
@@ -141,7 +141,7 @@ public class SkillManager : MonoBehaviour
             MoneySystem.instance.UpdateMoneyText();
         }
     }
-    public void UnlockSpin(int precio)
+    public void UnlockMidTwo(int precio)
     {
         if (freeUpgrade)
         {
@@ -167,6 +167,7 @@ public class SkillManager : MonoBehaviour
     public void OpenSkillsShop()
     {
         if (PlayerStats.instance.menuOpened) return;
+        skillShopOpened = true;
         skillShop.gameObject.SetActive(true);
         UpdateSkillValues();
         PlayerStats.instance.menuOpened = true;
@@ -174,6 +175,7 @@ public class SkillManager : MonoBehaviour
     public void CloseSkillsShop()
     {
         skillShop.gameObject.SetActive(false);
+        skillShopOpened = false;
         PlayerStats.instance.menuOpened = false;
     }
 }

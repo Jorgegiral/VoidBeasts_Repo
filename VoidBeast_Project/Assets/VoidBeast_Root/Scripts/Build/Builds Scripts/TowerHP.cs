@@ -32,15 +32,15 @@ public class TowerHP : MonoBehaviour
         if (currentHealth < 0)
         {
             Building area = GetComponent<Building>();
+            UpgradeManager.instance.UnRegisterTower(gameObject);
+            UpgradeManager.instance.towerAvailable++;
+            UpgradeManager.instance.towerBought--;
             if (area != null)
             {
-                area.Destroyed();
-                UpgradeManager.instance.towerAvailable++;
-                UpgradeManager.instance.towerBought--;
+                area.DestroyedTower();
                 GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
                 Settings.instance.PlayUniqueSoundSFXClip(deathSound, transform, 3f);
                 Destroy(destroyvfx, 3f);
-                UpgradeManager.instance.UnRegisterTower(gameObject);
                 Destroy(gameObject);
             }
         }
