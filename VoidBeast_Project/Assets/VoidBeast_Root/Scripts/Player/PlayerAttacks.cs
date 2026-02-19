@@ -26,16 +26,13 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] GameObject tornadoVFX;
     [SerializeField] Transform nadoPoint;
     [Header("Melee config")]
-    private bool canMelee = true;
+    private bool canDash = true;
     private bool canSpin = true;
     private float holdTimer;
     [SerializeField] Collider attackCollider; 
-    [SerializeField] int comboIndex;
     [SerializeField] private bool isHolding;
     [SerializeField] private float holdThreshold = 2f;
     [SerializeField] Image SpinPanel;
-    float attackComboTimer = 0f;
-    float comboResetTimer = 2f;
 
 
 
@@ -82,20 +79,9 @@ public class PlayerAttacks : MonoBehaviour
             holderFiller.fillAmount += 0.5f * Time.deltaTime;
             holderRect.position = Mouse.current.position.ReadValue();
         }
-        if (comboIndex > 1)
-        {
-            attackComboTimer += Time.deltaTime;
-
-            if (attackComboTimer >= comboResetTimer)
-            {
-                comboIndex = 1;
-                attackComboTimer = 0f;
-            }
-        }
     }
     void Shoot()
     {
-        if (!UpgradeManager.instance.isGunUnlocked) return;
         if (!canShoot) return;
         rotateToPlayer.RotateOnShoot();
         //gun.SetActive(true); //Jorge
@@ -109,21 +95,22 @@ public class PlayerAttacks : MonoBehaviour
     }
     void RayGun()
     {
-        if (!UpgradeManager.instance.isRayUnlocked) return;
+        if (!SkillManager.instance.isMidTwoUnlocked) return;
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
-        anim.SetTrigger("Ray");
+        anim.SetBool("Ray", true);
         anim.SetTrigger("Attack");
         GameObject tempRay = Instantiate(rayVFX, rayPoint.transform.position, rayPoint.rotation,transform);
         Settings.instance.PlaySoundFXClip(beamSound, transform, 6f);
-        Destroy(tempRay, 6f);
+        Destroy(tempRay, 3f);
+        StartCoroutine(DisableRayAfterTime(3f));
         StartCoroutine(RayCooldown());
 
 
     }
     void PlantMine()
     {
-        if (!UpgradeManager.instance.isMineUnlocked) return;
+        if (!SkillManager.instance.isLeftOneUnlocked) return;
         if (!canMine) return;
         anim.SetTrigger("Mine");
         anim.SetTrigger("Attack");
@@ -135,7 +122,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     void ThrowBomb()
     {
-        if (!UpgradeManager.instance.isBombUnlocked) return;
+        if (!SkillManager.instance.isLeftTwoUnlocked) return;
         if (!canBomb) return;
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("ThrowBomb");
@@ -147,31 +134,28 @@ public class PlayerAttacks : MonoBehaviour
 
 
     }
-    void MeleeAttack()
+    void Dash()
     {
-        if (!canMelee) return;
+        if (!SkillManager.instance.isRightOneUnlocked) return;
+        if (!canDash) return;
         rotateToPlayer.RotateOnShoot();
-        anim.SetTrigger("Melee");
-        anim.SetInteger("ComboIndex", comboIndex);
-        comboIndex++;
-        if (comboIndex == 3) comboIndex = 0;
+        anim.SetTrigger("Dash");
         anim.SetTrigger("Attack");
-        StartCoroutine(MeleeCooldown());
+        StartCoroutine(DashCooldown());
         Settings.instance.PlaySoundFXClip(meleeSound, transform, 1f);
 
     }
     void SpinAttack()
     {
-        if (!UpgradeManager.instance.isSpinUnlocked) return;
+        if (!SkillManager.instance.isRightTwoUnlocked) return;
         if (!canSpin) return;
-        anim.SetTrigger("Spin");
+        anim.SetBool("isSpin",true);
         anim.SetTrigger("Attack");
         GameObject tempNado = Instantiate(tornadoVFX, nadoPoint.transform.position, nadoPoint.rotation, transform);
         Destroy(tempNado, 6f);
         Settings.instance.PlaySoundFXClip(spinSound, transform, 6f);
+        StartCoroutine(DisableSpinAfterTime(6f));
         StartCoroutine(SpinCooldown());
-
-
     }
     public void GunActived()
     {
@@ -224,11 +208,11 @@ public class PlayerAttacks : MonoBehaviour
             })
         );
     }
-    IEnumerator MeleeCooldown()
+    IEnumerator DashCooldown()
     {
-        canMelee = false;
-        yield return new WaitForSeconds(PlayerStats.instance.meleeAttackSpeed);
-        canMelee = true;
+        canDash = false;
+        yield return new WaitForSeconds(PlayerStats.instance.dashCooldown);
+        canDash = true;
     }
     IEnumerator SpinCooldown()
     {
@@ -238,6 +222,16 @@ public class PlayerAttacks : MonoBehaviour
             canSpin = true;
         })
         );
+    }
+    IEnumerator DisableSpinAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        anim.SetBool("isSpin", false);
+    }
+    IEnumerator DisableRayAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        anim.SetBool("Ray", false);
     }
     IEnumerator RayCooldown()
     {
@@ -265,11 +259,11 @@ public class PlayerAttacks : MonoBehaviour
     }
     public void OnShoot(InputAction.CallbackContext context)
     {
-
+        if (DayNightSystem.Instance.isDay) return;
         if (PlayerStats.instance.isDeath) return;
         if (context.started)
         {
-            if (UpgradeManager.instance.isRayUnlocked)
+            if (SkillManager.instance.isMidTwoUnlocked)
             {
                 holderFiller.fillAmount = 0f;
                 isHolding = true;
@@ -296,11 +290,9 @@ public class PlayerAttacks : MonoBehaviour
     public void OnMelee(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
-        if (DayNightSystem.Instance.isDay) return;
-
         if (context.started)
         {
-            if (UpgradeManager.instance.isSpinUnlocked)
+            if (SkillManager.instance.isRightTwoUnlocked)
             {
                 holderFiller.fillAmount = 0f;
                 isHolding = true;
@@ -318,7 +310,7 @@ public class PlayerAttacks : MonoBehaviour
             }
             else
             {
-                MeleeAttack();
+                Dash();
             }
         }
     }

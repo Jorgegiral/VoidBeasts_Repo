@@ -7,7 +7,7 @@ public class Selection : MonoBehaviour
 
     private void Update()
     {
-        if (DayNightSystem.Instance.isNight)
+        if (DayNightSystem.Instance.isNight || !PlayerStats.instance.isActionMode)
         {
             selection.SetActive(false);
         }
@@ -32,7 +32,26 @@ public class Selection : MonoBehaviour
     }
 
 }
-private void OnTriggerExit(Collider other)
+    private void OnTriggerStay(Collider other)
+    {
+        if (PlayerStats.instance.isActionMode)
+        {
+            if (other.CompareTag("Player") && DayNightSystem.Instance.isDay)
+            {
+                selection.SetActive(true);
+                PlayerStats.instance.playerisInside = true;
+                if (layerPlants)
+                {
+                    PlayerStats.instance.layerPlants = true;
+                }
+                else
+                {
+                    PlayerStats.instance.layerPlants = false;
+                }
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player") && DayNightSystem.Instance.isDay)
         {
