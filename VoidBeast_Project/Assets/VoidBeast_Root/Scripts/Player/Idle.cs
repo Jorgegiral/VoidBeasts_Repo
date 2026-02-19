@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Idle : StateMachineBehaviour
 {
-    [SerializeField] private float timeToSecondIdle = 8f;
+ /*   [SerializeField] private float timeToSecondIdle = 8f;
 
     private float timer;
     private bool playingSecondIdle;
@@ -44,5 +44,5 @@ public class Idle : StateMachineBehaviour
                 animator.SetFloat("IdleAnim", 0);
             }
         }
-    }
+    }*/
 }

@@ -23,16 +23,26 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.CompareTag("Plant") && !other.gameObject.CompareTag("Confiner"))
+        GameObject otherGO = other.gameObject;
+
+        if (otherGO.CompareTag("Plant") ||
+            otherGO.CompareTag("Confiner") ||
+            otherGO.CompareTag("Wall") ||
+            otherGO.CompareTag("Tower"))
+            return;
+
+        if (hitVFX != null)
         {
-            GameObject hitVFXGameObject = Instantiate(hitVFX, transform.position, Quaternion.identity);
-            Destroy(hitVFXGameObject, 2f);
-            if (other.gameObject.CompareTag("Enemy"))
-            {
-                EnemyHP enemyHP = other.gameObject.GetComponent<EnemyHP>();
-                enemyHP.TakeDamage(PlayerStats.instance.gunDamage);
-            }
-            Destroy(gameObject);
+            GameObject vfx = Instantiate(hitVFX, transform.position, Quaternion.identity);
+            Destroy(vfx, 2f);
+        }
+
+        if (otherGO.CompareTag("Enemy") &&
+            otherGO.TryGetComponent(out EnemyHP enemyHP))
+        {
+            enemyHP.TakeDamage(PlayerStats.instance.gunDamage);
+        }
+        Destroy(gameObject);
         }
     }
-}
+

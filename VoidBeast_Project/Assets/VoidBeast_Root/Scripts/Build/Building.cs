@@ -7,7 +7,11 @@ public class Building : MonoBehaviour
     public BoundsInt area;
     public GameObject destroyDebrisCollider;
     private BoundsInt occupiedArea;
-
+    WallBehaviour wallbehaviour;
+    private void Start()
+    {
+        wallbehaviour = GetComponentInParent<WallBehaviour>();
+    }
     public bool CanBePlaced()
     {
         Vector3Int positionInt = GridBuilding.instance.gridLayout.LocalToCell(transform.position);
@@ -37,21 +41,28 @@ public class Building : MonoBehaviour
     {
         occupiedArea = area;
     }
-    public void Destroyed()
+    public void DestroyedWall()
     {
-        SetArea(area);
-        GridBuilding.instance.UnTakeArea(occupiedArea);
-        UpgradeManager.instance.wallAvailable++;
-        UpgradeManager.instance.wallBought--;
-        gameObject.SetActive(false);
+        if (wallbehaviour != null)
+        {
+            DisableAllColliders();
+            wallbehaviour.ThrowRaycast();
+            UpgradeManager.instance.UnRegisterWall(gameObject);
+            SetArea(area);
+            GridBuilding.instance.UnTakeArea(occupiedArea);
+            UpgradeManager.instance.wallAvailable++;
+            UpgradeManager.instance.wallBought--;
+            Destroy(gameObject);
+        }
     }
     public void DestroyedTower()
     {
+        UpgradeManager.instance.UnRegisterTower(gameObject);
         SetArea(area);
         GridBuilding.instance.UnTakeArea(occupiedArea);
         UpgradeManager.instance.towerAvailable++;
         UpgradeManager.instance.towerBought--;
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
     IEnumerator debrisCD()
     {
@@ -59,5 +70,13 @@ public class Building : MonoBehaviour
         yield return new WaitForSeconds(1f);
         destroyDebrisCollider.SetActive(false);
 
+    }
+    void DisableAllColliders()
+    {
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (Collider col in colliders)
+        {
+            col.enabled = false;
+        }
     }
 }

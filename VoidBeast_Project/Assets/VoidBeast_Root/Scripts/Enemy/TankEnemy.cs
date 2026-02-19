@@ -139,7 +139,7 @@ public class TankEnemy : MonoBehaviour
 
         // Movimiento
         float dist = Vector3.Distance(transform.position, assignedAttackPoint);
-        if (dist > 1.5f)
+        if (dist > 1f)
         {
             Settings.instance.PlayUniqueSoundSFXClip(moveEnemySound, transform, 1f);
             agent.isStopped = false;

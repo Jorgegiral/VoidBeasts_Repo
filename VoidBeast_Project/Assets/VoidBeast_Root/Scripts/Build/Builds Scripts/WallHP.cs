@@ -30,9 +30,9 @@ public class WallHP : MonoBehaviour
             Building area = GetComponent<Building>();
             if (area != null)
             {
-                area.Destroyed();
+                area.DestroyedWall();
                 UpgradeManager.instance.wallAvailable++;
-                UpgradeManager.instance.wallBought++;
+                UpgradeManager.instance.wallBought--;
                 GameObject destroyvfx = Instantiate(VFXDestroy, transform.position, transform.rotation);
 
                 Destroy(destroyvfx, 3f);
