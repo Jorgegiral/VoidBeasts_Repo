@@ -98,11 +98,12 @@ public class PlayerAttacks : MonoBehaviour
         if (!SkillManager.instance.isMidTwoUnlocked) return;
         if (!canRay) return;
         rotateToPlayer.RotateOnShoot();
-        anim.SetTrigger("Ray");
+        anim.SetBool("Ray", true);
         anim.SetTrigger("Attack");
         GameObject tempRay = Instantiate(rayVFX, rayPoint.transform.position, rayPoint.rotation,transform);
         Settings.instance.PlaySoundFXClip(beamSound, transform, 6f);
-        Destroy(tempRay, 6f);
+        Destroy(tempRay, 3f);
+        StartCoroutine(DisableRayAfterTime(3f));
         StartCoroutine(RayCooldown());
 
 
@@ -226,6 +227,11 @@ public class PlayerAttacks : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         anim.SetBool("isSpin", false);
+    }
+    IEnumerator DisableRayAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        anim.SetBool("Ray", false);
     }
     IEnumerator RayCooldown()
     {
