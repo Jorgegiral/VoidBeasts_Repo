@@ -17,9 +17,6 @@ public class Dialogue : MonoBehaviour
     public float textSpeed = 0.2f;
     public int index;
     public bool waitForAction = false;
-    private Coroutine typingCoroutine;
-    [SerializeField] private RectTransform backgroundPanel;
-    [SerializeField] private ContentSizeFitter sizeFitter;
     IEnumerator Start()
     {
         yield return UnityEngine.Localization.Settings.LocalizationSettings.InitializationOperation;
