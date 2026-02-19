@@ -41,6 +41,20 @@ public class SkillManager : MonoBehaviour
         isLeftTwoUnlocked = false;
         isRightTwoUnlocked = false;
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && DayNightSystem.Instance.isDay)
+        {
+            if (!skillShopOpened)
+            {
+                OpenSkillsShop();
+            }
+            else
+            {
+                CloseSkillsShop();
+            }
+        }
+    }
     private void UpdateSkillValues()
     {
         availablePointsText.text = "POINTS: " + availablePoints.ToString();
