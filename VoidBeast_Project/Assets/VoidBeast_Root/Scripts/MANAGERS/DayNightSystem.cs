@@ -34,8 +34,6 @@ public class DayNightSystem : MonoBehaviour
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
     //Jorge:
     bool enemies = false;
-    //provisional
-    [SerializeField]public  GameObject selection;
 
     public DailyPowerUP dailyPowerUP;
     public BuildingHP buildHP;

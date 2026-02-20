@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class SkillManager : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class SkillManager : MonoBehaviour
     public bool freeUpgrade;
     private int availablePoints = 3;
     private bool skillShopOpened;
+    private string key;
+    private string localizedString;
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -40,10 +43,26 @@ public class SkillManager : MonoBehaviour
         isMidTwoUnlocked = false;
         isLeftTwoUnlocked = false;
         isRightTwoUnlocked = false;
+        key = "Points";
+        localizedString = LocalizationSettings.StringDatabase.GetLocalizedString("Tabla1", key);
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && DayNightSystem.Instance.isDay)
+        {
+            if (!skillShopOpened)
+            {
+                OpenSkillsShop();
+            }
+            else
+            {
+                CloseSkillsShop();
+            }
+        }
     }
     private void UpdateSkillValues()
     {
-        availablePointsText.text = "POINTS: " + availablePoints.ToString();
+        availablePointsText.text = localizedString + availablePoints.ToString();
     }
 
     public void UnlockRightOne(int precio)

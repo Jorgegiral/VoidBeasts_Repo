@@ -51,15 +51,28 @@ public class UpgradeManager : MonoBehaviour
     private int wallBuildvalue = 500;
     private int towerBuildvalue = 500;
     public int upgradeValue = 100;
-   
+    private bool upgradeShopOpened;
     private void Awake()
     {
         if (instance == null) { instance = this; }
         wallBuild.build = wallBuild.levelModels[wallLevel];
         towerBuild.build = towerBuild.levelModels[towerLevel];
     }
-
-public void UpgradeWall()
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C) && DayNightSystem.Instance.isDay)
+        {
+            if (!upgradeShopOpened)
+            {
+                OpenUpgradeShop();
+            }
+            else
+            {
+                CloseUpgradeShop();
+            }
+        }
+    }
+    public void UpgradeWall()
     {
         if (wallLevel >= maxWallLevel) return;
         if (wallBuildvalue > MoneySystem.instance.money) return;
@@ -250,13 +263,17 @@ public void UpgradeWall()
         upgradeShop.gameObject.SetActive(true);
         UpdateValuesBuildings();
         PlayerStats.instance.menuOpened = true;
+        upgradeShopOpened = true;
+
     }
     public void CloseUpgradeShop()
     {
         upgradeShop.gameObject.SetActive(false);
         PlayerStats.instance.menuOpened = false;
+        upgradeShopOpened = false;
 
     }
+
     public void RegisterWall(GameObject wall)
     {
         if (!walls.Contains(wall))
