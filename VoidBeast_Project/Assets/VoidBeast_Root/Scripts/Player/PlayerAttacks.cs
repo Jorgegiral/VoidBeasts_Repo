@@ -25,7 +25,8 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Image RayPanel;
     [SerializeField] GameObject tornadoVFX;
     [SerializeField] Transform nadoPoint;
-    [Header("Melee config")]
+
+    [Header("WindAttacks config")]
     private bool canDash = true;
     private bool canSpin = true;
     private float holdTimer;
@@ -55,7 +56,6 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] AudioClip shootSound;
     [SerializeField] AudioClip beamSound;
     [SerializeField] AudioClip spinSound;
-    [SerializeField] AudioClip meleeSound;
 
 
     private Animator anim;
@@ -142,7 +142,6 @@ public class PlayerAttacks : MonoBehaviour
         anim.SetTrigger("Dash");
         anim.SetTrigger("Attack");
         StartCoroutine(DashCooldown());
-        Settings.instance.PlaySoundFXClip(meleeSound, transform, 1f);
 
     }
     void SpinAttack()
