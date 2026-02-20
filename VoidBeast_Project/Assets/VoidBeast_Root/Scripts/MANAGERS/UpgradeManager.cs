@@ -17,22 +17,11 @@ public class UpgradeManager : MonoBehaviour
     public TMP_Text towerText;
     public TMP_Text upgradesText;
 
-    public GameObject bombUI;
-    public GameObject RayUI;
-    public GameObject MineUI;
-    public GameObject SpinUI;
     public GameObject buildBlock;
     public GameObject towerBlock;
     public GameObject wallBlock;
     [SerializeField] GameObject buyDailyPowerUp;
-    [Header("Skill References")]
-    public GameObject lockMine;
-    public GameObject lockGun;
-    public GameObject lockSpin;
-    public GameObject lockBombTwo;
-    public GameObject lockBomb;
-    public GameObject lockRayTwo;
-    public GameObject lockRay;
+
     private int availablePoints = 3;
     public TMP_Text availablePointsText;
     [SerializeField] GameObject upgradeVFX;
@@ -56,29 +45,18 @@ public class UpgradeManager : MonoBehaviour
     public List<GameObject> towers = new List<GameObject>();
     private int maxTowerLevel = 2;
     private int maxWallLevel = 2;
-    public bool isGunUnlocked;
-    public bool isSpinUnlocked;
-    public bool isMineUnlocked;
-    public bool isBombUnlocked;
-    public bool isRayUnlocked;
     public BoundsInt bounds;
     public GameObject[] updateModelMainBuild;
     private int mainBuildvalue = 250;
     private int wallBuildvalue = 500;
     private int towerBuildvalue = 500;
     public int upgradeValue = 100;
-    public bool freeUpgrade;
    
     private void Awake()
     {
         if (instance == null) { instance = this; }
         wallBuild.build = wallBuild.levelModels[wallLevel];
         towerBuild.build = towerBuild.levelModels[towerLevel];
-        isGunUnlocked = false;
-        isSpinUnlocked = false;
-        isMineUnlocked = false;
-        isBombUnlocked = false;
-        isRayUnlocked = false;
     }
 
 public void UpgradeWall()
@@ -187,121 +165,7 @@ public void UpgradeWall()
         }
        
     }
-    public void UnlockGun(int precio)
-    {
-        if (freeUpgrade)
-        {
-            isBombUnlocked = true;
-            bombUI.SetActive(true);
-            lockBomb.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            freeUpgrade = false;
-        }
-        else
-        if (precio <= MoneySystem.instance.money && availablePoints > 0)
-        {
-            MoneySystem.instance.money -= precio;
-            isGunUnlocked = true;
-            lockGun.SetActive(false);
-            lockRayTwo.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            MoneySystem.instance.UpdateMoneyText();
-        }
-    }
-    public void UnlockRay(int precio)
-    {
-        if (freeUpgrade)
-        {
-            isBombUnlocked = true;
-            bombUI.SetActive(true);
-            lockBomb.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            freeUpgrade = false;
-        }
-        else
-        if (precio <= MoneySystem.instance.money && availablePoints > 0 )
-        {
-            MoneySystem.instance.money -= precio;
-            isRayUnlocked = true;
-            RayUI.SetActive(true);
-            lockRay.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            MoneySystem.instance.UpdateMoneyText();
-        }
-    }
-    public void UnlockMine(int precio)
-    {
-        if (freeUpgrade)
-        {
-            isBombUnlocked = true;
-            bombUI.SetActive(true);
-            lockBomb.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            freeUpgrade = false;
-        }
-        else
-        if (precio <= MoneySystem.instance.money && availablePoints > 0)
-        {
-            MoneySystem.instance.money -= precio;
-            isMineUnlocked = true;
-            MineUI.SetActive(true);
-            lockMine.SetActive(false);
-            lockBombTwo.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            MoneySystem.instance.UpdateMoneyText();
-        }
-    }
-    public void UnlockBomb(int precio)
-    {
-        if (freeUpgrade)
-        {
-            isBombUnlocked = true;
-            bombUI.SetActive(true);
-            lockBomb.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            freeUpgrade = false;
-        } else
-        if (precio <= MoneySystem.instance.money && availablePoints > 0)
-        {
-            MoneySystem.instance.money -= precio;
-            isBombUnlocked = true;
-            bombUI.SetActive(true);
-            lockBomb.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            MoneySystem.instance.UpdateMoneyText();
-        }
-    }
-    public void UnlockSpin(int precio)
-    {
-        if (freeUpgrade)
-        {
-            isSpinUnlocked = true;
-            SpinUI.SetActive(true);
-            lockSpin.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            freeUpgrade = false;
-        }
-        else 
-        if (precio <= MoneySystem.instance.money && availablePoints > 0)
-        {
-            MoneySystem.instance.money -= precio;
-            isSpinUnlocked = true;
-            SpinUI.SetActive(true);
-            lockSpin.SetActive(false);
-            availablePoints--;
-            UpdateSkillValues();
-            MoneySystem.instance.UpdateMoneyText();
-        }
-    }
+   
     public void SwapWallModelsOnUpgrade()
     {
 
@@ -379,10 +243,6 @@ public void UpgradeWall()
     {
         upgradesText.text = upgradeValue.ToString();
     }
-    private void UpdateSkillValues()
-    {
-        availablePointsText.text = "POINTS: " + availablePoints.ToString();
-    }
 
     public void OpenUpgradeShop()
     {
@@ -396,18 +256,6 @@ public void UpgradeWall()
         upgradeShop.gameObject.SetActive(false);
         PlayerStats.instance.menuOpened = false;
 
-    }
-    public void OpenSkillsShop()
-    {
-        if (PlayerStats.instance.menuOpened) return;
-        skillShop.gameObject.SetActive(true);
-        UpdateSkillValues();
-        PlayerStats.instance.menuOpened = true;
-    }
-    public void CloseSkillsShop()
-    {
-        skillShop.gameObject.SetActive(false);
-        PlayerStats.instance.menuOpened = false;
     }
     public void RegisterWall(GameObject wall)
     {
