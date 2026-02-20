@@ -31,10 +31,17 @@ public class PuñeteroFlyEnemy : MonoBehaviour
 
     void Update()
     {
-        UpdateEnemyTarget();
-        MoveEnemy();
-        UpdateAttackCooldown();
-
+        if (PlayerStats.instance.isDeath)
+        {
+            anim.SetBool("isAttacking", false);
+            agent.isStopped = true;
+        }
+        else
+        {
+            UpdateEnemyTarget();
+            MoveEnemy();
+            UpdateAttackCooldown();
+        }
     }
     void UpdateEnemyTarget()
     {
