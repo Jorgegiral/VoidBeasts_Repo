@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static UnityEngine.UI.Image;
@@ -9,7 +11,7 @@ public class PlayerAttacks : MonoBehaviour
 {
     [SerializeField] GameObject holderImage;
     [SerializeField] Image holderFiller;
-
+    private Rigidbody rb;
 
     [Header("Shoot config")]
     [SerializeField] Transform shootPoint;
@@ -26,6 +28,7 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] GameObject tornadoVFX;
     [SerializeField] Transform nadoPoint;
 
+
     [Header("WindAttacks config")]
     private bool canDash = true;
     private bool canSpin = true;
@@ -33,7 +36,12 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Collider attackCollider; 
     [SerializeField] private bool isHolding;
     [SerializeField] private float holdThreshold = 2f;
+    [SerializeField] float dashSpeed = 40f;
+    [SerializeField] float dashDecaySpeed = 40f;
+    [SerializeField] float dashDuration = 2f;
+    private bool isDashing;
     [SerializeField] Image SpinPanel;
+    [SerializeField] Image DashPanel;
 
 
 
@@ -64,6 +72,7 @@ public class PlayerAttacks : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>(); 
+        rb = GetComponent<Rigidbody>();
         gun.SetActive(false);
         holderRect = holderImage.GetComponent<RectTransform>();
     }
@@ -141,6 +150,8 @@ public class PlayerAttacks : MonoBehaviour
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("Dash");
         anim.SetTrigger("Attack");
+        isDashing = true;
+      //  StartCoroutine(DashAction());
         StartCoroutine(DashCooldown());
 
     }
@@ -156,6 +167,7 @@ public class PlayerAttacks : MonoBehaviour
         StartCoroutine(DisableSpinAfterTime(6f));
         StartCoroutine(SpinCooldown());
     }
+
     public void GunActived()
     {
         gun.SetActive(true);
@@ -182,6 +194,7 @@ public class PlayerAttacks : MonoBehaviour
         rb.linearVelocity = new Vector3(velocidadXZ.x, velocidadY, velocidadXZ.z);
 
     }
+
 
     IEnumerator ShootCooldown()
     {
@@ -210,8 +223,11 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator DashCooldown()
     {
         canDash = false;
-        yield return new WaitForSeconds(PlayerStats.instance.dashCooldown);
-        canDash = true;
+        yield return StartCoroutine(Cooldown(DashPanel, PlayerStats.instance.dashCooldown, () =>
+        {
+            canDash = true;
+        })
+        );
     }
     IEnumerator SpinCooldown()
     {
@@ -231,6 +247,11 @@ public class PlayerAttacks : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         anim.SetBool("Ray", false);
+    }
+    IEnumerator DisableDashAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        isDashing = false;
     }
     IEnumerator RayCooldown()
     {
