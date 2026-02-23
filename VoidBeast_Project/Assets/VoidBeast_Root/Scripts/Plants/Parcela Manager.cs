@@ -12,6 +12,7 @@ public class ParcelaManager : MonoBehaviour
     public List<GameObject> plant = new List<GameObject>();
     public int moneyToAdd;
     public GameObject seedShop;
+    public bool[] plantsUnlocked;
     private void Awake()
     {
         if (instance == null) { instance = this; }
@@ -83,6 +84,10 @@ public class ParcelaManager : MonoBehaviour
         seedShop.SetActive(false);
         PlayerStats.instance.menuOpened = false;
 
+    }
+    public void UnlockPlant(int numPlant)
+    {
+        plantsUnlocked[numPlant] = true;
     }
 }
 

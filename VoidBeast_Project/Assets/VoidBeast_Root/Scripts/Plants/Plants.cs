@@ -11,5 +11,4 @@ public class Plants : ScriptableObject
     public int precio;
     public List<GameObject> plantGameObject;
     public int ganancias;
-    public bool unlocked;
 }
