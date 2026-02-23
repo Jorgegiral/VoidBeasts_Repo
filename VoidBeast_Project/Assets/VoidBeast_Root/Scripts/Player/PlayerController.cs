@@ -13,9 +13,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     bool hasMovedTutorial = false;
     private Animator anim; //Jorge
-    [SerializeField] float dashSpeed = 40f;
-    [SerializeField] float dashDecaySpeed = 40f;
-    [SerializeField] float dashDuration = 2f;
 
     private void Start()
     {

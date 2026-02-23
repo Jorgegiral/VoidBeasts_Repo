@@ -151,7 +151,7 @@ public class PlayerAttacks : MonoBehaviour
         anim.SetTrigger("Dash");
         anim.SetTrigger("Attack");
         isDashing = true;
-        StartCoroutine(DashAction());
+      //  StartCoroutine(DashAction());
         StartCoroutine(DashCooldown());
 
     }
@@ -194,10 +194,7 @@ public class PlayerAttacks : MonoBehaviour
         rb.linearVelocity = new Vector3(velocidadXZ.x, velocidadY, velocidadXZ.z);
 
     }
-    IEnumerator DashAction()
-    {
 
-    }
 
     IEnumerator ShootCooldown()
     {
