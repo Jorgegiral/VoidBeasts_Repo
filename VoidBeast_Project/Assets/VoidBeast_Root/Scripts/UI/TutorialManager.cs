@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using static TutorialManager;
 
 public class TutorialManager : MonoBehaviour
@@ -56,11 +57,15 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject buildBlock;
     [SerializeField] private GameObject seedBlock;
     [SerializeField] private GameObject seedUnblock;
+    [SerializeField] private GameObject robot;
     [SerializeField] private RectTransform seedmode;
     [SerializeField] private RectTransform buildmode;
     [SerializeField] private RectTransform money;
+    [SerializeField] private Sprite[] robotS;
     private RectTransform rectTransform;
     private RectTransform blackR;
+    private Animator ranim;
+    private Image robotI;
     private void Awake()
     {
         instance = this;
@@ -71,6 +76,8 @@ public class TutorialManager : MonoBehaviour
         StartStep();
         rectTransform = dialoguetext.GetComponent<RectTransform>();
         blackR = black.GetComponent<RectTransform>();
+        ranim = robot.GetComponent<Animator>();
+        robotI = robot.GetComponent<Image>();
     }
     void StartStep()
     {
@@ -85,6 +92,7 @@ public class TutorialManager : MonoBehaviour
             case Step.OpenBuildMenu: // TAB construcción
                 arrow6.SetActive(true);
                 dialogue.WaitForAction();
+                robotI.sprite = robotS[1];
                 break;
 
             case Step.BuyPlot: //Comprar parcela
@@ -102,6 +110,7 @@ public class TutorialManager : MonoBehaviour
                 buildBlock.SetActive(false);
                 black2.SetActive(false);
                 arrow.SetActive(false);
+                robotI.sprite = robotS[0];
                 break;
 
             case Step.CloseBuild: // Tab otra vez
@@ -206,6 +215,7 @@ public class TutorialManager : MonoBehaviour
             currentStep = (Step)nextStepValue;
         }
         dialogue.ForceNextText();
+        ranim.SetTrigger("Change");
         StartStep();
     }
 
