@@ -14,15 +14,13 @@ public class BuildingHP : MonoBehaviour
     [SerializeField] AudioClip deathSound;
     private int enemyCounter = 0;
     [SerializeField] GameObject vfxRepair;
-    Renderer rend; //jorge
     MaterialPropertyBlock mpb;
-    Renderer[] renderers;
+    [SerializeField] Renderer[] renderers;
 
     [SerializeField] string damagePropertyName = "_DamageAmount";
     [SerializeField] string intensityPropertyName = "_IntensityStains";
     private void Awake()
     {      
-        renderers = GetComponentsInChildren<Renderer>();//Jorge
         mpb = new MaterialPropertyBlock(); //Jorge
 
         deathCanvas.gameObject.SetActive(false);
