@@ -36,9 +36,7 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Collider attackCollider; 
     [SerializeField] private bool isHolding;
     [SerializeField] private float holdThreshold = 2f;
-    [SerializeField] float dashSpeed = 40f;
-    [SerializeField] float dashDecaySpeed = 40f;
-    [SerializeField] float dashDuration = 2f;
+    [SerializeField] float dashForce = 30f;
     private bool isDashing;
     [SerializeField] Image SpinPanel;
     [SerializeField] Image DashPanel;
@@ -151,7 +149,7 @@ public class PlayerAttacks : MonoBehaviour
         anim.SetTrigger("Dash");
         anim.SetTrigger("Attack");
         isDashing = true;
-      //  StartCoroutine(DashAction());
+        rb.AddForce(transform.forward * dashForce,ForceMode.Impulse);
         StartCoroutine(DashCooldown());
 
     }
