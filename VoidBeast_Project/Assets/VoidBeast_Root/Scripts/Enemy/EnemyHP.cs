@@ -9,6 +9,7 @@ public class EnemyHP : MonoBehaviour
     [SerializeField] float maxHealth;
     [SerializeField] private Image healthbar;
     [SerializeField] private GameObject healthob;
+    [SerializeField] private int plantToUnlock ;
     float enemyMaxHealth;
     float enemyCurrentHealth;
 
@@ -18,7 +19,6 @@ public class EnemyHP : MonoBehaviour
     [SerializeField] private Material damageMaterial;
     [SerializeField] private Material baseMaterial;
     [SerializeField] Renderer rend;
-
 
     private void Awake()
     {
@@ -46,6 +46,10 @@ public class EnemyHP : MonoBehaviour
         UpdateHealthBar();
         if (enemyCurrentHealth < 0) 
         {
+            if (plantToUnlock >= 0 && Random.value <= 0.15f)
+            {
+                ParcelaManager.instance.UnlockPlant(plantToUnlock);
+            }
             BasicEnemy enemy = GetComponent<BasicEnemy>();
             GameObject tempSmoke = Instantiate(smokeVFX,transform.position,transform.rotation);
             Destroy(tempSmoke,1f);
