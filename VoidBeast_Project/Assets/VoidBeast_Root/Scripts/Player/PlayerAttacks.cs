@@ -37,6 +37,8 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] private bool isHolding;
     [SerializeField] private float holdThreshold = 2f;
     [SerializeField] float dashForce = 30f;
+    [SerializeField] float dashDuration = 0.25f;
+    [SerializeField] AnimationCurve dashCurve;
     private bool isDashing;
     [SerializeField] Image SpinPanel;
     [SerializeField] Image DashPanel;
@@ -363,6 +365,23 @@ public class PlayerAttacks : MonoBehaviour
         PlayerStats.instance.playerSpeed += 0.7f;
         yield return new WaitForSeconds(5f);
         PlayerStats.instance.playerSpeed -= 0.7f;
+    }
+    IEnumerator DashRoutine()
+    {
+        isDashing = true;
+        float time = 0;
+
+        while (time < dashDuration)
+        {
+            float speedMultiplier = dashCurve.Evaluate(time / dashDuration);
+            rb.linearVelocity = transform.forward * dashForce * speedMultiplier;
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        rb.linearVelocity = Vector3.zero;
+        isDashing = false;
     }
 
 }
