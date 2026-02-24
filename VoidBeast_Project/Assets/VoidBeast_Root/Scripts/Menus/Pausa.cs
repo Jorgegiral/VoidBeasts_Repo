@@ -22,6 +22,7 @@ public class Pausa : MonoBehaviour
     [SerializeField] GameObject firstSelectedOnControls;
 
     [SerializeField] private Dialogue dialogueScript;
+    [SerializeField] private Animator optionsanim;
 
     float sfxVolume;
     float musicVolume;
@@ -50,6 +51,7 @@ public class Pausa : MonoBehaviour
 
         controlsPanel.SetActive(true);
         keyboardControls.SetActive(true);
+        optionsanim.SetTrigger("panelchange");
         ControllerControls.SetActive(false);
         generalSettings.SetActive(false);
         EventSystem.current.SetSelectedGameObject(firstSelectedOnControls);
@@ -66,25 +68,33 @@ public class Pausa : MonoBehaviour
     public void CloseOptions()
     {
         Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
-
-        optionsPanel.SetActive(false);
-        pausePanel.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(firstSelectedOnOpen);
+        StartCoroutine(CloseControlsTime());
 
     }
     public void CloseControls()
     {
         Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
 
+        optionsanim.SetTrigger("panelchange");
         controlsPanel.SetActive(false);
         generalSettings.SetActive(true);
         EventSystem.current.SetSelectedGameObject(firstSelectedOnMenu);
 
     }
+
+    IEnumerator CloseControlsTime()
+    {
+        optionsanim.SetTrigger("panelclose");
+        yield return new WaitForSecondsRealtime(0.4f);
+        optionsPanel.SetActive(false);
+        pausePanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstSelectedOnOpen);
+    }
     public void ShowKeyboardControls()
     {
         Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
 
+        optionsanim.SetTrigger("panelchange");
         keyboardControls.SetActive(true);
         ControllerControls.SetActive(false);
     }
@@ -92,6 +102,7 @@ public class Pausa : MonoBehaviour
     {
         Settings.instance.PlaySoundFXClip(ClickSound, transform, 1f);
 
+        optionsanim.SetTrigger("panelchange");
         keyboardControls.SetActive(false);
         ControllerControls.SetActive(true);
     }
