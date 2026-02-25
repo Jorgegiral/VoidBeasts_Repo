@@ -31,6 +31,7 @@ public class SkillManager : MonoBehaviour
     public bool isRightTwoUnlocked;
     public bool freeUpgrade;
     private int availablePoints = 3;
+    public int maxPoints = 2;
     private bool skillShopOpened;
     private string key;
     private string localizedString;
@@ -119,6 +120,7 @@ public class SkillManager : MonoBehaviour
         {
             isLeftOneUnlocked = true;
             leftOneUI.SetActive(true);
+            lockLeftOne.SetActive(false);
             lockLeftTwoBlock.SetActive(false);
             availablePoints--;
             UpdateSkillValues();
@@ -196,5 +198,9 @@ public class SkillManager : MonoBehaviour
         skillShop.gameObject.SetActive(false);
         skillShopOpened = false;
         PlayerStats.instance.menuOpened = false;
+    }
+    public void AddPoint()
+    {
+        availablePoints++;  
     }
 }

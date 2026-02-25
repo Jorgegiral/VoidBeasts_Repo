@@ -17,8 +17,7 @@ public class RotateToPlayer : MonoBehaviour
 
     private void Start()
     {
-        layerGround = LayerMask.GetMask("Ground");
-
+        layerGround = LayerMask.GetMask("Ground","Enemy");
     }
     public void RotateOnShoot()
     {

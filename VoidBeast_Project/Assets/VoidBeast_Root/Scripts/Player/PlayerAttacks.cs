@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -25,7 +24,6 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] GameObject rayVFX;
     [SerializeField] Transform rayPoint;
     [SerializeField] Image RayPanel;
-    [SerializeField] GameObject tornadoVFX;
     [SerializeField] Transform nadoPoint;
 
 
@@ -36,12 +34,14 @@ public class PlayerAttacks : MonoBehaviour
     [SerializeField] Collider attackCollider; 
     [SerializeField] private bool isHolding;
     [SerializeField] private float holdThreshold = 2f;
-    [SerializeField] float dashSpeed = 40f;
-    [SerializeField] float dashDecaySpeed = 40f;
-    [SerializeField] float dashDuration = 2f;
-    private bool isDashing;
+    [SerializeField] float dashForce = 30f;
+    [SerializeField] float dashDuration = 0.25f;
+    [SerializeField] AnimationCurve dashCurve;
     [SerializeField] Image SpinPanel;
     [SerializeField] Image DashPanel;
+    [SerializeField] GameObject tornadoVFX;
+    [SerializeField] TrailRenderer trailDash;
+
 
 
 
@@ -78,6 +78,11 @@ public class PlayerAttacks : MonoBehaviour
     }
     private void Update()
     {
+        if (DayNightSystem.Instance.isDay)
+        {
+            holderImage.SetActive(false);
+            holderFiller.fillAmount = 0f;
+        }
         if (isHolding)
         {
             holdTimer += Time.deltaTime;
@@ -150,8 +155,8 @@ public class PlayerAttacks : MonoBehaviour
         rotateToPlayer.RotateOnShoot();
         anim.SetTrigger("Dash");
         anim.SetTrigger("Attack");
-        isDashing = true;
-      //  StartCoroutine(DashAction());
+
+        StartCoroutine(DashRoutine());
         StartCoroutine(DashCooldown());
 
     }
@@ -251,7 +256,7 @@ public class PlayerAttacks : MonoBehaviour
     IEnumerator DisableDashAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        isDashing = false;
+        PlayerStats.instance.isDashing = false;
     }
     IEnumerator RayCooldown()
     {
@@ -297,42 +302,22 @@ public class PlayerAttacks : MonoBehaviour
 
             if (holdTimer >= holdThreshold)
             {
+                if (DayNightSystem.Instance.isDay) return;
                 RayGun();
             }
             else
             {
+                if (DayNightSystem.Instance.isDay) return;
                 Shoot();
 
             }
         }
     }
 
-    public void OnMelee(InputAction.CallbackContext context)
+    public void OnDash(InputAction.CallbackContext context)
     {
         if (PlayerStats.instance.isDeath) return;
-        if (context.started)
-        {
-            if (SkillManager.instance.isRightTwoUnlocked)
-            {
-                holderFiller.fillAmount = 0f;
-                isHolding = true;
-                holdTimer = 0f;
-           }
-        }
-        else if (context.canceled)
-        {
-            holderImage.SetActive(false);
-            isHolding = false;
-
-            if (holdTimer >= holdThreshold)
-            {
-                SpinAttack();
-            }
-            else
-            {
-                Dash();
-            }
-        }
+         Dash();
     }
     public void OnBomb(InputAction.CallbackContext context)
     {
@@ -348,6 +333,11 @@ public class PlayerAttacks : MonoBehaviour
 
         PlantMine();
     }
+    public void OnSpin(InputAction.CallbackContext context)
+    {
+        if (PlayerStats.instance.isDeath) return;
+        SpinAttack();
+    }
     public void EndAttack()
     {
       //  anim.Play("Vacio", 1);
@@ -357,7 +347,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (other.CompareTag("Enemy")) 
         {
-            other.GetComponent<EnemyHP>().TakeDamage(PlayerStats.instance.meleeDamage);
+            other.GetComponent<EnemyHP>().TakeDamage(PlayerStats.instance.windDamage);
         }
     }
     IEnumerator SpeedBoost()
@@ -366,5 +356,33 @@ public class PlayerAttacks : MonoBehaviour
         yield return new WaitForSeconds(5f);
         PlayerStats.instance.playerSpeed -= 0.7f;
     }
+        IEnumerator DashRoutine()
+        {
+            PlayerStats.instance.isDashing = true;
 
-}
+            trailDash.Clear();          
+            trailDash.emitting = true;  
+
+            float time = 0f;
+            Vector3 direction = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+
+            while (time < dashDuration)
+            {
+                float t = time / dashDuration;
+                float speed = dashCurve.Evaluate(t) * dashForce;
+
+                rb.linearVelocity = direction * speed;
+
+                time += Time.deltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+
+            rb.linearVelocity = Vector3.zero;
+
+            trailDash.emitting = false; 
+
+            PlayerStats.instance.isDashing = false;
+        }
+    }
+
+
