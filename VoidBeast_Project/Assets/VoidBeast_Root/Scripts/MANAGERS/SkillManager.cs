@@ -31,7 +31,7 @@ public class SkillManager : MonoBehaviour
     public bool isRightTwoUnlocked;
     public bool freeUpgrade;
     private int availablePoints = 3;
-    public int maxPoints = 5;
+    public int maxPoints = 2;
     private bool skillShopOpened;
     private string key;
     private string localizedString;
