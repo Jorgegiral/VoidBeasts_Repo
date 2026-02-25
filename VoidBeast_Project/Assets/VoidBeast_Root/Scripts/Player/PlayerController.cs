@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(PlayerStats.instance.isDashing) return;
         if(TutorialManager.instance != null)
         {
             if(TutorialManager.instance.currentStep == TutorialManager.Step.Movement) { 

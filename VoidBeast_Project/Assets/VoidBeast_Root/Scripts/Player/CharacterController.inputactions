@@ -52,7 +52,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill 1",
+                    "name": "Skill Q",
                     "type": "Button",
                     "id": "06dec7a3-61e4-4bfc-9b02-c16c281a1908",
                     "expectedControlType": "",
@@ -61,9 +61,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill 2",
+                    "name": "Skill Shift",
                     "type": "Button",
                     "id": "d3819de4-3ae5-4c77-923b-6c198bc45dee",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill Control",
+                    "type": "Button",
+                    "id": "43b1c6b2-53af-4f16-ad83-ebe087a7bc02",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -250,18 +259,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill 1",
+                    "action": "Skill Q",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "7d87aeac-21f8-4cc6-a3a6-05c30ab507e4",
-                    "path": "<Keyboard>/ctrl",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill 1",
+                    "action": "Skill Q",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -272,7 +281,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill 2",
+                    "action": "Skill Shift",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -283,7 +292,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Skill 2",
+                    "action": "Skill Shift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "afe9fafa-842b-4c7c-9ff9-7ecf5458360f",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill Control",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -17,14 +17,14 @@ public class PlayerStats : MonoBehaviour
     [Header("Player Damage Stats")]
     public float gunDamage;
     public float explosionDamage;
-    public float meleeDamage;
+    public float windDamage;
 
 
     [Header("Player Cooldown Stats")]
 
     public float gunAttackSpeed = 2f;
     public float rayGunCooldown = 10f;
-    public float dashCooldown = 7f;
+    public float dashCooldown = 5f;
     public float spinCooldown = 5f;
     public float mineCooldown = 5f;
     public float bombCooldown = 8f;
@@ -38,7 +38,7 @@ public class PlayerStats : MonoBehaviour
     public bool isActionMode = true;
     public bool playerisInside;
     public bool layerPlants;
-
+    public bool isDashing;
 
     void Awake()
     {
@@ -56,9 +56,9 @@ public class PlayerStats : MonoBehaviour
         {
             explosionDamage += powerUpChosen.value;
         }
-        if (powerUpChosen.type.ToString() == "MeleeDamage")
+        if (powerUpChosen.type.ToString() == "windDamage")
         {
-            meleeDamage += powerUpChosen.value;
+            windDamage += powerUpChosen.value;
         }
         if (powerUpChosen.type.ToString() == "Resurrection")
         {
