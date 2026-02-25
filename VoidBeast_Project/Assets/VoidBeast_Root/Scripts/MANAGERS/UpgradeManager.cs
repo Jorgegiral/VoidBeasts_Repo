@@ -60,7 +60,7 @@ public class UpgradeManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C) && DayNightSystem.Instance.isDay)
+        if (Input.GetKeyDown(KeyCode.E) && DayNightSystem.Instance.isDay)
         {
             if (!upgradeShopOpened)
             {

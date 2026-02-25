@@ -11,10 +11,6 @@ public class PlayerFunctions : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject escapeMenu;
-    LayerMask layerInteractable;
-    LayerMask layerPlant;
-    LayerMask layerDestroyable;
-    LayerMask layerWall;
 
     private Vector3 originRaycast = new Vector3(0, 0.5f, 0);
     private Animator anim; //Jorge
@@ -22,10 +18,6 @@ public class PlayerFunctions : MonoBehaviour
 
     private void Awake()
     {
-        layerInteractable = LayerMask.GetMask("Interactable");
-        layerPlant = LayerMask.GetMask("Plant");
-        layerDestroyable = LayerMask.GetMask("Destroyable");
-        layerWall = LayerMask.GetMask("Wall");
         anim = GetComponent<Animator>(); //Jorge
     }
 

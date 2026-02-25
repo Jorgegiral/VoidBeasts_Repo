@@ -7,4 +7,8 @@ public class RecolectVFX : MonoBehaviour
         MoneySystem.instance.AddMoney(ParcelaManager.instance.moneyToAdd);
         ParcelaManager.instance.moneyToAdd = 0;
     }
+    public void DesactiveSelf()
+    {
+       Destroy(gameObject);
+    }
 }

@@ -10,6 +10,7 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] Transform spawnpoint;
     [SerializeField] Image fillImage;
     [SerializeField] Image backgroundImage;
+    [SerializeField] TMP_Text hpText;
     [SerializeField] TMP_Text deathTimerText;
     [SerializeField] Image blackAndWhiteImage;
     [SerializeField] AudioClip deathSound;
@@ -55,7 +56,6 @@ public class PlayerHP : MonoBehaviour
             StartDeathTimer();
             return;
         }
-        UpdateHP();
         BecomeTemporarilyInvincible();
         isInvicible = false;
 
@@ -73,7 +73,7 @@ public class PlayerHP : MonoBehaviour
     {
         float fill = PlayerStats.instance.playerCurrentHealth / PlayerStats.instance.playerMaxHealth;
         fill = Mathf.Clamp01(fill);
-
+        hpText.text = PlayerStats.instance.playerCurrentHealth.ToString();
         if (fillImage != null)
             fillImage.fillAmount = fill;
     }
@@ -121,7 +121,6 @@ public class PlayerHP : MonoBehaviour
             {
                 transform.position = spawnpoint.position;
                 ShowPlayer();
-                Debug.Log("Spawning");
                 deathTimerText.gameObject.SetActive(false);
                 blackAndWhiteImage.gameObject.SetActive(false);
 

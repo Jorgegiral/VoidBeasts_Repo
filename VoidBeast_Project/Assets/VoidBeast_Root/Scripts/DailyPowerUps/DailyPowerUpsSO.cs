@@ -20,8 +20,8 @@ public class DailyPowerUpsSO : ScriptableObject
     Resurrection,
     FireRate,
     ExplosionDamage,
-    MeleeDamage,
-    availablePoints
+    WindDamage,
+    AvailablePoints
     }
 public enum PowerUpRarity
 {

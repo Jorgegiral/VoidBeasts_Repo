@@ -26,7 +26,7 @@ public class Puñetero : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = Random.Range(minSpeed, maxSpeed);
+        agent.speed = Random.Range(minSpeed, maxSpeed) + DayNightSystem.Instance.nightNumber/15;
         anim = GetComponent<Animator>();
     }
 
