@@ -107,6 +107,8 @@ public class TutorialManager : MonoBehaviour
                 bloqueo2.SetActive(true);
                 arrow.SetActive(true);
                 arrow6.SetActive(false);
+                rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
+                robotR.anchoredPosition = new Vector2(716f, rectTransform.anchoredPosition.y);
                 break;
 
             case Step.PlacePlot: // Poner parcela
