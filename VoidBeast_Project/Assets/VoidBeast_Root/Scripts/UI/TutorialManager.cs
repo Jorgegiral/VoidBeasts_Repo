@@ -50,7 +50,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject bloqueo2;
     [SerializeField] private GameObject bloqueoN;
     [SerializeField] private GameObject bloqueoBotones;
-    [SerializeField] private GameObject close;
     [SerializeField] private GameObject black;
     [SerializeField] private GameObject black2;
     [SerializeField] private GameObject dialoguetext;
@@ -64,6 +63,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private Sprite[] robotS;
     private RectTransform rectTransform;
     private RectTransform blackR;
+    private RectTransform robotR;
     private Animator ranim;
     private Image robotI;
     private void Awake()
@@ -75,6 +75,7 @@ public class TutorialManager : MonoBehaviour
     {
         StartStep();
         rectTransform = dialoguetext.GetComponent<RectTransform>();
+        robotR = robot.GetComponent<RectTransform>();
         blackR = black.GetComponent<RectTransform>();
         ranim = robot.GetComponent<Animator>();
         robotI = robot.GetComponent<Image>();
@@ -92,6 +93,8 @@ public class TutorialManager : MonoBehaviour
             case Step.OpenBuildMenu: // TAB construcción
                 arrow6.SetActive(true);
                 dialogue.WaitForAction();
+                rectTransform.offsetMax = new Vector2(-450f, rectTransform.offsetMax.y);
+                robotR.anchoredPosition = new Vector2(500f, rectTransform.anchoredPosition.y);
                 robotI.sprite = robotS[1];
                 break;
 
@@ -103,6 +106,8 @@ public class TutorialManager : MonoBehaviour
                 bloqueo2.SetActive(true);
                 arrow.SetActive(true);
                 arrow6.SetActive(false);
+                rectTransform.offsetMax = new Vector2(-215f, rectTransform.offsetMax.y);
+                robotR.anchoredPosition = new Vector2(716f, rectTransform.anchoredPosition.y);
                 break;
 
             case Step.PlacePlot: // Poner parcela
@@ -121,6 +126,7 @@ public class TutorialManager : MonoBehaviour
             case Step.Interact: //  Interactuar
                 dialogue.WaitForAction();
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
+                robotI.sprite = robotS[1];
                 break;
 
             case Step.Notification: // Notificacion
@@ -129,6 +135,7 @@ public class TutorialManager : MonoBehaviour
                 blackR.SetSiblingIndex(4);
                 bloqueo.SetActive(true);
                 rectTransform.offsetMin = new Vector2(1000f, rectTransform.offsetMin.y);
+                robotI.sprite = robotS[0];
                 arrow2.SetActive(true);
                 break;
 
@@ -139,6 +146,7 @@ public class TutorialManager : MonoBehaviour
                 black.SetActive(false);
                 black2.SetActive(true);
                 arrow2.SetActive(false);
+                robotI.sprite = robotS[1];
                 break;
 
             case Step.Plant: // Plantar
@@ -155,6 +163,7 @@ public class TutorialManager : MonoBehaviour
                 seedBlock.SetActive(false);
                 seedmode.SetSiblingIndex(3);
                 arrow1.SetActive(false);
+                robotI.sprite = robotS[0];
                 break;
 
             case Step.Night: // Noche
@@ -162,24 +171,26 @@ public class TutorialManager : MonoBehaviour
                 bloqueoN.gameObject.SetActive(false);
                 arrow3.SetActive(true);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
+                robotI.sprite = robotS[0];
                 break;
 
             case Step.KillEnemies: // Mata los enemigos
                 dialogue.WaitForAction();
                 arrow3.SetActive(false);
                 rectTransform.offsetMin = new Vector2(800f, rectTransform.offsetMin.y);
+                robotI.sprite = robotS[1];
                 break;
 
             case Step.Collection: // recoleccion
                 dialogue.WaitForAction();
-                close.SetActive(true);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
+                robotI.sprite = robotS[0];
                 break;
 
             case Step.Upgrade: // Mejora
                 dialogue.WaitForAction();
-                close.SetActive(false);
-                rectTransform.offsetMin = new Vector2(596f, rectTransform.offsetMin.y);
+                rectTransform.offsetMin = new Vector2(562f, rectTransform.offsetMin.y);
+                robotI.sprite = robotS[1];
                 break;
 
             case Step.Money: // dinero
@@ -188,6 +199,7 @@ public class TutorialManager : MonoBehaviour
                 blackR.SetSiblingIndex(5);
                 money.SetAsLastSibling();
                 arrow5.SetActive(true);
+                robotI.sprite = robotS[1];
                 break;
 
             case Step.Upgrades: // Mejoras
@@ -196,6 +208,8 @@ public class TutorialManager : MonoBehaviour
                 arrow5.SetActive(false);
                 rectTransform.offsetMin = new Vector2(880f, rectTransform.offsetMin.y);
                 rectTransform.offsetMax = new Vector2(-450f, rectTransform.offsetMax.y);
+                robotR.anchoredPosition = new Vector2(500f, rectTransform.anchoredPosition.y);
+                robotI.sprite = robotS[0];
                 break;
 
             case Step.Final:
@@ -203,6 +217,8 @@ public class TutorialManager : MonoBehaviour
                 black.SetActive(false);
                 arrow4.SetActive(false);
                 rectTransform.offsetMax = new Vector2(-215f, rectTransform.offsetMax.y);
+                robotR.anchoredPosition = new Vector2(716f, rectTransform.anchoredPosition.y);
+                robotI.sprite = robotS[1];
                 break;
         }
     }
