@@ -64,6 +64,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private Sprite[] robotS;
     private RectTransform rectTransform;
     private RectTransform blackR;
+    private RectTransform robotR;
     private Animator ranim;
     private Image robotI;
     private void Awake()
@@ -75,6 +76,7 @@ public class TutorialManager : MonoBehaviour
     {
         StartStep();
         rectTransform = dialoguetext.GetComponent<RectTransform>();
+        robotR = robot.GetComponent<RectTransform>();
         blackR = black.GetComponent<RectTransform>();
         ranim = robot.GetComponent<Animator>();
         robotI = robot.GetComponent<Image>();
@@ -92,6 +94,8 @@ public class TutorialManager : MonoBehaviour
             case Step.OpenBuildMenu: // TAB construcción
                 arrow6.SetActive(true);
                 dialogue.WaitForAction();
+                rectTransform.offsetMax = new Vector2(-450f, rectTransform.offsetMax.y);
+                robotR.anchoredPosition = new Vector2(500f, rectTransform.anchoredPosition.y);
                 robotI.sprite = robotS[1];
                 break;
 
