@@ -78,6 +78,11 @@ public class PlayerAttacks : MonoBehaviour
     }
     private void Update()
     {
+        if (DayNightSystem.Instance.isDay)
+        {
+            holderImage.SetActive(false);
+            holderFiller.fillAmount = 0f;
+        }
         if (isHolding)
         {
             holdTimer += Time.deltaTime;
