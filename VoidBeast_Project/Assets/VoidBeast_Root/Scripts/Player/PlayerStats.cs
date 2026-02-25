@@ -84,14 +84,16 @@ public class PlayerStats : MonoBehaviour
         if (powerUpChosen.type.ToString() == "FireRate")
         {
             gunAttackSpeed += powerUpChosen.value;
-            if (gunAttackSpeed <= 0.6f)
+            if (gunAttackSpeed <= 0.1f)
             {
-                gunAttackSpeed = 0.6f;
+                gunAttackSpeed = 0.1f;
             }
         }
-        if (powerUpChosen.type.ToString() == "availablePoints")
+        if (powerUpChosen.type.ToString() == "AvailablePoints")
         {
             SkillManager.instance.freeUpgrade = true;
+            SkillManager.instance.maxPoints--;
+            SkillManager.instance.AddPoint();
             UpgradeManager.instance.TakeUpgrade();
         }
         powerUpChosen = null;

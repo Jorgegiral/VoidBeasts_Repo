@@ -115,10 +115,10 @@ public class DailyPowerUP : MonoBehaviour
     }
     private DailyPowerUpsSO GetRandomPowerUps(List<DailyPowerUpsSO> availablePowerUps)
     {
-        float commonWeight = 75f;
-        float rareWeight = 22.75f;
-        float legendaryWeight = 2.1f;
-        float voidWeight = 0.15f;
+        float commonWeight = 55f;
+        float rareWeight = 30f;
+        float legendaryWeight = 12f;
+        float voidWeight =3f;
 
         float total = commonWeight + rareWeight + legendaryWeight + voidWeight;
         float roll = Random.Range(0f, total);
@@ -136,25 +136,30 @@ public class DailyPowerUP : MonoBehaviour
         roll -= legendaryWeight;
 
         return RandomFrom(availablePowerUps, PowerUpRarity.Void);
-    }
 
+    }
     private DailyPowerUpsSO RandomFrom(List<DailyPowerUpsSO> pool, PowerUpRarity rarity)
     {
         var list = pool.Where(p => p.rarityName == rarity).ToList();
+        if (list.Count == 0) return pool[Random.Range(0, pool.Count)];
         return list[Random.Range(0, list.Count)];
     }
     private bool IsPowerUpAvailable(DailyPowerUpsSO powerUp)
     {
         if (powerUp.type == PowerUpType.FireRate)
         {
-            return PlayerStats.instance.gunAttackSpeed > 0.6f;
+            return PlayerStats.instance.gunAttackSpeed > 0.1f;
         }
 
         if (powerUp.type == PowerUpType.Resurrection)
         {
             return PlayerStats.instance.deathTimer > 1f;
         }
-
+        if (powerUp.type == PowerUpType.AvailablePoints)
+        {
+            if (SkillManager.instance.maxPoints == 0)
+                return false;
+        }
         return true;
     }
     public void BuyPowerUp()
