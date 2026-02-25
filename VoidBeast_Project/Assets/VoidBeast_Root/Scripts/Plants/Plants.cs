@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Plants : ScriptableObject
 {
     public string plantName;
+    public int life;
     public int numDias;
     public int precio;
     public List<GameObject> plantGameObject;

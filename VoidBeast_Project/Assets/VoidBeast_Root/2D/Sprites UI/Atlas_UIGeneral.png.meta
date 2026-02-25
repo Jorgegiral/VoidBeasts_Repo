@@ -1820,6 +1820,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Atlas_UIGeneral_76
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 245
+        width: 52
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40cca9fd7ac1a444192ac9d94f0514b2
+      internalID: 1551916506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -1910,6 +1932,7 @@ TextureImporter:
       Atlas_UIGeneral_73: -1880212438
       Atlas_UIGeneral_74: -1234442726
       Atlas_UIGeneral_75: 1626428063
+      Atlas_UIGeneral_76: 1551916506
       Atlas_UIGeneral_8: -1841956884
       Atlas_UIGeneral_9: 1941335953
   mipmapLimitGroupName: 
