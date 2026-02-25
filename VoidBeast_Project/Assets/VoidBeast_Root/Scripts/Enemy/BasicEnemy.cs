@@ -38,7 +38,7 @@ public class BasicEnemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>(); //Jorge
-        agent.speed = Random.Range(minSpeed, maxSpeed);
+        agent.speed = Random.Range(minSpeed, maxSpeed) + DayNightSystem.Instance.nightNumber/18;
 
     }
 

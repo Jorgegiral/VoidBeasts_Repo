@@ -23,13 +23,10 @@ public class DailyPowerUP : MonoBehaviour
     private int selectedIndex = -1;
     bool upgradeselect = false;
     bool recollection = false;
-    public bool poopedDay = false;
 
 
     public void StartPowerUp()
     {
-        if (poopedDay) return;
-        poopedDay=true;
         gameObject.SetActive(true);
         PickPowerUps();
         Settings.instance.PlaySoundFXClip(startPickSound, transform, 1f);
