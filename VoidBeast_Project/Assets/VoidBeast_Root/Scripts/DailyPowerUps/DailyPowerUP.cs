@@ -112,10 +112,10 @@ public class DailyPowerUP : MonoBehaviour
     }
     private DailyPowerUpsSO GetRandomPowerUps(List<DailyPowerUpsSO> availablePowerUps)
     {
-        float commonWeight = 55f;
-        float rareWeight = 30f;
-        float legendaryWeight = 12f;
-        float voidWeight =3f;
+        float commonWeight = 65f;
+        float rareWeight = 25f;
+        float legendaryWeight = 8f;
+        float voidWeight =2f;
 
         float total = commonWeight + rareWeight + legendaryWeight + voidWeight;
         float roll = Random.Range(0f, total);
