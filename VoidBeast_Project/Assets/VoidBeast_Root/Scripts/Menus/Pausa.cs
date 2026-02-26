@@ -61,7 +61,7 @@ public class Pausa : MonoBehaviour
     {
         Settings.instance.PlaySoundFXClip(unClickSound, transform, 1f);
         optionsPanel.SetActive(false);
-        pauseMenu.SetActive(false);
+        pausePanel.SetActive(false);
         PlayerStats.instance.menuOpened = false;
         Time.timeScale = 1f;
     }

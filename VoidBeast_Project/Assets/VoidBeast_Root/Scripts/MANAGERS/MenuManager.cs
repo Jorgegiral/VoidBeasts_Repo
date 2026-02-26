@@ -14,6 +14,8 @@ public class MenuManager : MonoBehaviour
 
     [Header("Pause Menu")]
     [SerializeField] GameObject escapeMenu;
+    [SerializeField] GameObject optionsPanel;
+
     [Header("Upgrade Menu")]
     public GameObject upgradeShop;
     private bool upgradeShopOpened;
@@ -23,7 +25,7 @@ public class MenuManager : MonoBehaviour
     private bool shopOpened;
 
     private GameObject currentMenu;
-
+    private bool openMenu;
     private void Awake()
     {
         key = "Points";
@@ -32,10 +34,16 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && DayNightSystem.Instance.isDay)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            if (!shopOpened)
+            if (!shopOpened && DayNightSystem.Instance.isDay)
             {
+                if(currentMenu != null && openMenu)
+                {
+                    currentMenu.SetActive(false);
+                    openMenu = false;
+                    upgradeShopOpened = false;
+                }
                 OpenSkillsShop();
                 currentMenu = skillShop;
             }
@@ -46,10 +54,16 @@ public class MenuManager : MonoBehaviour
 
             }
         }
-        if (Input.GetKeyDown(KeyCode.E) && DayNightSystem.Instance.isDay)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (!upgradeShopOpened)
+            if (!upgradeShopOpened && DayNightSystem.Instance.isDay)
             {
+                if (currentMenu != null && openMenu)
+                {
+                    currentMenu.SetActive(false);
+                    openMenu = false;
+                    shopOpened = false;
+                }
                 OpenUpgradeShop();
                 currentMenu = upgradeShop;
             }
@@ -62,17 +76,19 @@ public class MenuManager : MonoBehaviour
     }
     public void OpenSkillsShop()
     {
-        if (PlayerStats.instance.menuOpened) return;
+        if(openMenu) return;
         shopOpened = true;
         skillShop.gameObject.SetActive(true);
         UpdateSkillValues();
         PlayerStats.instance.menuOpened = true;
+        openMenu = true;
     }
     public void CloseSkillsShop()
     {
         skillShop.gameObject.SetActive(false);
         shopOpened = false;
         PlayerStats.instance.menuOpened = false;
+        openMenu=false;
     }
     public void UpdateSkillValues()
     {
@@ -80,10 +96,12 @@ public class MenuManager : MonoBehaviour
     }
     public void OpenUpgradeShop()
     {
-        if (PlayerStats.instance.menuOpened) return;
+
+        if (openMenu) return;
         upgradeShop.gameObject.SetActive(true);
         UpdateValuesBuildings();
         PlayerStats.instance.menuOpened = true;
+        openMenu = true;
         upgradeShopOpened = true;
 
     }
@@ -91,6 +109,7 @@ public class MenuManager : MonoBehaviour
     {
         upgradeShop.gameObject.SetActive(false);
         PlayerStats.instance.menuOpened = false;
+        openMenu = false;
         upgradeShopOpened = false;
 
     }
@@ -117,6 +136,7 @@ public class MenuManager : MonoBehaviour
         else
         {
             escapeMenu.SetActive(false);
+            optionsPanel.SetActive(false);
             PlayerStats.instance.menuOpened = false;
             PlayerStats.instance.escapeMenuOpened = false;
             Time.timeScale = 1f;
