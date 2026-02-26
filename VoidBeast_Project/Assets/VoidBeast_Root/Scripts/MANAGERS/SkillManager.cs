@@ -30,7 +30,7 @@ public class SkillManager : MonoBehaviour
     public bool isLeftTwoUnlocked;
     public bool isRightTwoUnlocked;
     public bool freeUpgrade;
-    private int availablePoints = 3;
+    public int availablePoints = 3;
     public int maxPoints = 2;
     private bool skillShopOpened;
     private string key;
@@ -47,20 +47,7 @@ public class SkillManager : MonoBehaviour
         key = "Points";
         localizedString = LocalizationSettings.StringDatabase.GetLocalizedString("Tabla1", key);
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F) && DayNightSystem.Instance.isDay)
-        {
-            if (!skillShopOpened)
-            {
-                OpenSkillsShop();
-            }
-            else
-            {
-                CloseSkillsShop();
-            }
-        }
-    }
+
     private void UpdateSkillValues()
     {
         availablePointsText.text = localizedString + availablePoints.ToString();
@@ -184,20 +171,6 @@ public class SkillManager : MonoBehaviour
             UpdateSkillValues();
             MoneySystem.instance.UpdateMoneyText();
         }
-    }
-    public void OpenSkillsShop()
-    {
-        if (PlayerStats.instance.menuOpened) return;
-        skillShopOpened = true;
-        skillShop.gameObject.SetActive(true);
-        UpdateSkillValues();
-        PlayerStats.instance.menuOpened = true;
-    }
-    public void CloseSkillsShop()
-    {
-        skillShop.gameObject.SetActive(false);
-        skillShopOpened = false;
-        PlayerStats.instance.menuOpened = false;
     }
     public void AddPoint()
     {
