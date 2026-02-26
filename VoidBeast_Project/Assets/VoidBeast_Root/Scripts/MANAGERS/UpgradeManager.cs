@@ -10,7 +10,6 @@ public class UpgradeManager : MonoBehaviour
     public static UpgradeManager instance;
 
     [Header("UI References")]
-    public GameObject upgradeShop;
     public GameObject skillShop;
     public TMP_Text mainBuildText;
     public TMP_Text wallText;
@@ -47,31 +46,17 @@ public class UpgradeManager : MonoBehaviour
     private int maxWallLevel = 2;
     public BoundsInt bounds;
     public GameObject[] updateModelMainBuild;
-    private int mainBuildvalue = 250;
-    private int wallBuildvalue = 500;
-    private int towerBuildvalue = 500;
+    public int mainBuildvalue = 250;
+    public int wallBuildvalue = 500;
+    public int towerBuildvalue = 500;
     public int upgradeValue = 100;
-    private bool upgradeShopOpened;
     private void Awake()
     {
         if (instance == null) { instance = this; }
         wallBuild.build = wallBuild.levelModels[wallLevel];
         towerBuild.build = towerBuild.levelModels[towerLevel];
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && DayNightSystem.Instance.isDay)
-        {
-            if (!upgradeShopOpened)
-            {
-                OpenUpgradeShop();
-            }
-            else
-            {
-                CloseUpgradeShop();
-            }
-        }
-    }
+
     public void UpgradeWall()
     {
         if (wallLevel >= maxWallLevel) return;
@@ -270,24 +255,6 @@ public class UpgradeManager : MonoBehaviour
     {
         upgradesText.text = upgradeValue.ToString();
     }
-
-    public void OpenUpgradeShop()
-    {
-        if (PlayerStats.instance.menuOpened) return;
-        upgradeShop.gameObject.SetActive(true);
-        UpdateValuesBuildings();
-        PlayerStats.instance.menuOpened = true;
-        upgradeShopOpened = true;
-
-    }
-    public void CloseUpgradeShop()
-    {
-        upgradeShop.gameObject.SetActive(false);
-        PlayerStats.instance.menuOpened = false;
-        upgradeShopOpened = false;
-
-    }
-
     public void RegisterWall(GameObject wall)
     {
         if (!walls.Contains(wall))

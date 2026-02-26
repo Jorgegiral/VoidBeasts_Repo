@@ -29,7 +29,7 @@ public class DayNightSystem : MonoBehaviour
     [SerializeField] Sprite[] dayNightSprites;
     [SerializeField] GameObject[] dayButton;
     float lightTransitionDuration = 3f;
-    float powerUpDelay = 3f;
+    [SerializeField] float powerUpDelay = 3f;
     public List<Parcela> parcelas = new List<Parcela>();
     public List<ParcelaOrder> parcelasOrder = new List<ParcelaOrder>();
     //Jorge:

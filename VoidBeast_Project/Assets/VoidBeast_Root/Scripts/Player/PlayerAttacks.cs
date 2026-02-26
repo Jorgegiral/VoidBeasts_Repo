@@ -78,12 +78,8 @@ public class PlayerAttacks : MonoBehaviour
     }
     private void Update()
     {
-        if (DayNightSystem.Instance.isDay)
-        {
-            holderImage.SetActive(false);
-            holderFiller.fillAmount = 0f;
-        }
-        if (isHolding)
+
+        if (isHolding && DayNightSystem.Instance.isNight)
         {
             holdTimer += Time.deltaTime;
             if (holdTimer > 0.2f)
@@ -152,8 +148,7 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (!SkillManager.instance.isRightOneUnlocked) return;
         if (!canDash) return;
-        rotateToPlayer.RotateOnShoot();
-        anim.SetTrigger("Dash");
+        anim.SetBool("isDashing",true);
         anim.SetTrigger("Attack");
 
         StartCoroutine(DashRoutine());
@@ -379,10 +374,12 @@ public class PlayerAttacks : MonoBehaviour
 
             rb.linearVelocity = Vector3.zero;
 
-            trailDash.emitting = false; 
+            trailDash.emitting = false;
 
-            PlayerStats.instance.isDashing = false;
-        }
+        PlayerStats.instance.isDashing = false;
+        anim.SetBool("isDashing", false);
+
     }
+}
 
 
