@@ -11,6 +11,7 @@ public class Building : MonoBehaviour
     private void Start()
     {
         wallbehaviour = GetComponentInParent<WallBehaviour>();
+
     }
     public bool CanBePlaced()
     {
@@ -40,6 +41,15 @@ public class Building : MonoBehaviour
     public void SetArea(BoundsInt area)
     {
         occupiedArea = area;
+        Debug.Log(occupiedArea.ToString());
+    }
+    public void SetAreaTower(BoundsInt area)
+    {
+        occupiedArea = area;
+        Debug.Log(occupiedArea.ToString());
+        GridBuilding.instance.UnTakeArea(occupiedArea);
+        UpgradeManager.instance.towerAvailable++;
+        UpgradeManager.instance.towerBought--;
     }
     public void DestroyedWall()
     {
@@ -58,10 +68,7 @@ public class Building : MonoBehaviour
     public void DestroyedTower()
     {
         UpgradeManager.instance.UnRegisterTower(gameObject);
-        SetArea(area);
-        GridBuilding.instance.UnTakeArea(occupiedArea);
-        UpgradeManager.instance.towerAvailable++;
-        UpgradeManager.instance.towerBought--;
+        SetAreaTower(area);
         Destroy(gameObject);
     }
     IEnumerator debrisCD()
