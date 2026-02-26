@@ -212,16 +212,30 @@ public class UpgradeManager : MonoBehaviour
     }
     public void SwapTowerModelsOnUpgrade()
     {
+        List<GameObject> newTowers = new List<GameObject>();
 
-        for (int i = towers.Count-1; i >= 0; i--)
+        foreach (var tower in towers.ToList())
         {
-            Vector3 position = towers[i].transform.position;
-            Quaternion rotation = towers[i].transform.rotation;
-            Instantiate(towerBuild.build, position, rotation);
-            TowerHP towerHP = towers[i].GetComponent<TowerHP>();
-            towerHP.UpgradeDamage(100000);
-            
+            if (tower == null) continue;
+            UnRegisterWall(tower);
+            Vector3 position = tower.transform.position;
+            Quaternion rotation = tower.transform.rotation;
+            GameObject newTower = Instantiate(towerBuild.build, position, rotation);
+            Building oldTowerBuild = tower.GetComponent<Building>();
+            Building newTowerBuild = newTower.GetComponent<Building>();
+            if (oldTowerBuild != null && newTowerBuild != null)
+            {
+                newTowerBuild.area.position = oldTowerBuild.area.position;
+            }
+            TowerHP towerHP = tower.GetComponent<TowerHP>();
+            if (towerHP != null)
+            {
+                towerHP.UpgradeDamage(100000);
+            }
+            newTowers.Add(newTower);
+            Destroy(tower);
         }
+        towers = newTowers;
     }
     public void ExpandBuildArea(int extraWidth, int extraHeight)
     {
