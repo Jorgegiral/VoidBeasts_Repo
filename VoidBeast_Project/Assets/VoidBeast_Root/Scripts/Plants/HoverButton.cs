@@ -8,6 +8,7 @@ public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] GameObject etiqueta;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text costText;
+    [SerializeField] TMP_Text lifeText;
     [SerializeField] bool isPlant;
     [Header("Plants Refs")]
     [SerializeField] TMP_Text earningsText;
@@ -28,6 +29,7 @@ public class HoverButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             nameText.text = plantToWatch.plantName;
             costText.text = plantToWatch.precio.ToString();
             daysText.text = plantToWatch.numDias.ToString();
+            lifeText.text = plantToWatch.life.ToString();
             earningsText.text = plantToWatch.ganancias.ToString();
         }
         else
