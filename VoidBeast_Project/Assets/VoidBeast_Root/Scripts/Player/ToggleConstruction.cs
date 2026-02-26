@@ -13,7 +13,7 @@
         [SerializeField] GameObject tableRun;
         [SerializeField] GameObject tableIdle;
 
-        public PlayerInput playerInput;
+    public PlayerInput playerInput;
 
         [Header("Animation References")]
         private Animator anim;
@@ -87,7 +87,6 @@
                 buildCam.SetActive(true);
                 grid.SetActive(true);
                 anim.SetBool("isBuilding", true);
-
                 PlayerStats.instance.isActionMode = false;
             }
             else if (!PlayerStats.instance.isActionMode && DayNightSystem.Instance.isDay && GridBuilding.instance.buildingTemp == null)
@@ -106,6 +105,7 @@
 
         }
     }
+
     public void SwitchMode(InputAction.CallbackContext context)
         {
             if(!context.performed) return;
